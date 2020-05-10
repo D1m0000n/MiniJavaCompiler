@@ -2,8 +2,8 @@
 /parser.cpp
 /parser.gv
 /parser.hh
-/bin/myCompiller
 /bin/test.in
 /bin/test.txt
 /cmake-build-debug/
 /scanner/scanner.cpp
+/bin/MiniJavaCompiler

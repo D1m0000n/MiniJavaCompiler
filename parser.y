@@ -10,46 +10,29 @@
     #include <string>
     class Scanner;
     class Driver;
-    class Expression;
-    class NumberExpression;
-    class AddExpression;
-    class SubtractExpression;
-    class DivExpression;
-    class IdentExpression;
-    class Assignment;
-    class AssignmentList;
 
-    class Program;
+    #include "visitors/forward_decl.h"
 }
-
-// %param { Driver &drv }
 
 %define parse.trace
 %define parse.error verbose
 
 %code {
-    #include "driver.hh"
-    #include "location.hh"
+    #include <driver.hh>
+    #include <location.hh>
 
-    #include "expressions/NumberExpression.h"
-    #include "expressions/AddExpression.h"
-    #include "expressions/MulExpression.h"
-    #include "expressions/DivExpression.h"
-    #include "expressions/SubtractExpression.h"
-    #include "expressions/IdentExpression.h"
-    #include "assignments/Assignment.h"
-    #include "assignments/AssignmentList.h"
-    #include "Program.h"
+    #include "visitors/elements.h"
+    /* #include <Program.h> */
 
-    static yy::parser::symbol_type yylex(Scanner &scanner, Driver& driver) {
+    static yy::parser::symbol_type yylex(Scanner& scanner, Driver& driver) {
         return scanner.ScanToken();
     }
 }
 
-%lex-param { Scanner &scanner }
-%lex-param { Driver &driver }
-%parse-param { Scanner &scanner }
-%parse-param { Driver &driver }
+%lex-param { Scanner& scanner }
+%lex-param { Driver& driver }
+%parse-param { Scanner& scanner }
+%parse-param { Driver& driver }
 
 %locations
 
@@ -58,56 +41,67 @@
 %token
     END 0 "end of file"
     ASSIGN ":="
-    MINUS "-"
     PLUS "+"
+    MINUS "-"
     STAR "*"
     SLASH "/"
     LPAREN "("
     RPAREN ")"
+    LCURBRACE "{"
+    RCURBRACE "}"
+    PRINT "System.out.println"
+    LESS "<"
+    GREATER ">"
+    MODULO "%"
+    AND "&&"
+    OR "||"
+    CLASS "class"
+    PUBLIC "public"
+    STATIC "static"
+    VOID "void"
+    MAIN "main"
 ;
 
 %token <std::string> IDENTIFIER "identifier"
 %token <int> NUMBER "number"
-%nterm <Expression*> exp
-%nterm <Assignment*> assignment
+%nterm <Expression*> expr
 %nterm <AssignmentList*> assignments
-%nterm <Program*> unit
+%nterm <Assignment*> assignment
+%nterm <Program*> unit;
 
-// %printer { yyo << $$; } <*>;
+%printer {yyo << $$;} <*>;
 
 %%
 %start unit;
-
-unit: assignments exp { $$ = new Program($1, $2); driver.program = $$; };
+unit: assignments expr { $$ = new Program($1, $2); driver.program = $$;};
 
 assignments:
-    %empty { $$ = new AssignmentList(); /* A -> eps */}
+    %empty {$$ = new AssignmentList();}
     | assignments assignment {
-        $1->AddAssignment($2); $$ = $1;
-    };
+    	$1->AddAssignment($2);
+    	$$ = $1;
+    }
 
 assignment:
-    "identifier" ":=" exp {
-        $$ = new Assignment($1, $3);
-        // driver.variables[$1] = $3->eval();
+    "identifier" ":=" expr {
+    	$$ = new Assignment($1, $3);
     };
 
 %left "+" "-";
 %left "*" "/";
 
-exp:
-    "number" {$$ = new NumberExpression($1); }
-    | "identifier" {$$ = new IdentExpression($1); }
-    | exp "+" exp { $$ = new AddExpression($1, $3); }
-    | exp "-" exp { $$ = new SubtractExpression($1, $3); }
-    | exp "*" exp { $$ = new MulExpression($1, $3); }
-    | exp "/" exp { $$ = new DivExpression($1, $3); }
-    | "(" exp ")" { $$ = $2; };
+expr:
+    "number" 		{$$ = new NumberExpression($1);}
+    | "identifier" 	{$$ = new IdentExpression($1); }
+    | expr "+" expr 	{$$ = new AddExpression($1, $3); }
+    | expr "-" expr 	{$$ = new SubtractExpression($1, $3); }
+    | expr "*" expr 	{$$ = new MulExpression($1, $3); }
+    | expr "/" expr 	{$$ = new DivExpression($1, $3); }
+    | "(" expr ")" 	{$$ = $2; };
 
 %%
 
 void
-yy::parser::error(const location_type& l, const std::string& m)
-{
-  std::cerr << l << ": " << m << '\n';
+yy::parser::error(const location_type& l, const std::string& m) {
+    std::cerr << l << ": " << m << '\n';
 }

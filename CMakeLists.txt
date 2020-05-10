@@ -46,6 +46,9 @@ add_executable(
         expressions/MulExpression.cpp
         expressions/DivExpression.cpp
         expressions/SubtractExpression.cpp
+        expressions/AndExpression.cpp
+        expressions/OrExpression.cpp
+        expressions/ModuloExpression.cpp
         expressions/NumberExpression.cpp
         expressions/IdentExpression.cpp
         assignments/Assignment.cpp
@@ -61,6 +64,9 @@ add_executable(
         visitors/Interpreter.h
         visitors/PrintVisitor.cpp
         visitors/PrintVisitor.h
+        expressions/IsEqualExpression.cpp
+        expressions/IsGreaterExpression.cpp
+        expressions/IsLessExpression.cpp
 )
 
 target_include_directories(MiniJavaCompiler PRIVATE ${MiniJavaCompiler_SOURCE_DIR})
