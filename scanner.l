@@ -50,13 +50,14 @@ blank [ \t\r]
 "/"                    return yy::parser::make_SLASH  (loc);
 "("                    return yy::parser::make_LPAREN (loc);
 ")"                    return yy::parser::make_RPAREN (loc);
-":="                   return yy::parser::make_ASSIGN (loc);
+"="                   return yy::parser::make_ASSIGN (loc);
 "{"                    return yy::parser::make_LCURBRACE (loc);
 "}"                    return yy::parser::make_RCURBRACE (loc);
 "System.out.println"   return yy::parser::make_PRINT     (loc);
 "<"                    return yy::parser::make_LESS      (loc);
 ">"                    return yy::parser::make_GREATER   (loc);
 "%"                    return yy::parser::make_MODULO    (loc);
+"=="                   return yy::parser::make_ISEQUAL   (loc);
 "&&"                   return yy::parser::make_AND       (loc);
 "||"                   return yy::parser::make_OR        (loc);
 "class"                return yy::parser::make_CLASS     (loc);

@@ -40,7 +40,7 @@
 
 %token
     END 0 "end of file"
-    ASSIGN ":="
+    ASSIGN "="
     PLUS "+"
     MINUS "-"
     STAR "*"
@@ -55,6 +55,7 @@
     MODULO "%"
     AND "&&"
     OR "||"
+    ISEQUAL "=="
     CLASS "class"
     PUBLIC "public"
     STATIC "static"
@@ -83,7 +84,7 @@ assignments:
     }
 
 assignment:
-    "identifier" ":=" expr {
+    "identifier" "=" expr {
     	$$ = new Assignment($1, $3);
     };
 
@@ -97,6 +98,12 @@ expr:
     | expr "-" expr 	{$$ = new SubtractExpression($1, $3); }
     | expr "*" expr 	{$$ = new MulExpression($1, $3); }
     | expr "/" expr 	{$$ = new DivExpression($1, $3); }
+    | expr "<" expr   {$$ = new IsLessExpression($1, $3); }
+    | expr ">" expr   {$$ = new IsGreaterExpression($1, $3); }
+    | expr "==" expr   {$$ = new IsEqualExpression($1, $3); }
+    | expr "&&" expr   {$$ = new AndExpression($1, $3); }
+    | expr "||" expr   {$$ = new OrExpression($1, $3); }
+    | expr "%" expr   {$$ = new ModuloExpression($1, $3); }
     | "(" expr ")" 	{$$ = $2; };
 
 %%
