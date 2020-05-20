@@ -5,7 +5,7 @@
     #include <cstring> // strerror
     #include <string>
     #include <iostream>
-    #include <driver.hh>
+    #include "driver.hh"
     #include "parser.hh"
 %}
 
@@ -45,15 +45,22 @@ blank [ \t\r]
               std::cout << loc.begin.line << " " << loc.end.line << std::endl;
               return yy::parser::make_MINUS  (loc);
            }
-"+"                    return yy::parser::make_PLUS   (loc);
-"*"                    return yy::parser::make_STAR   (loc);
-"/"                    return yy::parser::make_SLASH  (loc);
-"("                    return yy::parser::make_LPAREN (loc);
-")"                    return yy::parser::make_RPAREN (loc);
-"="                   return yy::parser::make_ASSIGN (loc);
-"{"                    return yy::parser::make_LCURBRACE (loc);
-"}"                    return yy::parser::make_RCURBRACE (loc);
-"System.out.println"   return yy::parser::make_PRINT     (loc);
+"+"        return yy::parser::make_PLUS   (loc);
+"*"        return yy::parser::make_STAR   (loc);
+"/"        return yy::parser::make_SLASH  (loc);
+"("        return yy::parser::make_LPAREN (loc);
+")"        return yy::parser::make_RPAREN (loc);
+"="        return yy::parser::make_ASSIGN (loc);
+";"        return yy::parser::make_SEMICOLON(loc);
+"{"        return yy::parser::make_LEFTSCOPE(loc);
+"}"        return yy::parser::make_RIGHTSCOPE(loc);
+"System.out.println"    return yy::parser::make_PRINT(loc);
+"var"                  return yy::parser::make_VAR(loc);
+"class"                return yy::parser::make_CLASS     (loc);
+"public"               return yy::parser::make_PUBLIC    (loc);
+"static"               return yy::parser::make_STATIC    (loc);
+"void"                 return yy::parser::make_VOID      (loc);
+"main"                 return yy::parser::make_MAIN      (loc);
 "<"                    return yy::parser::make_LESS      (loc);
 ">"                    return yy::parser::make_GREATER   (loc);
 "%"                    return yy::parser::make_MODULO    (loc);
@@ -61,10 +68,9 @@ blank [ \t\r]
 "&&"                   return yy::parser::make_AND       (loc);
 "||"                   return yy::parser::make_OR        (loc);
 "class"                return yy::parser::make_CLASS     (loc);
-"public"               return yy::parser::make_PUBLIC    (loc);
-"static"               return yy::parser::make_STATIC    (loc);
-"void"                 return yy::parser::make_VOID      (loc);
-"main"                 return yy::parser::make_MAIN      (loc);
+"if"                   return yy::parser::make_IF        (loc);
+"else"                 return yy::parser::make_ELSE      (loc);
+"while"                return yy::parser::make_WHILE     (loc);
 
 {int}      return make_NUMBER(yytext, loc);
 {id}       return yy::parser::make_IDENTIFIER(yytext, loc);

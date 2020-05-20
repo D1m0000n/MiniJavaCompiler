@@ -4,149 +4,184 @@
 
 #include <iostream>
 
-SymbolTreeVisitor::SymbolTreeVisitor(const std::string& filename) : stream_(filename) {
+PrintVisitor::PrintVisitor(const std::string& filename) : stream_(filename) {
 }
 
-void SymbolTreeVisitor::Visit(NumberExpression* expression) {
+void PrintVisitor::Visit(NumberExpression* expression) {
   PrintTabs();
   stream_ << "NumExpression " << expression->value_ << std::endl;
 }
 
-void SymbolTreeVisitor::Visit(AddExpression* expression) {
+void PrintVisitor::Visit(AddExpression* expression) {
   PrintTabs();
   stream_ << "AddExpression is:" << std::endl;
 
   ++num_tabs_;
-  expression->first->AcceptVisitor(this);
-  expression->second->AcceptVisitor(this);
+  expression->first->Accept(this);
+  expression->second->Accept(this);
   --num_tabs_;
 }
 
-void SymbolTreeVisitor::Visit(SubtractExpression* expression) {
+void PrintVisitor::Visit(SubtractExpression* expression) {
   PrintTabs();
 
   stream_ << "SubExpression: " << std::endl;
   ++num_tabs_;
-  expression->first->AcceptVisitor(this);
-  expression->second->AcceptVisitor(this);
+  expression->first->Accept(this);
+  expression->second->Accept(this);
   --num_tabs_;
 }
 
-void SymbolTreeVisitor::Visit(MulExpression* expression) {
+void PrintVisitor::Visit(MulExpression* expression) {
   PrintTabs();
 
   stream_ << "MulExpression: " << std::endl;
   ++num_tabs_;
-  expression->first->AcceptVisitor(this);
-  expression->second->AcceptVisitor(this);
+  expression->first->Accept(this);
+  expression->second->Accept(this);
   --num_tabs_;
 }
 
-void SymbolTreeVisitor::Visit(DivExpression* expression) {
+void PrintVisitor::Visit(DivExpression* expression) {
   PrintTabs();
   stream_ << "DivExpression: " << std::endl;
   ++num_tabs_;
-  expression->first->AcceptVisitor(this);
-  expression->second->AcceptVisitor(this);
+  expression->first->Accept(this);
+  expression->second->Accept(this);
   --num_tabs_;
 }
 
-void SymbolTreeVisitor::Visit(AndExpression* expression) {
+////
+
+void PrintVisitor::Visit(AndExpression* expression) {
   PrintTabs();
   stream_ << "AndExpression: " << std::endl;
   ++num_tabs_;
-  expression->first->AcceptVisitor(this);
-  expression->second->AcceptVisitor(this);
+  expression->first->Accept(this);
+  expression->second->Accept(this);
   --num_tabs_;
 }
 
-void SymbolTreeVisitor::Visit(OrExpression* expression) {
-  PrintTabs();
-  stream_ << "AndExpression: " << std::endl;
-  ++num_tabs_;
-  expression->first->AcceptVisitor(this);
-  expression->second->AcceptVisitor(this);
-  --num_tabs_;
-}
-
-void SymbolTreeVisitor::Visit(ModuloExpression* expression) {
-  PrintTabs();
-  stream_ << "ModuloExpression: " << std::endl;
-  ++num_tabs_;
-  expression->first->AcceptVisitor(this);
-  expression->second->AcceptVisitor(this);
-  --num_tabs_;
-}
-
-void SymbolTreeVisitor::Visit(IsEqualExpression* expression) {
+void PrintVisitor::Visit(IsEqualExpression* expression) {
   PrintTabs();
   stream_ << "IsEqualExpression: " << std::endl;
   ++num_tabs_;
-  expression->first->AcceptVisitor(this);
-  expression->second->AcceptVisitor(this);
+  expression->first->Accept(this);
+  expression->second->Accept(this);
   --num_tabs_;
 }
 
-void SymbolTreeVisitor::Visit(IsLessExpression* expression) {
+void PrintVisitor::Visit(IsLessExpression* expression) {
   PrintTabs();
   stream_ << "IsLessExpression: " << std::endl;
   ++num_tabs_;
-  expression->first->AcceptVisitor(this);
-  expression->second->AcceptVisitor(this);
+  expression->first->Accept(this);
+  expression->second->Accept(this);
   --num_tabs_;
 }
 
-void SymbolTreeVisitor::Visit(IsGreaterExpression* expression) {
+void PrintVisitor::Visit(IsGreaterExpression* expression) {
   PrintTabs();
   stream_ << "IsGreaterExpression: " << std::endl;
   ++num_tabs_;
-  expression->first->AcceptVisitor(this);
-  expression->second->AcceptVisitor(this);
+  expression->first->Accept(this);
+  expression->second->Accept(this);
   --num_tabs_;
 }
 
-void SymbolTreeVisitor::Visit(IdentExpression* expression) {
+void PrintVisitor::Visit(ModuloExpression* expression) {
+  PrintTabs();
+  stream_ << "ModuloExpression: " << std::endl;
+  ++num_tabs_;
+  expression->first->Accept(this);
+  expression->second->Accept(this);
+  --num_tabs_;
+}
+
+void PrintVisitor::Visit(OrExpression* expression) {
+  PrintTabs();
+  stream_ << "OrExpression: " << std::endl;
+  ++num_tabs_;
+  expression->first->Accept(this);
+  expression->second->Accept(this);
+  --num_tabs_;
+}
+
+////
+
+void PrintVisitor::Visit(IdentExpression* expression) {
   PrintTabs();
 
   stream_ << "IdentExpression: " << expression->ident_ << std::endl;
 }
 
-void SymbolTreeVisitor::Visit(Assignment* assignment) {
+void PrintVisitor::Visit(Assignment* assignment) {
   PrintTabs();
   stream_ << "Assignment: " << assignment->variable_ << std::endl;
   ++num_tabs_;
-  assignment->expression_->AcceptVisitor(this);
+  assignment->expression_->Accept(this);
   --num_tabs_;
 }
 
-void SymbolTreeVisitor::Visit(AssignmentList* assignment_list) {
+void PrintVisitor::Visit(VarDecl* var_decl) {
+  PrintTabs();
+  stream_ << "VarDecl: " << var_decl->variable_ << std::endl;
+}
+
+void PrintVisitor::Visit(PrintStatement* statement) {
+  PrintTabs();
+  stream_ << "PrintStatement: " << std::endl;
+  ++num_tabs_;
+  statement->expression_->Accept(this);
+  --num_tabs_;
+}
+
+void PrintVisitor::Visit(AssignmentList* assignment_list) {
   PrintTabs();
   stream_ << "AssignmentList: " << std::endl;
 
   ++num_tabs_;
-  for (Assignment* assignment : assignment_list->assignments_) {
-    assignment->AcceptVisitor(this);
+  for (Statement* assignment : assignment_list->statements_) {
+    assignment->Accept(this);
   }
   --num_tabs_;
 }
 
-void SymbolTreeVisitor::Visit(Program* program) {
+void PrintVisitor::Visit(ScopeAssignmentList* list) {
+  stream_ << "ScopeAssignmentList:" << std::endl;
+  ++num_tabs_;
+
+  list->statement_list->Accept(this);
+  --num_tabs_;
+}
+
+void PrintVisitor::Visit(IfStatement* if_statement) {
+  stream_ << "IfStatement:" << std::endl;
+  ++num_tabs_; // ???
+}
+
+void PrintVisitor::Visit(WhileStatement* while_statement) {
+  stream_ << "WhileStatement:" << std::endl;
+  ++num_tabs_; // ???
+}
+
+void PrintVisitor::Visit(Program* program) {
   stream_ << "Program:" << std::endl;
 
   ++num_tabs_;
 
-  program->assignments_->AcceptVisitor(this);
-  program->expression_->AcceptVisitor(this);
+  program->assignments_->Accept(this);
+//    program->expression_->Accept(this);
 
   --num_tabs_;
 }
 
-void SymbolTreeVisitor::PrintTabs() {
+void PrintVisitor::PrintTabs() {
   for (int i = 0; i < num_tabs_; ++i) {
     stream_ << '\t';
   }
 }
 
-SymbolTreeVisitor::~SymbolTreeVisitor() {
+PrintVisitor::~PrintVisitor() {
   stream_.close();
 }

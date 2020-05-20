@@ -6,6 +6,6 @@ int IsLessExpression::eval() const {
   return first->eval() < second->eval();
 }
 
-void IsLessExpression::AcceptVisitor(Visitor* visitor) {
+void IsLessExpression::Accept(Visitor* visitor) {
   visitor->Visit(this);
 }

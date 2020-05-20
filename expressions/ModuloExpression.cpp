@@ -6,6 +6,6 @@ int ModuloExpression::eval() const {
   return first->eval() % second->eval();
 }
 
-void ModuloExpression::AcceptVisitor(Visitor* visitor) {
+void ModuloExpression::Accept(Visitor* visitor) {
   visitor->Visit(this);
 }

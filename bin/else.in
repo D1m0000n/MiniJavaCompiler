@@ -1,0 +1,22 @@
+var three;
+three = 1;
+three = 0;
+if (0 > 0) {
+    var four;
+    four = 56;
+    System.out.println(four);
+} else {
+    if (0 > 0) {
+        var b;
+        b = 2;
+        System.out.println(b);
+    } else {
+        var c;
+        c = 23;
+        System.out.println(c);
+    }
+    var kek;
+    kek = 101;
+    System.out.println(kek);
+}
+System.out.println(three);

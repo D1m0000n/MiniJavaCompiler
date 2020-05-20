@@ -21,12 +21,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${MiniJavaCompiler_SOURCE_DIR}/bin)
 
 set(
         HEADERS
-        ${MiniJavaCompiler_SOURCE_DIR}/driver/driver.h
-        ${MiniJavaCompiler_SOURCE_DIR}/parser.hh
+        driver.hh
+        parser.hh
 )
 
 BISON_TARGET(
-        Parser
+        ParserScopes
         parser.y
         ${MiniJavaCompiler_SOURCE_DIR}/parser.cpp
         COMPILE_FLAGS --graph
@@ -34,51 +34,79 @@ BISON_TARGET(
 )
 
 FLEX_TARGET(
-        Scanner
+        ScannerScopes
         scanner.l
-        ${MiniJavaCompiler_SOURCE_DIR}/scanner/scanner.cpp
+        ${MiniJavaCompiler_SOURCE_DIR}/scanner.cpp
 )
 
-add_executable(
-        MiniJavaCompiler
-        main.cpp
-        driver/driver.cpp
-        expressions/AddExpression.cpp
-        expressions/MulExpression.cpp
-        expressions/DivExpression.cpp
-        expressions/SubtractExpression.cpp
+
+
+ADD_FLEX_BISON_DEPENDENCY(ScannerScopes ParserScopes)
+
+set(
+        SOURCES
+        driver.cpp
+        ${BISON_ParserScopes_OUTPUTS}
+        ${FLEX_ScannerScopes_OUTPUTS}
         expressions/AndExpression.cpp
-        expressions/OrExpression.cpp
-        expressions/ModuloExpression.cpp
-        expressions/NumberExpression.cpp
-        expressions/IdentExpression.cpp
-        assignments/Assignment.cpp
-        ${BISON_Parser_OUTPUTS}
-        ${FLEX_Scanner_OUTPUTS}
-        assignments/AssignmentList.cpp
-        assignments/AssignmentList.h
-        expressions/Expression.h
-        Program.cpp Program.h
-        visitors/Visitor.h
-        base/BaseElement.h
-        visitors/Interpreter.cpp
-        visitors/Interpreter.h
-        visitors/PrintVisitor.cpp
-        visitors/PrintVisitor.h
         expressions/IsEqualExpression.cpp
         expressions/IsGreaterExpression.cpp
         expressions/IsLessExpression.cpp
+        expressions/ModuloExpression.cpp
+        expressions/OrExpression.cpp
+        expressions/NumberExpression.cpp
+        expressions/MulExpression.cpp
+        expressions/AddExpression.cpp
+        expressions/SubtractExpression.cpp
+        expressions/DivExpression.cpp
+        expressions/IdentExpression.cpp
+        statements/Statement.cpp
+        statements/Assignment.cpp
+        statements/AssignmentList.cpp
+        statements/PrintStatement.cpp
+        statements/VarDecl.cpp
+        statements/ScopeAssignmentList.cpp
+        statements/IfStatement.cpp
+        statements/WhileStatement.cpp
+        visitors/Interpreter.cpp
+        visitors/TemplateVisitor.cpp
+        visitors/PrintVisitor.cpp
+        symbol_table/Symbol.cpp
+        symbol_table/Table.cpp
+        symbol_table/ScopeLayer.cpp
+        symbol_table/ScopeLayerTree.cpp
+        objects/Integer.cpp
+        objects/Object.cpp
+        objects/UninitObject.cpp
+        Program.cpp
+        visitors/SymbolTreeVisitor.cpp
 )
 
-target_include_directories(MiniJavaCompiler PRIVATE ${MiniJavaCompiler_SOURCE_DIR})
+add_executable(
+        ScopesExecutable
+        main.cpp
+        ${SOURCES}
+)
+
+add_executable(
+        TestScopes
+        tests/test_scope_layer.cpp
+        ${SOURCES}
+)
+
+target_include_directories(
+        TestScopes PRIVATE ${MiniJavaCompiler_SOURCE_DIR}
+)
+
+target_include_directories(
+        ScopesExecutable PRIVATE ${MiniJavaCompiler_SOURCE_DIR}
+)
 
 add_custom_target(
-        VisitorTree
+        ScopesTree
         COMMAND dot -Tpng ${MiniJavaCompiler_SOURCE_DIR}/parser.gv -o ${MiniJavaCompiler_SOURCE_DIR}/parser.png
 
         DEPENDS ${MiniJavaCompiler_SOURCE_DIR}/parser.cpp
 )
 
-add_dependencies(MiniJavaCompiler VisitorTree)
-
-
+add_dependencies(ScopesExecutable ScopesTree)

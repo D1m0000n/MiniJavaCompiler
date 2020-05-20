@@ -1,13 +1,13 @@
-#include <DivExpression.h>
+#include "DivExpression.h"
 
 DivExpression::DivExpression(
-    Expression* e1, Expression* e2
-) : first(e1), second(e2) {}
+    Expression *e1, Expression *e2
+): first(e1), second(e2) {}
 
 int DivExpression::eval() const {
-  return first->eval() / second->eval();
+    return first->eval() / second->eval();
 }
 
-void DivExpression::AcceptVisitor(Visitor* visitor) {
-  visitor->Visit(this);
+void DivExpression::Accept(Visitor* visitor) {
+    visitor->Visit(this);
 }

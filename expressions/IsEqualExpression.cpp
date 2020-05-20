@@ -6,6 +6,6 @@ int IsEqualExpression::eval() const {
   return first->eval() == second->eval();
 }
 
-void IsEqualExpression::AcceptVisitor(Visitor* visitor) {
+void IsEqualExpression::Accept(Visitor* visitor) {
   visitor->Visit(this);
 }

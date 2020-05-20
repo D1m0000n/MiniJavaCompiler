@@ -5,7 +5,7 @@ class IsGreaterExpression : public Expression {
  public:
   IsGreaterExpression(Expression* e1, Expression* e2);
   [[nodiscard]] int eval() const override;
-  void AcceptVisitor(Visitor* visitor) override;
+  void Accept(Visitor* visitor) override;
   Expression* first;
   Expression* second;
 };

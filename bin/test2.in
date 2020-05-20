@@ -1,4 +1,0 @@
-three = 3
-ten = 3 + 3 * 3 - 2
-twenty = 2 * ten
-twenty && ten

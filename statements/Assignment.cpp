@@ -1,5 +1,4 @@
-#pragma once
-#include <Assignment.h>
+#include "Assignment.h"
 
 #include <utility>
 
@@ -8,6 +7,6 @@ Assignment::Assignment(
     Expression* expression
 ) : variable_(std::move(variable)), expression_(expression) {}
 
-void Assignment::AcceptVisitor(Visitor* visitor) {
+void Assignment::Accept(Visitor* visitor) {
   visitor->Visit(this);
 }

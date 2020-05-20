@@ -1,14 +1,11 @@
-#pragma once
-#include <IdentExpression.h>
+#include "IdentExpression.h"
 
-#include <utility>
-
-IdentExpression::IdentExpression(std::string  ident) : ident_(std::move(ident)) {}
+IdentExpression::IdentExpression(const std::string& ident): ident_(ident) {}
 
 int IdentExpression::eval() const {
-  return 0;
+    return 0;
 }
 
-void IdentExpression::AcceptVisitor(Visitor* visitor) {
-  visitor->Visit(this);
+void IdentExpression::Accept(Visitor* visitor) {
+    visitor->Visit(this);
 }

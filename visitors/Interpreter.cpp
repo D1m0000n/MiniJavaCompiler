@@ -4,146 +4,137 @@
 
 #include <iostream>
 
-Interpreter::Interpreter() {
-  variables_["one"] = 1;
-  variables_["two"] = 2;
-  is_tos_expression_ = false;
+#include "objects/Integer.h"
+
+Interpreter::Interpreter(ScopeLayer* root) : current_layer_(root) {
+
+  current_layer_->Put(Symbol("one"), std::make_shared<Integer>(1));
+  current_layer_->Put(Symbol("two"), std::make_shared<Integer>(2));
+  offsets_.push(0);
   tos_value_ = 0;
 }
 
 void Interpreter::Visit(NumberExpression* expression) {
-  SetTosValue(expression->value_);
+  tos_value_ = expression->value_;
 }
 
 void Interpreter::Visit(AddExpression* expression) {
-  int value = 0;
-  expression->first->AcceptVisitor(this);
-  value += tos_value_;
-
-  expression->second->AcceptVisitor(this);
-  value += tos_value_;
-  SetTosValue(value);
+  tos_value_ = Accept(expression->first) + Accept(expression->second);
 }
 
 void Interpreter::Visit(SubtractExpression* expression) {
-  expression->first->AcceptVisitor(this);
-  int value = tos_value_;
-  expression->second->AcceptVisitor(this);
-  value -= tos_value_;
-
-  SetTosValue(value);
+  tos_value_ = Accept(expression->first) - Accept(expression->second);
 }
 
 void Interpreter::Visit(MulExpression* expression) {
-  expression->first->AcceptVisitor(this);
-  int value = tos_value_;
-  expression->second->AcceptVisitor(this);
-  value *= tos_value_;
-
-  SetTosValue(value);
+  tos_value_ = Accept(expression->first) * Accept(expression->second);
 }
 
 void Interpreter::Visit(DivExpression* expression) {
-  expression->first->AcceptVisitor(this);
-  int value = tos_value_;
-  expression->second->AcceptVisitor(this);
-  value /= tos_value_;
-
-  SetTosValue(value);
+  tos_value_ = Accept(expression->first) / Accept(expression->second);
 }
 
+////
 void Interpreter::Visit(AndExpression* expression) {
-  expression->first->AcceptVisitor(this);
-  int value = tos_value_;
-  expression->second->AcceptVisitor(this);
-  value = value && tos_value_;
-
-  SetTosValue(value);
-}
-
-void Interpreter::Visit(OrExpression* expression) {
-  expression->first->AcceptVisitor(this);
-  int value = tos_value_;
-  expression->second->AcceptVisitor(this);
-  value = value || tos_value_;
-
-  SetTosValue(value);
-}
-
-void Interpreter::Visit(ModuloExpression* expression) {
-  expression->first->AcceptVisitor(this);
-  int value = tos_value_;
-  expression->second->AcceptVisitor(this);
-  value %= tos_value_;
-
-  SetTosValue(value);
+  tos_value_ = Accept(expression->first) && Accept(expression->second);
 }
 
 void Interpreter::Visit(IsEqualExpression* expression) {
-  expression->first->AcceptVisitor(this);
-  int value = tos_value_;
-  expression->second->AcceptVisitor(this);
-  value = (value == tos_value_);
-
-  SetTosValue(value);
-}
-
-void Interpreter::Visit(IsLessExpression* expression) {
-  expression->first->AcceptVisitor(this);
-  int value = tos_value_;
-  expression->second->AcceptVisitor(this);
-  value = (value < tos_value_);
-
-  SetTosValue(value);
+  tos_value_ = Accept(expression->first) == Accept(expression->second);
 }
 
 void Interpreter::Visit(IsGreaterExpression* expression) {
-  expression->first->AcceptVisitor(this);
-  int value = tos_value_;
-  expression->second->AcceptVisitor(this);
-  value = (value > tos_value_);
-
-  SetTosValue(value);
+  tos_value_ = Accept(expression->first) > Accept(expression->second);
 }
 
-void Interpreter::Visit(IdentExpression* expression) {
-  int value = variables_[expression->ident_];
+void Interpreter::Visit(IsLessExpression* expression) {
+  tos_value_ = Accept(expression->first) < Accept(expression->second);
+}
 
-  SetTosValue(value);
+void Interpreter::Visit(ModuloExpression* expression) {
+  tos_value_ = Accept(expression->first) % Accept(expression->second);
+}
+
+void Interpreter::Visit(OrExpression* expression) {
+  tos_value_ = Accept(expression->first) || Accept(expression->second);
+}
+
+////
+
+void Interpreter::Visit(IdentExpression* expression) {
+  tos_value_ = current_layer_->Get(Symbol(expression->ident_))->ToInt();
 }
 
 void Interpreter::Visit(Assignment* assignment) {
-  assignment->expression_->AcceptVisitor(this);
-  variables_[assignment->variable_] = tos_value_;
+  int value = Accept(assignment->expression_);
 
-  UnsetTosValue();
+  current_layer_->Put(Symbol(assignment->variable_), std::make_shared<Integer>(value));
+}
+
+void Interpreter::Visit(PrintStatement* statement) {
+  int value = Accept(statement->expression_);
+
+  std::cout << value << std::endl;
 }
 
 void Interpreter::Visit(AssignmentList* assignment_list) {
-  for (Assignment* assignment: assignment_list->assignments_) {
-    assignment->AcceptVisitor(this);
+  for (Statement* assignment: assignment_list->statements_) {
+    assignment->Accept(this);
   }
-  UnsetTosValue();
+}
+
+void Interpreter::Visit(VarDecl* var_decl) {
+  std::cout << "Var decl called: " << var_decl->variable_ << std::endl;
+}
+
+void Interpreter::Visit(ScopeAssignmentList* list) {
+  std::cout << "Going inside" << std::endl;
+
+  current_layer_ = current_layer_->GetChild(offsets_.top());
+
+  offsets_.push(0);
+  list->statement_list->Accept(this);
+
+  offsets_.pop();
+  size_t index = offsets_.top();
+
+  offsets_.pop();
+  offsets_.push(index + 1);
+
+  current_layer_ = current_layer_->GetParent();
+}
+
+void Interpreter::Visit(IfStatement* if_statement) {
+  if_statement->expression_->Accept(this);
+  if (tos_value_) {
+    std::cout << "Chosen true branch" << std::endl;
+    if_statement->true_statement_->Accept(this);
+  } else {
+    size_t index = offsets_.top();
+    offsets_.pop();
+    offsets_.push(index + 1);
+    std::cout << "Chosen false  branch" << std::endl;
+    if_statement->false_statement_->Accept(this);
+  }
+}
+
+void Interpreter::Visit(WhileStatement* while_statement) {
+  while_statement->expression_->Accept(this);
+  while (tos_value_) {
+    while_statement->statement_->Accept(this);
+    size_t index = offsets_.top();
+    offsets_.pop();
+    offsets_.push(index - 1);
+    while_statement->expression_->Accept(this);
+  }
 }
 
 void Interpreter::Visit(Program* program) {
-  program->assignments_->AcceptVisitor(this);
-
-  program->expression_->AcceptVisitor(this); // tos value is called
+  program->assignments_->Accept(this);
+//    program->expression_->Accept(this); // tos value is called
 }
 
-void Interpreter::SetTosValue(int value) {
-  tos_value_ = value;
-  is_tos_expression_ = true;
-}
-
-void Interpreter::UnsetTosValue() {
-  tos_value_ = 0;
-  is_tos_expression_ = false;
-}
-
-int Interpreter::GetResult(Program* program) {
-  UnsetTosValue();
+void Interpreter::GetResult(Program* program) {
   Visit(program);
-  return tos_value_;
+//    return tos_value_;
 }

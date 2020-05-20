@@ -14,25 +14,27 @@
     #include "visitors/forward_decl.h"
 }
 
+// %param { Driver &drv }
+
 %define parse.trace
 %define parse.error verbose
 
 %code {
-    #include <driver.hh>
-    #include <location.hh>
+    #include "driver.hh"
+    #include "location.hh"
 
     #include "visitors/elements.h"
-    /* #include <Program.h> */
+    #include "Program.h"
 
-    static yy::parser::symbol_type yylex(Scanner& scanner, Driver& driver) {
+    static yy::parser::symbol_type yylex(Scanner &scanner, Driver& driver) {
         return scanner.ScanToken();
     }
 }
 
-%lex-param { Scanner& scanner }
-%lex-param { Driver& driver }
-%parse-param { Scanner& scanner }
-%parse-param { Driver& driver }
+%lex-param { Scanner &scanner }
+%lex-param { Driver &driver }
+%parse-param { Scanner &scanner }
+%parse-param { Driver &driver }
 
 %locations
 
@@ -41,15 +43,17 @@
 %token
     END 0 "end of file"
     ASSIGN "="
-    PLUS "+"
     MINUS "-"
+    PLUS "+"
     STAR "*"
     SLASH "/"
     LPAREN "("
     RPAREN ")"
-    LCURBRACE "{"
-    RCURBRACE "}"
     PRINT "System.out.println"
+    VAR "var"
+    LEFTSCOPE "{"
+    RIGHTSCOPE "}"
+    SEMICOLON ";"
     LESS "<"
     GREATER ">"
     MODULO "%"
@@ -61,54 +65,63 @@
     STATIC "static"
     VOID "void"
     MAIN "main"
+    IF "if"
+    ELSE "else"
+    WHILE "while"
 ;
 
 %token <std::string> IDENTIFIER "identifier"
 %token <int> NUMBER "number"
-%nterm <Expression*> expr
-%nterm <AssignmentList*> assignments
-%nterm <Assignment*> assignment
-%nterm <Program*> unit;
+%nterm <Expression*> exp
+%nterm <Statement*> statement
+%nterm <AssignmentList*> statements
+%nterm <Program*> unit
 
-%printer {yyo << $$;} <*>;
+// %printer { yyo << $$; } <*>;
 
 %%
 %start unit;
-unit: assignments expr { $$ = new Program($1, $2); driver.program = $$;};
 
-assignments:
-    %empty {$$ = new AssignmentList();}
-    | assignments assignment {
-    	$1->AddAssignment($2);
-    	$$ = $1;
-    }
+unit: statements { $$ = new Program($1); driver.program = $$; };
 
-assignment:
-    "identifier" "=" expr {
-    	$$ = new Assignment($1, $3);
+statements:
+    %empty { $$ = new AssignmentList(); /* A -> eps */}
+    | statements statement {
+        $1->AddStatement($2); $$ = $1;
     };
+
+statement:
+    "identifier" "=" exp ";" { $$ = new Assignment($1, $3);}
+    | "System.out.println" "(" exp ")" ";" { $$ = new PrintStatement($3); }
+    | "var" "identifier" ";" { $$ = new VarDecl($2); }
+    | "{" statements "}" { $$ = new ScopeAssignmentList($2); }
+    | "if" "(" exp ")" statement {$$ = new IfStatement($3, $5, NULL); }
+    | "if" "(" exp ")" statement "else" statement {$$ = new IfStatement($3, $5, $7); }
+    | "while" "(" exp ")" statement {$$ = new WhileStatement($3, $5); }
+    ;
 
 %left "+" "-";
 %left "*" "/";
 
-expr:
-    "number" 		{$$ = new NumberExpression($1);}
-    | "identifier" 	{$$ = new IdentExpression($1); }
-    | expr "+" expr 	{$$ = new AddExpression($1, $3); }
-    | expr "-" expr 	{$$ = new SubtractExpression($1, $3); }
-    | expr "*" expr 	{$$ = new MulExpression($1, $3); }
-    | expr "/" expr 	{$$ = new DivExpression($1, $3); }
-    | expr "<" expr   {$$ = new IsLessExpression($1, $3); }
-    | expr ">" expr   {$$ = new IsGreaterExpression($1, $3); }
-    | expr "==" expr   {$$ = new IsEqualExpression($1, $3); }
-    | expr "&&" expr   {$$ = new AndExpression($1, $3); }
-    | expr "||" expr   {$$ = new OrExpression($1, $3); }
-    | expr "%" expr   {$$ = new ModuloExpression($1, $3); }
-    | "(" expr ")" 	{$$ = $2; };
+exp:
+    "number" {$$ = new NumberExpression($1); }
+    | "identifier" {$$ = new IdentExpression($1); }
+    | exp "+" exp { $$ = new AddExpression($1, $3); }
+    | exp "-" exp { $$ = new SubtractExpression($1, $3); }
+    | exp "*" exp { $$ = new MulExpression($1, $3); }
+    | exp "/" exp { $$ = new DivExpression($1, $3); }
+    | exp "<" exp { $$ = new IsLessExpression($1, $3); }
+    | exp ">" exp { $$ = new IsGreaterExpression($1, $3); }
+    | exp "==" exp {$$ = new IsEqualExpression($1, $3); }
+    | exp "&&" exp {$$ = new AndExpression($1, $3); }
+    | exp "||" exp {$$ = new OrExpression($1, $3); }
+    | exp "%" exp {$$ = new ModuloExpression($1, $3); }
+    | "(" exp ")" { $$ = $2; };
 
 %%
 
 void
-yy::parser::error(const location_type& l, const std::string& m) {
-    std::cerr << l << ": " << m << '\n';
+yy::parser::error(const location_type& l, const std::string& m)
+{
+  std::cerr << l << ": " << m << '\n';
 }

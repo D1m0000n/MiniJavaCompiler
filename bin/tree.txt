@@ -1,0 +1,6 @@
+Program:
+	AssignmentList: 
+		VarDecl: a
+		Assignment: a
+			NumExpression 1
+WhileStatement:

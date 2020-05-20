@@ -1,12 +1,12 @@
 #pragma once
-#include <Expression.h>
+#include "Expression.h"
 
-class SubtractExpression : public Expression {
+class SubtractExpression: public Expression {
  public:
-  SubtractExpression(Expression* e1, Expression* e2);
-  [[nodiscard]] int eval() const override;
-  void AcceptVisitor(Visitor* visitor) override;
+    SubtractExpression(Expression* e1, Expression* e2);
+    int eval() const override;
+    void Accept(Visitor* visitor) override;
 
-  Expression* first;
-  Expression* second;
+    Expression* first;
+    Expression* second;
 };

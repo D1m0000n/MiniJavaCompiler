@@ -1,13 +1,13 @@
 #pragma once
-#include <Expression.h>
+#include "Expression.h"
 
 #include <string>
 
-class IdentExpression : public Expression {
+class IdentExpression: public Expression {
  public:
-  IdentExpression(std::string ident);
-  [[nodiscard]] int eval() const override;
-  void AcceptVisitor(Visitor* visitor) override;
+    IdentExpression(const std::string& ident);
+    int eval() const override;
+    void Accept(Visitor* visitor) override;
 
-  std::string ident_;
+    std::string ident_;
 };

@@ -5,25 +5,32 @@
 #include <fstream>
 #include <string>
 
-class SymbolTreeVisitor : public Visitor {
+class PrintVisitor : public Visitor {
  public:
-  SymbolTreeVisitor(const std::string& filename);
-  ~SymbolTreeVisitor();
+  PrintVisitor(const std::string& filename);
+  ~PrintVisitor();
   void Visit(NumberExpression* expression) override;
   void Visit(AddExpression* expression) override;
   void Visit(SubtractExpression* expression) override;
-  void Visit(AndExpression* expression) override;
-  void Visit(OrExpression* expression) override;
-  void Visit(ModuloExpression* expression) override;
-  void Visit(IsEqualExpression* expression) override;
-  void Visit(IsLessExpression* expression) override;
-  void Visit(IsGreaterExpression* expression) override;
   void Visit(MulExpression* expression) override;
   void Visit(DivExpression* expression) override;
   void Visit(IdentExpression* expression) override;
+  void Visit(PrintStatement* statement) override;
   void Visit(Assignment* assignment) override;
+  void Visit(VarDecl* var_decl) override;
   void Visit(AssignmentList* assignment_list) override;
+  void Visit(ScopeAssignmentList* list) override;
   void Visit(Program* program) override;
+
+  void Visit(AndExpression* expression) override;
+  void Visit(IsEqualExpression* expression) override;
+  void Visit(IsGreaterExpression* expression) override;
+  void Visit(IsLessExpression* expression) override;
+  void Visit(ModuloExpression* expression) override;
+  void Visit(OrExpression* expression) override;
+  void Visit(IfStatement* if_statement) override;
+  void Visit(WhileStatement* while_statement) override;
+
  private:
 
   void PrintTabs();
