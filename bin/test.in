@@ -1,6 +1,7 @@
-var a;
-a = 1;
-while (a < 10) {
-    a = a + 2;
+class TestClass {
+  public static void main () {
+    int a;
+    a = int;
     System.out.println(a);
+  }
 }

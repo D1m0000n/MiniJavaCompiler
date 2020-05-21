@@ -1,5 +1,14 @@
 #include "Object.h"
 
 int Object::ToInt() {
-    return 0;
+  throw std::runtime_error("Integer type error");
 }
+
+int Object::ToBoolean() {
+  throw std::runtime_error("Boolean type error");
+}
+
+Class Object::ToClass() {
+  throw std::runtime_error("Class type error");
+}
+

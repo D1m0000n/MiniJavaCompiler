@@ -158,6 +158,9 @@ void PrintVisitor::Visit(ScopeAssignmentList* list) {
 void PrintVisitor::Visit(IfStatement* if_statement) {
   stream_ << "IfStatement:" << std::endl;
   ++num_tabs_; // ???
+  if_statement->expression_->Accept(this);
+
+  --num_tabs_;
 }
 
 void PrintVisitor::Visit(WhileStatement* while_statement) {
@@ -170,9 +173,17 @@ void PrintVisitor::Visit(Program* program) {
 
   ++num_tabs_;
 
-  program->assignments_->Accept(this);
+  program->main_class_->Accept(this);
 //    program->expression_->Accept(this);
 
+  --num_tabs_;
+}
+
+void PrintVisitor::Visit(MainClass* main_class) {
+  stream_ << "Main class:" << std::endl;
+
+  ++num_tabs_;
+  main_class->statement_->Accept(this);
   --num_tabs_;
 }
 

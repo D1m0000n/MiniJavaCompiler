@@ -24,7 +24,6 @@
     #include "location.hh"
 
     #include "visitors/elements.h"
-    #include "Program.h"
 
     static yy::parser::symbol_type yylex(Scanner &scanner, Driver& driver) {
         return scanner.ScanToken();
@@ -50,7 +49,7 @@
     LPAREN "("
     RPAREN ")"
     PRINT "System.out.println"
-    VAR "var"
+    INT "int"
     LEFTSCOPE "{"
     RIGHTSCOPE "}"
     SEMICOLON ";"
@@ -76,13 +75,22 @@
 %nterm <Statement*> statement
 %nterm <AssignmentList*> statements
 %nterm <Program*> unit
+%nterm <MainClass*> main_class
+%nterm <Program*> program
 
 // %printer { yyo << $$; } <*>;
 
 %%
 %start unit;
 
-unit: statements { $$ = new Program($1); driver.program = $$; };
+unit: program { $$ = $1; driver.program = $1; };
+
+program:
+    main_class {$$ = new Program($1); }
+
+main_class:
+    "class" "identifier" "{" "public" "static" "void" "main" "(" ")" "{" statements "}" "}"
+    {$$ = new MainClass($2, $11); }
 
 statements:
     %empty { $$ = new AssignmentList(); /* A -> eps */}
@@ -93,11 +101,11 @@ statements:
 statement:
     "identifier" "=" exp ";" { $$ = new Assignment($1, $3);}
     | "System.out.println" "(" exp ")" ";" { $$ = new PrintStatement($3); }
-    | "var" "identifier" ";" { $$ = new VarDecl($2); }
+    | "int" "identifier" ";" { $$ = new VarDecl($2); }
     | "{" statements "}" { $$ = new ScopeAssignmentList($2); }
-    | "if" "(" exp ")" statement {$$ = new IfStatement($3, $5, NULL); }
-    | "if" "(" exp ")" statement "else" statement {$$ = new IfStatement($3, $5, $7); }
-    | "while" "(" exp ")" statement {$$ = new WhileStatement($3, $5); }
+    | "if" "(" exp ")" statements {$$ = new IfStatement($3, $5, NULL); }
+    | "if" "(" exp ")" statements "else" statements {$$ = new IfStatement($3, $5, $7); }
+    | "while" "(" exp ")" statements {$$ = new WhileStatement($3, $5); }
     ;
 
 %left "+" "-";

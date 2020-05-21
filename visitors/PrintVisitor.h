@@ -31,6 +31,8 @@ class PrintVisitor : public Visitor {
   void Visit(IfStatement* if_statement) override;
   void Visit(WhileStatement* while_statement) override;
 
+  void Visit(MainClass* main_class) override;
+
  private:
 
   void PrintTabs();

@@ -8,8 +8,8 @@
 
 Interpreter::Interpreter(ScopeLayer* root) : current_layer_(root) {
 
-  current_layer_->Put(Symbol("one"), std::make_shared<Integer>(1));
-  current_layer_->Put(Symbol("two"), std::make_shared<Integer>(2));
+  current_layer_->Put(Symbol("true"), std::make_shared<Integer>(1));
+  current_layer_->Put(Symbol("false"), std::make_shared<Integer>(0));
   offsets_.push(0);
   tos_value_ = 0;
 }
@@ -62,7 +62,12 @@ void Interpreter::Visit(OrExpression* expression) {
 ////
 
 void Interpreter::Visit(IdentExpression* expression) {
-  tos_value_ = current_layer_->Get(Symbol(expression->ident_))->ToInt();
+  try{
+    tos_value_ = current_layer_->Get(Symbol(expression->ident_))->ToInt();
+  } catch (std::runtime_error &error) {
+    std::cout << error.what() << std::endl;
+    exit(1);
+  }
 }
 
 void Interpreter::Visit(Assignment* assignment) {
@@ -130,8 +135,12 @@ void Interpreter::Visit(WhileStatement* while_statement) {
 }
 
 void Interpreter::Visit(Program* program) {
-  program->assignments_->Accept(this);
+  program->main_class_->Accept(this);
 //    program->expression_->Accept(this); // tos value is called
+}
+
+void Interpreter::Visit(MainClass* main_class) {
+  main_class->statement_->Accept(this);
 }
 
 void Interpreter::GetResult(Program* program) {

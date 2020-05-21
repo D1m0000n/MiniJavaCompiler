@@ -29,6 +29,7 @@ class Interpreter : public TemplateVisitor<int> {
     void Visit(OrExpression* expression) override;
     void Visit(IfStatement* if_statement) override;
     void Visit(WhileStatement* while_statement) override;
+    void Visit(MainClass* main_class) override;
 
     void GetResult(Program* program);
 

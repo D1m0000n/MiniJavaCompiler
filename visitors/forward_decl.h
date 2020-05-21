@@ -24,3 +24,4 @@ class IsGreaterExpression;
 class IsLessExpression;
 class ModuloExpression;
 class OrExpression;
+class MainClass;

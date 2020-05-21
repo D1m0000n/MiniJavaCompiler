@@ -8,11 +8,11 @@
 
 SymbolTreeVisitor::SymbolTreeVisitor() : tree_(new ScopeLayer) {
 
-  tree_.root_->DeclareVariable(Symbol("one"));
-  tree_.root_->DeclareVariable(Symbol("two"));
+  tree_.root_->DeclareVariable(Symbol("true"));
+  tree_.root_->DeclareVariable(Symbol("false"));
 
-//    tree_.root_->Put(Symbol("one"), std::make_shared<Integer>(1));
-//    tree_.root_->Put(Symbol("two"), std::make_shared<Integer>(2));
+  tree_.root_->Put(Symbol("true"), std::make_shared<Integer>(1));
+  tree_.root_->Put(Symbol("false"), std::make_shared<Integer>(0));
 
   current_layer_ = tree_.root_;
 
@@ -98,8 +98,12 @@ void SymbolTreeVisitor::Visit(Program* program) {
   if (program == nullptr) {
     throw std::runtime_error("Syntax error");
   }
-  program->assignments_->Accept(this);
+  program->main_class_->Accept(this);
 //    program->expression_->Accept(this); // tos value is called
+}
+
+void SymbolTreeVisitor::Visit(MainClass* main_class) {
+  main_class->statement_->Accept(this);
 }
 
 ScopeLayer* SymbolTreeVisitor::GetRoot() {

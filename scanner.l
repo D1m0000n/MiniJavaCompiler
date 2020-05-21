@@ -55,7 +55,7 @@ blank [ \t\r]
 "{"        return yy::parser::make_LEFTSCOPE(loc);
 "}"        return yy::parser::make_RIGHTSCOPE(loc);
 "System.out.println"    return yy::parser::make_PRINT(loc);
-"var"                  return yy::parser::make_VAR(loc);
+"int"                  return yy::parser::make_INT(loc);
 "class"                return yy::parser::make_CLASS     (loc);
 "public"               return yy::parser::make_PUBLIC    (loc);
 "static"               return yy::parser::make_STATIC    (loc);

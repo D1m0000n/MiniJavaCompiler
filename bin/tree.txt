@@ -1,6 +1,12 @@
 Program:
-	AssignmentList: 
-		VarDecl: a
-		Assignment: a
-			NumExpression 1
-WhileStatement:
+Main class:
+		AssignmentList: 
+			VarDecl: three
+			Assignment: three
+				NumExpression 1
+			Assignment: three
+				NumExpression 0
+IfStatement:
+				IsGreaterExpression: 
+					NumExpression 0
+					NumExpression 0

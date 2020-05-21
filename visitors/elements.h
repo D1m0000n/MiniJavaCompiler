@@ -22,4 +22,6 @@
 #include "statements/IfStatement.h"
 #include "statements/WhileStatement.h"
 
+#include <MainClass.h>
+
 #include "Program.h"

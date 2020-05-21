@@ -12,8 +12,10 @@ include_directories(
         driver
         expressions
         assignments
-        base
+        base_elements
+        statements
         visitors
+        main_class
         .
 )
 
@@ -78,12 +80,15 @@ set(
         objects/Integer.cpp
         objects/Object.cpp
         objects/UninitObject.cpp
+        objects/Boolean.h
+        objects/Class.h
         Program.cpp
+        main_class/MainClass.cpp
         visitors/SymbolTreeVisitor.cpp
 )
 
 add_executable(
-        ScopesExecutable
+        MiniJavaCompiler
         main.cpp
         ${SOURCES}
 )
@@ -99,7 +104,7 @@ target_include_directories(
 )
 
 target_include_directories(
-        ScopesExecutable PRIVATE ${MiniJavaCompiler_SOURCE_DIR}
+        MiniJavaCompiler PRIVATE ${MiniJavaCompiler_SOURCE_DIR}
 )
 
 add_custom_target(
@@ -109,4 +114,4 @@ add_custom_target(
         DEPENDS ${MiniJavaCompiler_SOURCE_DIR}/parser.cpp
 )
 
-add_dependencies(ScopesExecutable ScopesTree)
+add_dependencies(MiniJavaCompiler ScopesTree)

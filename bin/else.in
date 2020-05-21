@@ -1,22 +1,26 @@
-var three;
-three = 1;
-three = 0;
-if (0 > 0) {
-    var four;
-    four = 56;
-    System.out.println(four);
-} else {
+class TestClass {
+  public static void main () {
+    int three;
+    three = 1;
+    three = 0;
     if (0 > 0) {
-        var b;
-        b = 2;
-        System.out.println(b);
+        int four;
+        four = 56;
+        System.out.println(four);
     } else {
-        var c;
-        c = 23;
-        System.out.println(c);
+        if (false) {
+            int b;
+            b = 2;
+            System.out.println(b);
+        } else {
+            int c;
+            c = 23;
+            System.out.println(c);
+        }
+        int kek;
+        kek = 101;
+        System.out.println(kek);
     }
-    var kek;
-    kek = 101;
-    System.out.println(kek);
+    System.out.println(three);
+  }
 }
-System.out.println(three);

@@ -26,4 +26,6 @@ class Visitor {
 
     virtual void Visit(IfStatement* if_statement) = 0;
     virtual void Visit(WhileStatement* while_statement) = 0;
+
+    virtual void Visit(MainClass* main_class) = 0;
 };

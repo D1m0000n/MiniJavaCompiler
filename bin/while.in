@@ -1,0 +1,12 @@
+class TestClass {
+  public static void main () {
+   var three;
+   three = 3;
+   if (three > 2) {
+       var four;
+       four = 56;
+       System.out.println(four);
+   }
+   System.out.println(three);
+  }
+}
