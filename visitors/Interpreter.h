@@ -1,3 +1,4 @@
+#pragma once
 #include "TemplateVisitor.h"
 
 #include "symbol_table/Table.h"
@@ -42,5 +43,4 @@ class Interpreter : public TemplateVisitor<int> {
   ScopeLayer* current_layer_;
 
   std::stack<int> offsets_;
-
 };

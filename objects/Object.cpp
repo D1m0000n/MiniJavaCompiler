@@ -12,3 +12,7 @@ Class Object::ToClass() {
   throw std::runtime_error("Class type error");
 }
 
+std::string Object::Type() {
+  return std::string();
+}
+

@@ -2,7 +2,7 @@
 
 DivExpression::DivExpression(
     Expression *e1, Expression *e2
-): first(e1), second(e2) {}
+): BinaryExpression(e1, e2) {}
 
 int DivExpression::eval() const {
     return first->eval() / second->eval();

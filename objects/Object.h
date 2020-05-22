@@ -28,5 +28,6 @@ class Object {
   virtual int ToInt();
   virtual int ToBoolean();
   virtual Class ToClass();
+  virtual std::string Type();
   virtual ~Object() = default;
 };

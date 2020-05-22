@@ -3,10 +3,8 @@ Main class:
 		AssignmentList: 
 			VarDecl: three
 			Assignment: three
-				NumExpression 1
-			Assignment: three
-				NumExpression 0
+				NumExpression 3
 IfStatement:
 				IsGreaterExpression: 
-					NumExpression 0
-					NumExpression 0
+					IdentExpression: three
+					NumExpression 2

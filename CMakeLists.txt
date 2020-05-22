@@ -77,6 +77,7 @@ set(
         visitors/Interpreter.cpp
         visitors/TemplateVisitor.cpp
         visitors/PrintVisitor.cpp
+        visitors/TypeCheckerVisitor.cpp
         symbol_table/Symbol.cpp
         symbol_table/Table.cpp
         symbol_table/ScopeLayer.cpp

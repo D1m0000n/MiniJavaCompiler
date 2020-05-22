@@ -5,19 +5,20 @@
 #include <map>
 
 #include "symbol_table/ScopeLayerTree.h"
+#include <BinaryExpression.h>
 
-class SymbolTreeVisitor : public Visitor {
+class TypeCheckerVisitor : public TemplateVisitor<std::string> {
  public:
-  SymbolTreeVisitor();
-  ~SymbolTreeVisitor() = default;
+  explicit TypeCheckerVisitor(ScopeLayer* root);
+
   void Visit(NumberExpression* expression) override;
   void Visit(AddExpression* expression) override;
   void Visit(SubtractExpression* expression) override;
   void Visit(MulExpression* expression) override;
   void Visit(DivExpression* expression) override;
   void Visit(IdentExpression* expression) override;
-  void Visit(PrintStatement* statement) override;
   void Visit(Assignment* assignment) override;
+  void Visit(PrintStatement* statement) override;
   void Visit(AssignmentList* assignment_list) override;
   void Visit(ScopeAssignmentList* list) override;
   void Visit(Program* program) override;
@@ -28,18 +29,23 @@ class SymbolTreeVisitor : public Visitor {
   void Visit(IsLessExpression* expression) override;
   void Visit(ModuloExpression* expression) override;
   void Visit(OrExpression* expression) override;
+
   void Visit(IfStatement* if_statement) override;
   void Visit(WhileStatement* while_statement) override;
 
-  void Visit(MainClass* main_class) override;
-
-  void Visit(VarDecl* declaration) override;
-  void Visit(ClassDecl* declaration) override;
-  void Visit(MethodDecl* declaration) override;
+  void Visit(VarDecl* var_decl) override;
+  void Visit(ClassDecl* class_decl) override;
+  void Visit(MethodDecl* method_decl) override;
   void Visit(DeclarationList* declaration_list) override;
 
-  ScopeLayer* GetRoot();
+  void Visit(MainClass* main_class) override;
+
+  void CheckTypes(Program* program);
+
  private:
-  ScopeLayerTree tree_;
+
+  void BinaryTypesCheck(BinaryExpression* expression, const std::string& name);
+
   ScopeLayer* current_layer_;
+  std::stack<int> offsets_;
 };

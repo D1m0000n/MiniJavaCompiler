@@ -1,11 +1,9 @@
 #pragma once
-#include <Expression.h>
+#include <BinaryExpression.h>
 
-class OrExpression : public Expression {
+class OrExpression : public BinaryExpression {
  public:
   OrExpression(Expression* e1, Expression* e2);
   [[nodiscard]] int eval() const override;
   void Accept(Visitor* visitor) override;
-  Expression* first;
-  Expression* second;
 };

@@ -8,4 +8,5 @@ T TemplateVisitor<T>::Accept(BaseElement * element) {
     return tos_value_;
 }
 
+template std::string TemplateVisitor<std::string>::Accept(BaseElement *element);
 template int TemplateVisitor<int>::Accept(BaseElement* element);

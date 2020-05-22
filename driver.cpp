@@ -5,6 +5,7 @@
 #include "visitors/PrintVisitor.h"
 
 #include "visitors/SymbolTreeVisitor.h"
+#include "visitors/TypeCheckerVisitor.h"
 
 Driver::Driver() :
     trace_parsing(false),
@@ -31,10 +32,19 @@ void Driver::Evaluate() {
     std::cout << error.what() << std::endl;
     exit(1);
   }
-
   std::cout << "Symbol tree built" << std::endl;
 
   ScopeLayer* root = visitor.GetRoot();
+
+  TypeCheckerVisitor type_checker(root);
+  try{
+    type_checker.CheckTypes(program);
+  } catch (std::runtime_error& error) {
+    std::cout << error.what() << std::endl;
+    exit(1);
+  }
+  std::cout << "Types checked" << std::endl;
+
   Interpreter interpreter(root);
   interpreter.GetResult(program);
 }

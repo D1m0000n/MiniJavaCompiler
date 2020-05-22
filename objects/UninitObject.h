@@ -2,9 +2,10 @@
 
 #include "Object.h"
 
-class UninitObject: public Object {
+class UninitObject : public Object {
  public:
-    // explicit Integer(int value);
-    int ToInt() override;
-    // int value_;
+  UninitObject(std::string type);
+  int ToInt() override;
+  std::string Type() override;
+  std::string type_;
 };

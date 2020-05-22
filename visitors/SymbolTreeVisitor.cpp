@@ -8,8 +8,8 @@
 
 SymbolTreeVisitor::SymbolTreeVisitor() : tree_(new ScopeLayer) {
 
-  tree_.root_->DeclareVariable(Symbol("true"));
-  tree_.root_->DeclareVariable(Symbol("false"));
+  tree_.root_->DeclareVariable(Symbol("true"), "int");
+  tree_.root_->DeclareVariable(Symbol("false"), "int");
 
   tree_.root_->Put(Symbol("true"), std::make_shared<Integer>(1));
   tree_.root_->Put(Symbol("false"), std::make_shared<Integer>(0));
@@ -72,7 +72,7 @@ void SymbolTreeVisitor::Visit(AssignmentList* assignment_list) {
 
 void SymbolTreeVisitor::Visit(VarDecl* var_decl) {
   std::cout << "Declaring var " << var_decl->variable_ << std::endl;
-  current_layer_->DeclareVariable(Symbol(var_decl->variable_));
+  current_layer_->DeclareVariable(Symbol(var_decl->variable_), var_decl->type_);
 }
 
 void SymbolTreeVisitor::Visit(ClassDecl* class_decl) {
