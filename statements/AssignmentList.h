@@ -6,8 +6,8 @@
 
 class AssignmentList : public Statement {
  public:
-    void AddStatement(Statement* assignment);
-    void Accept(Visitor* visitor) override;
+  void AddStatement(Statement* assignment);
+  void Accept(Visitor* visitor) override;
 
-    std::vector<Statement*> statements_;
+  std::vector<Statement*> statements_;
 };

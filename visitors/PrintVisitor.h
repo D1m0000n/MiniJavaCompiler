@@ -17,7 +17,6 @@ class PrintVisitor : public Visitor {
   void Visit(IdentExpression* expression) override;
   void Visit(PrintStatement* statement) override;
   void Visit(Assignment* assignment) override;
-  void Visit(VarDecl* var_decl) override;
   void Visit(AssignmentList* assignment_list) override;
   void Visit(ScopeAssignmentList* list) override;
   void Visit(Program* program) override;
@@ -30,6 +29,11 @@ class PrintVisitor : public Visitor {
   void Visit(OrExpression* expression) override;
   void Visit(IfStatement* if_statement) override;
   void Visit(WhileStatement* while_statement) override;
+
+  void Visit(VarDecl* declaration) override;
+  void Visit(ClassDecl* declaration) override;
+  void Visit(DeclarationList* declaration_list) override;
+  void Visit(MethodDecl* method_decl) override;
 
   void Visit(MainClass* main_class) override;
 

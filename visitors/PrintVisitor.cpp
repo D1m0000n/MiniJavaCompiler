@@ -128,6 +128,29 @@ void PrintVisitor::Visit(VarDecl* var_decl) {
   stream_ << "VarDecl: " << var_decl->variable_ << std::endl;
 }
 
+void PrintVisitor::Visit(MethodDecl* method_decl) {
+  PrintTabs();
+  stream_ << "MethodDecl: " << std::endl;
+}
+
+void PrintVisitor::Visit(ClassDecl* class_decl) {
+  PrintTabs();
+  stream_ << "ClassDecl: " << class_decl->identifier << std::endl;
+  ++num_tabs_;
+  class_decl->declaration_list_->Accept(this);
+  --num_tabs_;
+}
+
+void PrintVisitor::Visit(DeclarationList* declaration_list) {
+  PrintTabs();
+  stream_ << "Declaration list: " << std::endl;
+  ++num_tabs_;
+  for (Declaration* declaration : declaration_list->declarations_) {
+    declaration->Accept(this);
+  }
+  --num_tabs_;
+}
+
 void PrintVisitor::Visit(PrintStatement* statement) {
   PrintTabs();
   stream_ << "PrintStatement: " << std::endl;

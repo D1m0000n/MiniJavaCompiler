@@ -62,9 +62,9 @@ void Interpreter::Visit(OrExpression* expression) {
 ////
 
 void Interpreter::Visit(IdentExpression* expression) {
-  try{
+  try {
     tos_value_ = current_layer_->Get(Symbol(expression->ident_))->ToInt();
-  } catch (std::runtime_error &error) {
+  } catch (std::runtime_error& error) {
     std::cout << error.what() << std::endl;
     exit(1);
   }
@@ -90,6 +90,18 @@ void Interpreter::Visit(AssignmentList* assignment_list) {
 
 void Interpreter::Visit(VarDecl* var_decl) {
   std::cout << "Var decl called: " << var_decl->variable_ << std::endl;
+}
+
+void Interpreter::Visit(DeclarationList* declaration_list) {
+  for (Declaration* declaration : declaration_list->declarations_) {
+    declaration->Accept(this);
+  }
+}
+
+void Interpreter::Visit(ClassDecl* class_decl) {
+}
+
+void Interpreter::Visit(MethodDecl* method_decl) {
 }
 
 void Interpreter::Visit(ScopeAssignmentList* list) {
@@ -136,7 +148,6 @@ void Interpreter::Visit(WhileStatement* while_statement) {
 
 void Interpreter::Visit(Program* program) {
   program->main_class_->Accept(this);
-//    program->expression_->Accept(this); // tos value is called
 }
 
 void Interpreter::Visit(MainClass* main_class) {
@@ -145,5 +156,4 @@ void Interpreter::Visit(MainClass* main_class) {
 
 void Interpreter::GetResult(Program* program) {
   Visit(program);
-//    return tos_value_;
 }

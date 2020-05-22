@@ -73,10 +73,23 @@
 %token <int> NUMBER "number"
 %nterm <Expression*> exp
 %nterm <Statement*> statement
+%nterm <Statement*> local_variable_declaration
 %nterm <AssignmentList*> statements
+
 %nterm <Program*> unit
 %nterm <MainClass*> main_class
 %nterm <Program*> program
+
+%nterm <Declaration*> declaration
+%nterm <Declaration*> variable_declaration
+%nterm <Declaration*> method_declaration
+%nterm <Declaration*> class_declaration
+%nterm <DeclarationList*> declarations
+%nterm <DeclarationList*> class_declarations
+
+%nterm <std::string> simple_type
+%nterm <std::string> type
+%nterm <std::string> type_identifier
 
 // %printer { yyo << $$; } <*>;
 
@@ -86,7 +99,7 @@
 unit: program { $$ = $1; driver.program = $1; };
 
 program:
-    main_class {$$ = new Program($1); }
+    main_class class_declarations {$$ = new Program($1, $2); }
 
 main_class:
     "class" "identifier" "{" "public" "static" "void" "main" "(" ")" "{" statements "}" "}"
@@ -100,13 +113,55 @@ statements:
 
 statement:
     "identifier" "=" exp ";" { $$ = new Assignment($1, $3);}
+    | local_variable_declaration { $$ = $1; }
     | "System.out.println" "(" exp ")" ";" { $$ = new PrintStatement($3); }
-    | "int" "identifier" ";" { $$ = new VarDecl($2); }
     | "{" statements "}" { $$ = new ScopeAssignmentList($2); }
     | "if" "(" exp ")" statements {$$ = new IfStatement($3, $5, NULL); }
     | "if" "(" exp ")" statements "else" statements {$$ = new IfStatement($3, $5, $7); }
     | "while" "(" exp ")" statements {$$ = new WhileStatement($3, $5); }
     ;
+
+local_variable_declaration:
+    variable_declaration { $$ = reinterpret_cast<Statement*>($1); }
+
+class_declarations:
+    %empty { $$ = new DeclarationList(); }
+    | class_declarations class_declaration {
+      $1->AddDeclaration($2); $$ = $1;
+    };
+
+class_declaration:
+    "class" "identifier" "{" declarations "}" {
+      $$ = new ClassDecl($2, $4);
+    }
+
+declarations:
+    %empty {$$ = new DeclarationList(); }
+    | declarations declaration {
+      $1->AddDeclaration($2); $$ = $1;
+    };
+
+declaration:
+    variable_declaration { $$ = $1; }
+    | method_declaration { $$ = $1; }
+
+type:
+    simple_type { $$ = $1; }
+
+simple_type:
+    "int" {$$ = "int"; }
+    | "boolean" { $$ = "boolean"; }
+    | "void" { $$ = "void"; }
+    | type_identifier { $$ = $1; }
+
+type_identifier:
+    "identifier" { $$ = $1; }
+
+variable_declaration:
+    type "identifier" ";" { $$ = new VarDecl($1, $2); }
+
+method_declaration:
+    "public" type "identifier" ";" {$$ = new MethodDecl($2, $3); }
 
 %left "+" "-";
 %left "*" "/";

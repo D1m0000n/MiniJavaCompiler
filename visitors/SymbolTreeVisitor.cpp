@@ -75,6 +75,21 @@ void SymbolTreeVisitor::Visit(VarDecl* var_decl) {
   current_layer_->DeclareVariable(Symbol(var_decl->variable_));
 }
 
+void SymbolTreeVisitor::Visit(ClassDecl* class_decl) {
+  std::cout << "Declaring class " << class_decl->identifier << std::endl;
+  class_decl->declaration_list_->Accept(this);
+}
+
+void SymbolTreeVisitor::Visit(MethodDecl* method_decl) {
+
+}
+
+void SymbolTreeVisitor::Visit(DeclarationList* declaration_list) {
+  for (Declaration* declaration : declaration_list->declarations_) {
+    declaration->Accept(this);
+  }
+}
+
 void SymbolTreeVisitor::Visit(ScopeAssignmentList* list) {
   auto new_layer = new ScopeLayer(current_layer_);
 

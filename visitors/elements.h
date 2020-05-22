@@ -14,13 +14,18 @@
 #include "expressions/OrExpression.h"
 
 #include "statements/PrintStatement.h"
-#include "statements/VarDecl.h"
 #include "statements/Statement.h"
 #include "statements/Assignment.h"
 #include "statements/AssignmentList.h"
 #include "statements/ScopeAssignmentList.h"
 #include "statements/IfStatement.h"
 #include "statements/WhileStatement.h"
+
+#include "declarations/VarDecl.h"
+#include "declarations/Declaration.h"
+#include "declarations/DeclarationList.h"
+#include "declarations/ClassDecl.h"
+#include "declarations/MethodDecl.h"
 
 #include <MainClass.h>
 

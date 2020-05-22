@@ -11,6 +11,7 @@ include_directories(
         scanner
         driver
         expressions
+        declarations
         assignments
         base_elements
         statements
@@ -66,7 +67,10 @@ set(
         statements/Assignment.cpp
         statements/AssignmentList.cpp
         statements/PrintStatement.cpp
-        statements/VarDecl.cpp
+        declarations/VarDecl.cpp
+        declarations/DeclarationList.cpp
+        declarations/MethodDecl.cpp
+        declarations/ClassDecl.cpp
         statements/ScopeAssignmentList.cpp
         statements/IfStatement.cpp
         statements/WhileStatement.cpp
