@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Visitor.h"
+#include "include/visitors/Visitor.h"
 
 template<typename T>
 class TemplateVisitor : public Visitor {

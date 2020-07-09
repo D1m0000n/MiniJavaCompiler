@@ -210,6 +210,56 @@ void PrintVisitor::Visit(MainClass* main_class) {
   --num_tabs_;
 }
 
+void PrintVisitor::Visit(Function* function) {
+  PrintTabs();
+  stream_ << "Function:" << std::endl;
+
+  ++num_tabs_;
+
+  PrintTabs();
+  stream_ << "Name: " << function->name_ << std::endl;
+  function->param_list_->Accept(this);
+  function->statements_->Accept(this);
+  --num_tabs_;
+}
+
+void PrintVisitor::Visit(ParamList* param_list) {
+  PrintTabs();
+  stream_ << "ParamList:" << std::endl;
+
+  ++num_tabs_;
+
+  for (const std::string& param: param_list->params_) {
+    PrintTabs();
+    stream_ << param << std::endl;
+  }
+  --num_tabs_;
+}
+
+void PrintVisitor::Visit(FunctionList* function_list) {
+  PrintTabs();
+  stream_ << "FunctionList:" << std::endl;
+
+  ++num_tabs_;
+  for (auto* function: function_list->functions_) {
+    function->Accept(this);
+  }
+  --num_tabs_;
+}
+
+void PrintVisitor::Visit(ParamValueList* param_value_list) {
+  PrintTabs();
+  stream_ << "ParamValueList:" << std::endl;
+
+  ++num_tabs_;
+
+  for (Expression* param: param_value_list->params_) {;
+    param->Accept(this);
+//        stream_ << param << std::endl;
+  }
+  --num_tabs_;
+}
+
 void PrintVisitor::PrintTabs() {
   for (int i = 0; i < num_tabs_; ++i) {
     stream_ << '\t';

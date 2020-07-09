@@ -27,6 +27,11 @@
 #include "declarations/ClassDecl.h"
 #include "declarations/MethodDecl.h"
 
+#include "functions/Function.h"
+#include "functions/FunctionList.h"
+#include "functions/ParamList.h"
+#include "functions/ParamValueList.h"
+
 #include <MainClass.h>
 
 #include "Program.h"

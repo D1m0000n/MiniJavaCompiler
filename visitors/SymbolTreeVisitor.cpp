@@ -8,11 +8,11 @@
 
 SymbolTreeVisitor::SymbolTreeVisitor() : tree_(new ScopeLayer) {
 
-  tree_.root_->DeclareVariable(Symbol("true"), "int");
-  tree_.root_->DeclareVariable(Symbol("false"), "int");
+//  tree_.root_->DeclareVariable(Symbol("true"), "int");
+//  tree_.root_->DeclareVariable(Symbol("false"), "int");
 
-  tree_.root_->Put(Symbol("true"), std::make_shared<Integer>(1));
-  tree_.root_->Put(Symbol("false"), std::make_shared<Integer>(0));
+//  tree_.root_->Put(Symbol("true"), std::make_shared<Integer>(1));
+//  tree_.root_->Put(Symbol("false"), std::make_shared<Integer>(0));
 
   current_layer_ = tree_.root_;
 
@@ -107,6 +107,23 @@ void SymbolTreeVisitor::Visit(IfStatement* if_statement) {
 
 void SymbolTreeVisitor::Visit(WhileStatement* while_statement) {
   while_statement->statement_->Accept(this);
+}
+
+void SymbolTreeVisitor::Visit(Function* function) {
+  current_layer_->DeclareFunction(Symbol(function->name_), function);
+
+  auto new_layer = new ScopeLayer(current_layer_);
+
+  current_layer_ = new_layer;
+
+  function->param_list_->Accept(this);
+  function->statements_->Accept(this);
+
+  tree_.AddMapping(Symbol(function->name_), new_layer);
+
+  current_layer_ = current_layer_->GetParent();
+
+  functions_[Symbol(function->name_)] = function;
 }
 
 void SymbolTreeVisitor::Visit(Program* program) {

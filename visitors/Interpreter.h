@@ -35,6 +35,11 @@ class Interpreter : public TemplateVisitor<int> {
   void Visit(MethodDecl* method_decl) override;
   void Visit(DeclarationList* declaration_list) override;
 
+  void Visit(Function* function) override;
+  void Visit(FunctionList* function_list) override;
+  void Visit(ParamList* param_list) override;
+  void Visit(ParamValueList* param_value_list) override;
+
   void GetResult(Program* program);
 
  private:

@@ -157,3 +157,15 @@ void Interpreter::Visit(MainClass* main_class) {
 void Interpreter::GetResult(Program* program) {
   Visit(program);
 }
+
+void Interpreter::Visit(Function* function) {
+}
+
+void Interpreter::Visit(ParamList* param_list) {
+}
+
+void Interpreter::Visit(FunctionList* function_list) {
+}
+
+void Interpreter::Visit(ParamValueList* param_value_list) {
+}

@@ -29,3 +29,7 @@ class IsLessExpression;
 class ModuloExpression;
 class OrExpression;
 class MainClass;
+class Function;
+class ParamList;
+class FunctionList;
+class ParamValueList;

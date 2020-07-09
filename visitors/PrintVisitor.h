@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Visitor.h"
+#include "include/visitors/Visitor.h"
 
 #include <fstream>
 #include <string>
@@ -34,6 +34,11 @@ class PrintVisitor : public Visitor {
   void Visit(ClassDecl* declaration) override;
   void Visit(DeclarationList* declaration_list) override;
   void Visit(MethodDecl* method_decl) override;
+
+  void Visit(Function* function) override;
+  void Visit(FunctionList* function_list) override;
+  void Visit(ParamList* param_list) override;
+  void Visit(ParamValueList* param_value_list) override;
 
   void Visit(MainClass* main_class) override;
 

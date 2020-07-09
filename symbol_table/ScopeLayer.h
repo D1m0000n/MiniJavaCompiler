@@ -2,6 +2,7 @@
 
 #include "Symbol.h"
 #include "objects/Object.h"
+#include <functions/Function.h>
 
 #include <unordered_map>
 #include <string>
@@ -14,6 +15,7 @@ class ScopeLayer {
     explicit ScopeLayer(ScopeLayer* parent);
     ScopeLayer();
     void DeclareVariable(Symbol symbol, const std::string& type);
+    void DeclareFunction(Symbol symbol, Function* function);
     void Put(Symbol symbol, std::shared_ptr<Object> value);
     std::shared_ptr<Object> Get(Symbol symbol);
     bool Has(Symbol symbol);

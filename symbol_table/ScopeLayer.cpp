@@ -28,6 +28,14 @@ void ScopeLayer::DeclareVariable(Symbol symbol, const std::string& type) {
   symbols_.push_back(symbol);
 }
 
+void ScopeLayer::DeclareFunction(Symbol symbol, Function* function) {
+  if (values_.find(symbol) != values_.end()) {
+    throw std::runtime_error("Variable has declared");
+  }
+
+  values_[symbol] = std::make_shared<FunctionType>(function->param_list_->params_);
+}
+
 void ScopeLayer::Put(Symbol symbol, std::shared_ptr<Object> value) {
 
   ScopeLayer* current_layer = this;

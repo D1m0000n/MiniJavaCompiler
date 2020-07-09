@@ -31,5 +31,10 @@ class Visitor {
   virtual void Visit(MethodDecl* method_decl) = 0;
   virtual void Visit(DeclarationList* declaration_list) = 0;
 
+  virtual void Visit(Function* function) = 0;
+  virtual void Visit(ParamList* param_list) = 0;
+  virtual void Visit(FunctionList* function_list) = 0;
+  virtual void Visit(ParamValueList* param_value_list) = 0;
+
   virtual void Visit(MainClass* main_class) = 0;
 };
