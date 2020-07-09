@@ -5,7 +5,7 @@
     #include <cstring> // strerror
     #include <string>
     #include <iostream>
-    #include "driver.hh"
+    #include "include/driver.hh"
     #include "parser.hh"
 %}
 

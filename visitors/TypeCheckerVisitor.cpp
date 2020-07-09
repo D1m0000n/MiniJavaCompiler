@@ -70,7 +70,10 @@ void TypeCheckerVisitor::Visit(Assignment* assignment) {
 }
 
 void TypeCheckerVisitor::Visit(PrintStatement* statement) {
-  // What do we can print?
+  Accept(statement->expression_);
+  if (tos_value_ != "int") {
+    throw std::runtime_error("Print only ints");
+  }
 }
 
 void TypeCheckerVisitor::Visit(AssignmentList* assignment_list) {
@@ -133,4 +136,9 @@ void TypeCheckerVisitor::BinaryTypesCheck(BinaryExpression* expression, const st
     std::string error_message = "Different operands in " + name;
     throw std::runtime_error(error_message);
   }
+}
+
+void TypeCheckerVisitor::Visit(Function* function) {
+  Accept(function->param_list_);
+  Accept(function->statements_);
 }

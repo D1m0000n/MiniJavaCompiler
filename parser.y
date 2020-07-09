@@ -11,7 +11,7 @@
     class Scanner;
     class Driver;
 
-    #include "visitors/forward_decl.h"
+    #include "include/visitors/forward_decl.h"
 }
 
 // %param { Driver &drv }
@@ -20,7 +20,7 @@
 %define parse.error verbose
 
 %code {
-    #include "driver.hh"
+    #include "include/driver.hh"
     #include "location.hh"
 
     #include "visitors/elements.h"

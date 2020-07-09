@@ -12,22 +12,22 @@ class Variable {
   std::string identifier;
 };
 
-class Method {
- public:
-  Method() = default;
-};
-
-class Class {
- public:
-  std::vector<Method> methods;
-  std::vector<Variable> variables;
-};
+//class Method {
+// public:
+//  Method() = default;
+//};
+//
+//class Class {
+// public:
+//  std::vector<Method> methods;
+//  std::vector<Variable> variables;
+//};
 
 class Object {
  public:
   virtual int ToInt();
   virtual int ToBoolean();
-  virtual Class ToClass();
+//  virtual Class ToClass();
   virtual std::string Type();
   virtual ~Object() = default;
 };

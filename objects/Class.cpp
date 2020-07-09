@@ -6,7 +6,7 @@ ClassType::ClassType(std::string type) : type(type) {
   }
 }
 
-Class ClassType::ToClass() { return {} }
+//Class ClassType::ToClass() { return {}; }
 
 std::string ClassType::Type() {
   return type;

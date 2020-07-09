@@ -33,7 +33,6 @@ void SymbolTreeVisitor::Visit(MulExpression* expression) {
 
 void SymbolTreeVisitor::Visit(DivExpression* expression) {
 }
-///
 
 void SymbolTreeVisitor::Visit(AndExpression* expression) {
 }
@@ -53,7 +52,6 @@ void SymbolTreeVisitor::Visit(ModuloExpression* expression) {
 void SymbolTreeVisitor::Visit(OrExpression* expression) {
 }
 
-////
 void SymbolTreeVisitor::Visit(IdentExpression* expression) {
 }
 
@@ -124,6 +122,24 @@ void SymbolTreeVisitor::Visit(Function* function) {
   current_layer_ = current_layer_->GetParent();
 
   functions_[Symbol(function->name_)] = function;
+}
+
+void SymbolTreeVisitor::Visit(FunctionList* function_list) {
+  for (auto* function : function_list->functions_) {
+    function->Accept(this);
+  }
+}
+
+void SymbolTreeVisitor::Visit(ParamValueList* value_list) {
+  for (Expression* value : value_list->params_) {
+    value->Accept(this);
+  }
+}
+
+void SymbolTreeVisitor::Visit(ParamList *param_list) {
+  for (const std::string& param: param_list->params_) {
+    current_layer_->DeclareVariable(Symbol(param), "int"); //// check for type
+  }
 }
 
 void SymbolTreeVisitor::Visit(Program* program) {

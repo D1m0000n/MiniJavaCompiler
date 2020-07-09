@@ -1,6 +1,7 @@
 #include "ScopeLayer.h"
 
 #include "objects/UninitObject.h"
+#include "objects/Method.h"
 
 #include <iostream>
 
@@ -33,7 +34,7 @@ void ScopeLayer::DeclareFunction(Symbol symbol, Function* function) {
     throw std::runtime_error("Variable has declared");
   }
 
-  values_[symbol] = std::make_shared<FunctionType>(function->param_list_->params_);
+  values_[symbol] = std::make_shared<Method>(function->param_list_->params_);
 }
 
 void ScopeLayer::Put(Symbol symbol, std::shared_ptr<Object> value) {
@@ -78,4 +79,17 @@ void ScopeLayer::AddChild(ScopeLayer* child) {
 
 ScopeLayer* ScopeLayer::GetParent() const {
   return parent_;
+}
+
+void ScopeLayer::PrintLayer(std::ostream &stream, int num_tabs) const {
+
+  for (const auto& symbol : symbols_) {
+    for (int i = 0; i < num_tabs; ++i) {
+      stream << "\t";
+    }
+    stream << symbol.GetName() << std::endl;
+  }
+  for (ScopeLayer* layer : children_) {
+    layer->PrintLayer(stream, num_tabs + 1);
+  }
 }

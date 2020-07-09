@@ -112,8 +112,9 @@ set(
         objects/Integer.cpp
         objects/Object.cpp
         objects/UninitObject.cpp
-        objects/Boolean.h
-        objects/Class.h
+        objects/Boolean.cpp
+        objects/Class.cpp
+        objects/Method.cpp
         Program.cpp
         main_class/MainClass.cpp
         visitors/SymbolTreeVisitor.cpp
@@ -121,6 +122,16 @@ set(
         functions/ParamList.cpp
         functions/FunctionList.cpp
         functions/ParamValueList.cpp
+        function-mechanisms/Frame.cpp
+        function-mechanisms/Frame.h
+        function-mechanisms/FunctionStorage.h
+        function-mechanisms/FunctionStorage.cpp
+        function-mechanisms/FunctionTable.h
+        function-mechanisms/FunctionTable.cpp
+        expressions/FunctionCallExpression.cpp
+        expressions/FunctionCallExpression.h
+        statements/ReturnStatement.cpp
+        statements/ReturnStatement.h
 )
 
 add_executable(

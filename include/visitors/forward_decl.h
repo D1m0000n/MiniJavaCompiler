@@ -33,3 +33,5 @@ class Function;
 class ParamList;
 class FunctionList;
 class ParamValueList;
+class FunctionCallExpression;
+class ReturnStatement;
