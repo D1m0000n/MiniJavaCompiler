@@ -23,43 +23,67 @@ void SymbolTreeVisitor::Visit(NumberExpression* expression) {
 }
 
 void SymbolTreeVisitor::Visit(AddExpression* expression) {
+  expression->first->Accept(this);
+  expression->second->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(SubtractExpression* expression) {
+  expression->first->Accept(this);
+  expression->second->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(MulExpression* expression) {
+  expression->first->Accept(this);
+  expression->second->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(DivExpression* expression) {
+  expression->first->Accept(this);
+  expression->second->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(AndExpression* expression) {
+  expression->first->Accept(this);
+  expression->second->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(IsEqualExpression* expression) {
+  expression->first->Accept(this);
+  expression->second->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(IsLessExpression* expression) {
+  expression->first->Accept(this);
+  expression->second->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(IsGreaterExpression* expression) {
+  expression->first->Accept(this);
+  expression->second->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(ModuloExpression* expression) {
+  expression->first->Accept(this);
+  expression->second->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(OrExpression* expression) {
+  expression->first->Accept(this);
+  expression->second->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(IdentExpression* expression) {
+  current_layer_->Get(Symbol(expression->ident_)); // check that element exists
 }
 
 void SymbolTreeVisitor::Visit(Assignment* assignment) {
+  current_layer_->Get(assignment->variable_);
 
+  assignment->expression_->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(PrintStatement* statement) {
+  statement->expression_->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(AssignmentList* assignment_list) {
@@ -97,14 +121,33 @@ void SymbolTreeVisitor::Visit(ScopeAssignmentList* list) {
 }
 
 void SymbolTreeVisitor::Visit(IfStatement* if_statement) {
+//  if_statement->true_statement_->Accept(this);
+  if_statement->expression_->Accept(this);
+  auto true_layer = new ScopeLayer(current_layer_);
+  current_layer_ = true_layer;
+
   if_statement->true_statement_->Accept(this);
-  if (if_statement->false_statement_) {
-    if_statement->false_statement_->Accept(this);
-  }
+  current_layer_ = current_layer_->GetParent();
+
+  auto false_layer = new ScopeLayer(current_layer_);
+  current_layer_ = false_layer;
+
+  if_statement->false_statement_->Accept(this);
+  current_layer_ = current_layer_->GetParent();
+
+//  if (if_statement->false_statement_) {
+//    if_statement->false_statement_->Accept(this);
+//  }
 }
 
 void SymbolTreeVisitor::Visit(WhileStatement* while_statement) {
+  while_statement->expression_->Accept(this);
+
+  auto while_layer = new ScopeLayer(current_layer_);
+  current_layer_ = while_layer;
+
   while_statement->statement_->Accept(this);
+  current_layer_ = current_layer_->GetParent();
 }
 
 void SymbolTreeVisitor::Visit(Function* function) {
@@ -137,9 +180,14 @@ void SymbolTreeVisitor::Visit(ParamValueList* value_list) {
 }
 
 void SymbolTreeVisitor::Visit(ParamList *param_list) {
-  for (const std::string& param: param_list->params_) {
-    current_layer_->DeclareVariable(Symbol(param), "int"); //// check for type
+  for (size_t i = 0; i < param_list->params_.size(); ++i) {
+    const std::string& param = param_list->params_[i];
+    const std::string& type = param_list->types_[i];
+    current_layer_->DeclareVariable(Symbol(param), type);
   }
+//  for (const std::string& param: param_list->params_) {
+//    current_layer_->DeclareVariable(Symbol(param), "int"); //// check for type
+//  }
 }
 
 void SymbolTreeVisitor::Visit(FunctionCallExpression* statement) {

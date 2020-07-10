@@ -98,7 +98,8 @@
 %nterm <std::string> simple_type
 %nterm <std::string> type
 %nterm <std::string> type_identifier
-%nterm <BaseElement*> method_invocation
+%nterm <MethodInvExpression*> method_invocation
+%nterm <std::vector<Expression*>> exp_list
 
 // %printer { yyo << $$; } <*>;
 
@@ -129,7 +130,21 @@ statement:
     | "if" "(" exp ")" statements "else" statements {$$ = new IfStatement($3, $5, $7); }
     | "while" "(" exp ")" statements {$$ = new WhileStatement($3, $5); }
     | "return" exp ";" { $$ = new ReturnStatement($2); }
+    | method_invocation ";" { $$ = $1; }
     ;
+
+method_invocation:
+    exp "." "identifier" "(" ")" {
+      $$ = new MethodInvExpression($1, $3, std::vector<Expression*>());
+    }
+    | exp "." "identifier" "(" exp_list ")" {
+      $$ = new MethodInvExpression($1, $3, $5);
+    }
+
+exp_list:
+    %empty { $$ = std::vector<Expression*>(); }
+    | exp { $$.push_back($1) }
+    | exp_list "," exp { $1.push_back($3); $$ = $1; }
 
 local_variable_declaration:
     variable_declaration { $$ = reinterpret_cast<Statement*>($1); }
@@ -171,7 +186,9 @@ variable_declaration:
     type "identifier" ";" { $$ = new VarDecl($1, $2); }
 
 method_declaration:
-    "public" type "identifier" "(" formals ")" "{" statements "}" ";" {$$ = new MethodDecl($2, $3); }
+    "public" type "identifier" "(" formals ")" "{" statements "}" ";" {
+      $$ = new MethodDecl($2, $3, $5, $8);
+     }
 
 formals:
     empty_param_list { $$ = $1; }

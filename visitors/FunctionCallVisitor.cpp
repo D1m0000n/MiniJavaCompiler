@@ -25,6 +25,35 @@ void FunctionCallVisitor::Visit(DivExpression *expression) {
   tos_value_ = Accept(expression->first) / Accept(expression->second);
 }
 
+void FunctionCallVisitor::Visit(AndExpression* expression) {
+  tos_value_ = (Accept(expression->first) && Accept(expression->second));
+}
+
+void FunctionCallVisitor::Visit(IsEqualExpression* expression) {
+  tos_value_ = (Accept(expression->first) == Accept(expression->second));
+}
+
+void FunctionCallVisitor::Visit(IsGreaterExpression* expression) {
+  tos_value_ = (Accept(expression->first) > Accept(expression->second));
+}
+
+void FunctionCallVisitor::Visit(IsLessExpression* expression) {
+  tos_value_ = (Accept(expression->first) < Accept(expression->second));
+}
+
+void FunctionCallVisitor::Visit(ModuloExpression* expression) {
+  int module = Accept(expression->second);
+  if (!module) {
+    throw std::runtime_error("Modulo by zero");
+  }
+  tos_value_ = (Accept(expression->first) % module);
+}
+
+void FunctionCallVisitor::Visit(OrExpression* expression) {
+  tos_value_ = (Accept(expression->first) || Accept(expression->second));
+}
+
+
 void FunctionCallVisitor::Visit(IdentExpression *expression) {
   int index = table_.Get(Symbol(expression->ident_));
   tos_value_ = frame.Get(index);

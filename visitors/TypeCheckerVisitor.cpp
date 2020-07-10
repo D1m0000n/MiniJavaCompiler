@@ -144,12 +144,25 @@ void TypeCheckerVisitor::Visit(Function* function) {
 }
 
 void TypeCheckerVisitor::Visit(ParamList* param_list) {
-
+  //// TODO in CE checkpoint
 }
 
 void TypeCheckerVisitor::Visit(ParamValueList* param_value_list) {
-  for (auto type : param_value_list->params_) {
-    Accept(type);
-    ////need to match expression and parameter type
-  }
+  //// TODO in CE checkpoint
+  //  for (auto type : param_value_list->params_) {
+//    Accept(type);
+//    ////need to match expression and parameter type
+//  }
+}
+
+void TypeCheckerVisitor::Visit(FunctionList* function_list) {
+  //// TODO in CE checkpoint
+}
+
+void TypeCheckerVisitor::Visit(FunctionCallExpression* statement) {
+  //// TODO in CE checkpoint
+}
+
+void TypeCheckerVisitor::Visit(ReturnStatement* statement) {
+  //// TODO in CE checkpoint
 }

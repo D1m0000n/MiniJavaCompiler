@@ -8,11 +8,11 @@
 
 class MethodInvExpression : public Expression, public Statement {
  public:
-  MethodInvExpression(Expression* expr, const std::string& identifier,
-                 std::vector<Expression*>  expr_list);
+  MethodInvExpression(Expression* expr, std::string identifier,
+                      std::vector<Expression*> expr_list);
   int eval() const override;
   void Accept(Visitor* visitor) override;
-  Expression* expr;
+  Expression* expression_;
   std::string identifier_;
-  std::vector<Expression*> expr_list;
+  std::vector<Expression*> expression_list_;
 };
