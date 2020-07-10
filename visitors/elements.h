@@ -12,6 +12,7 @@
 #include "expressions/IsLessExpression.h"
 #include "expressions/ModuloExpression.h"
 #include "expressions/OrExpression.h"
+#include "expressions/MethodInvExpression.h"
 
 #include "statements/PrintStatement.h"
 #include "statements/Statement.h"
@@ -31,6 +32,9 @@
 #include "functions/FunctionList.h"
 #include "functions/ParamList.h"
 #include "functions/ParamValueList.h"
+
+#include "expressions/FunctionCallExpression.h"
+#include "statements/ReturnStatement.h"
 
 #include <MainClass.h>
 

@@ -90,6 +90,7 @@ set(
         expressions/SubtractExpression.cpp
         expressions/DivExpression.cpp
         expressions/IdentExpression.cpp
+        expressions/MethodInvExpression.cpp
         statements/Statement.cpp
         statements/Assignment.cpp
         statements/AssignmentList.cpp
@@ -105,6 +106,7 @@ set(
         visitors/TemplateVisitor.cpp
         visitors/PrintVisitor.cpp
         visitors/TypeCheckerVisitor.cpp
+        visitors/FunctionCallVisitor.cpp
         symbol_table/Symbol.cpp
         symbol_table/Table.cpp
         symbol_table/ScopeLayer.cpp

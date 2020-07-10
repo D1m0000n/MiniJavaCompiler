@@ -1,16 +1,20 @@
 #pragma once
+
+#include <symbol_table/ScopeLayer.h>
+#include <stack>
+#include <function-mechanisms/Frame.h>
+#include <function-mechanisms/FunctionTable.h>
+#include <symbol_table/ScopeLayerTree.h>
 #include "TemplateVisitor.h"
 
-#include "symbol_table/Table.h"
-#include <map>
-
-#include "symbol_table/ScopeLayerTree.h"
-#include <BinaryExpression.h>
-
-class TypeCheckerVisitor : public TemplateVisitor<std::string> {
+class FunctionCallVisitor: public TemplateVisitor<int> {
  public:
-  explicit TypeCheckerVisitor(ScopeLayer* root);
+  FunctionCallVisitor(
+      ScopeLayer* function_scope, std::shared_ptr<Method> function);
 
+  void SetTree(ScopeLayerTree* tree);
+
+  void SetParams(const std::vector<int>& params);
   void Visit(NumberExpression* expression) override;
   void Visit(AddExpression* expression) override;
   void Visit(SubtractExpression* expression) override;
@@ -48,12 +52,17 @@ class TypeCheckerVisitor : public TemplateVisitor<std::string> {
 
   void Visit(MainClass* main_class) override;
 
-  void CheckTypes(Program* program);
+  Frame& GetFrame();
 
  private:
-
-  void BinaryTypesCheck(BinaryExpression* expression, const std::string& name);
-
+  ScopeLayer* root_layer;
   ScopeLayer* current_layer_;
   std::stack<int> offsets_;
+  Frame frame;
+  FunctionTable table_;
+  ScopeLayerTree* tree_;
+  bool returned_ = false;
 };
+
+
+

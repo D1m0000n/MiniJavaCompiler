@@ -169,3 +169,9 @@ void Interpreter::Visit(FunctionList* function_list) {
 
 void Interpreter::Visit(ParamValueList* param_value_list) {
 }
+
+void Interpreter::Visit(FunctionCallExpression* statement) {
+}
+
+void Interpreter::Visit(ReturnStatement* statement) {
+}

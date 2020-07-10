@@ -142,6 +142,15 @@ void SymbolTreeVisitor::Visit(ParamList *param_list) {
   }
 }
 
+void SymbolTreeVisitor::Visit(FunctionCallExpression* statement) {
+  // We don't check function name because function could be created after
+  statement->param_list_->Accept(this);
+}
+
+void SymbolTreeVisitor::Visit(ReturnStatement* return_statement) {
+  return_statement->return_expression_->Accept(this);
+}
+
 void SymbolTreeVisitor::Visit(Program* program) {
   if (program == nullptr) {
     throw std::runtime_error("Syntax error");

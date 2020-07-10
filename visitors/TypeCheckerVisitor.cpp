@@ -142,3 +142,14 @@ void TypeCheckerVisitor::Visit(Function* function) {
   Accept(function->param_list_);
   Accept(function->statements_);
 }
+
+void TypeCheckerVisitor::Visit(ParamList* param_list) {
+
+}
+
+void TypeCheckerVisitor::Visit(ParamValueList* param_value_list) {
+  for (auto type : param_value_list->params_) {
+    Accept(type);
+    ////need to match expression and parameter type
+  }
+}

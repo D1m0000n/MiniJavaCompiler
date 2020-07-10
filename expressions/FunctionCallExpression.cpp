@@ -1,13 +1,12 @@
 #include "FunctionCallExpression.h"
 
+#include <utility>
 
-FunctionCallExpression::FunctionCallExpression(const std::string &name, ParamValueList *param_list):
+FunctionCallExpression::FunctionCallExpression(std::string name, ParamValueList *param_list):
     param_list_(param_list),
-    name_(name) {
-
+    name_(std::move(name)) {
 }
 
 void FunctionCallExpression::Accept(Visitor *visitor) {
   visitor->Visit(this);
-
 }

@@ -35,3 +35,4 @@ class FunctionList;
 class ParamValueList;
 class FunctionCallExpression;
 class ReturnStatement;
+class MethodInvExpression;

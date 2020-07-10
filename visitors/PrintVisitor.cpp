@@ -260,6 +260,26 @@ void PrintVisitor::Visit(ParamValueList* param_value_list) {
   --num_tabs_;
 }
 
+void PrintVisitor::Visit(FunctionCallExpression* statement) {
+  PrintTabs();
+  stream_ << "CallStatement:" << std::endl;
+  ++num_tabs_;
+
+  PrintTabs();
+  stream_ << "Name: " << statement->name_ << std::endl;
+  statement->param_list_->Accept(this);
+  --num_tabs_;
+}
+
+void PrintVisitor::Visit(ReturnStatement* return_statement) {
+  PrintTabs();
+  stream_ << "ReturnStatement:" << std::endl;
+
+  ++num_tabs_;
+  return_statement->return_expression_->Accept(this);
+  --num_tabs_;
+}
+
 void PrintVisitor::PrintTabs() {
   for (int i = 0; i < num_tabs_; ++i) {
     stream_ << '\t';

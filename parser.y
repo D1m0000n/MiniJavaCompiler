@@ -87,9 +87,18 @@
 %nterm <DeclarationList*> declarations
 %nterm <DeclarationList*> class_declarations
 
+%nterm <ParamList*> formals
+%nterm <ParamList*> empty_param_list
+%nterm <ParamList*> complex_param_list
+
+%nterm <ParamValueList*> param_value_list
+%nterm <ParamValueList*> empty_param_value_list
+%nterm <ParamValueList*> complex_param_value_list
+
 %nterm <std::string> simple_type
 %nterm <std::string> type
 %nterm <std::string> type_identifier
+%nterm <BaseElement*> method_invocation
 
 // %printer { yyo << $$; } <*>;
 
@@ -119,6 +128,7 @@ statement:
     | "if" "(" exp ")" statements {$$ = new IfStatement($3, $5, NULL); }
     | "if" "(" exp ")" statements "else" statements {$$ = new IfStatement($3, $5, $7); }
     | "while" "(" exp ")" statements {$$ = new WhileStatement($3, $5); }
+    | "return" exp ";" { $$ = new ReturnStatement($2); }
     ;
 
 local_variable_declaration:
@@ -161,7 +171,18 @@ variable_declaration:
     type "identifier" ";" { $$ = new VarDecl($1, $2); }
 
 method_declaration:
-    "public" type "identifier" ";" {$$ = new MethodDecl($2, $3); }
+    "public" type "identifier" "(" formals ")" "{" statements "}" ";" {$$ = new MethodDecl($2, $3); }
+
+formals:
+    empty_param_list { $$ = $1; }
+    | complex_param_list { $$ = 1; }
+
+empty_param_list:
+  %empty { $$ = new ParamList(); }
+
+complex_param_list:
+  | type "identifier" { $$ = new ParamList($1, $2); }
+  | complex_param_list "," type "identifier" { $1->AddParam($3, $4); $$ = $1; }
 
 %left "+" "-";
 %left "*" "/";

@@ -3,9 +3,9 @@
 
 #include "visitors/Interpreter.h"
 #include "visitors/PrintVisitor.h"
-
 #include "visitors/SymbolTreeVisitor.h"
 #include "visitors/TypeCheckerVisitor.h"
+#include "visitors/FunctionCallVisitor.h"
 
 Driver::Driver() :
     trace_parsing(false),

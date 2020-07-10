@@ -43,6 +43,9 @@ class SymbolTreeVisitor : public Visitor {
   void Visit(ParamList* param_list) override;
   void Visit(ParamValueList* param_value_list) override;
 
+  void Visit(FunctionCallExpression* statement) override;
+  void Visit(ReturnStatement* statement) override;
+
   ScopeLayer* GetRoot();
 
  private:

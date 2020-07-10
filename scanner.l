@@ -71,6 +71,7 @@ blank [ \t\r]
 "if"                   return yy::parser::make_IF        (loc);
 "else"                 return yy::parser::make_ELSE      (loc);
 "while"                return yy::parser::make_WHILE     (loc);
+"return"               return yy::parser::make_RETURN    (loc);
 
 {int}      return make_NUMBER(yytext, loc);
 {id}       return yy::parser::make_IDENTIFIER(yytext, loc);
