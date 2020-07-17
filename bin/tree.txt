@@ -9,3 +9,6 @@ Main class:
 			CallStatement:
 				Name: TestFunc
 				ParamValueList:
+			CallStatement:
+				Name: TestFunc
+				ParamValueList:

@@ -158,7 +158,7 @@ void SymbolTreeVisitor::Visit(WhileStatement* while_statement) {
 void SymbolTreeVisitor::Visit(Function* function) {
   std::string full_func_name = this_ + "." + function->name_;
 
-  current_layer_->DeclareFunction(Symbol(function->name_), function);
+  current_layer_->DeclareFunction(Symbol(full_func_name), function);
 
   auto new_layer = new ScopeLayer(current_layer_);
 
@@ -167,11 +167,11 @@ void SymbolTreeVisitor::Visit(Function* function) {
   function->param_list_->Accept(this);
   function->statements_->Accept(this);
 
-  tree_.AddMapping(Symbol(function->name_), new_layer);
+  tree_.AddMapping(Symbol(full_func_name), new_layer);
 
   current_layer_ = current_layer_->GetParent();
 
-  functions_[Symbol(function->name_)] = function;
+  functions_[Symbol(full_func_name)] = function;
 }
 
 void SymbolTreeVisitor::Visit(FunctionList* function_list) {
@@ -220,7 +220,8 @@ void SymbolTreeVisitor::Visit(MainClass* main_class) {
 
   ParamList* empty_param_list = new ParamList();
   Function* main_function = new Function("void", "main", empty_param_list, main_class->statements_);
-  current_layer_->DeclareFunction(Symbol(main_function->name_), main_function);
+  std::string full_main_func_name = this_ + "." + main_function->name_;
+  current_layer_->DeclareFunction(Symbol(full_main_func_name), main_function);
 
   auto new_layer = new ScopeLayer(current_layer_);
 
@@ -229,11 +230,11 @@ void SymbolTreeVisitor::Visit(MainClass* main_class) {
   main_function->param_list_->Accept(this);
   main_function->statements_->Accept(this);
 
-  tree_.AddMapping(Symbol(main_function->name_), new_layer);
+  tree_.AddMapping(Symbol(full_main_func_name), new_layer);
 
   current_layer_ = current_layer_->GetParent();
 
-  functions_[Symbol(main_function->name_)] = main_function;
+  functions_[Symbol(full_main_func_name)] = main_function;
 }
 
 void SymbolTreeVisitor::Visit(ThisExpression* this_expression) {

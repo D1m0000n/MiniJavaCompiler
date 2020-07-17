@@ -53,17 +53,18 @@ void Driver::Evaluate() {
   for (auto it : methods) {
     storage.Set(it.first, it.second);
   }
-
-  Function* main_function = storage.Get(Symbol("main"));
+  std::string main_func_name = program->main_class_->identifier + "." + "main";
+  Function* main_function = storage.Get(Symbol(main_func_name));
   std::shared_ptr<Method> method_type = std::dynamic_pointer_cast<Method>(
-      root.Get(Symbol("main"))
+      root.Get(Symbol(main_func_name))
   );
 
   FunctionCallVisitor function_visitor(
-      root.GetFunctionScopeByName(Symbol("main")),
+      root.GetFunctionScopeByName(Symbol(main_func_name)),
       method_type
   );
   function_visitor.SetTree(&root);
+  function_visitor.SetThis(program->main_class_->identifier);
   function_visitor.Visit(main_function);
 
 //  Interpreter interpreter(root);

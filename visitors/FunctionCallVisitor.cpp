@@ -139,7 +139,14 @@ void FunctionCallVisitor::SetParams(const std::vector<int>& params) {
 
 void FunctionCallVisitor::Visit(FunctionCallExpression* statement) {
   std::cerr << "Function called " << statement->name_ << std::endl;
-  auto function_type = current_layer_->Get(statement->name_);
+  std::string full_func_name;
+  IdentExpression* ident_expression = dynamic_cast<IdentExpression*>(statement->expression_);
+  if (ident_expression->ident_ == "this") {
+    full_func_name = this_ + "." + statement->name_;
+  } else {
+    full_func_name = ident_expression->ident_ + "." + statement->name_;
+  }
+  auto function_type = current_layer_->Get(full_func_name);
 
   std::shared_ptr<Method> func_converted = std::dynamic_pointer_cast<Method>(function_type);
 
@@ -154,13 +161,13 @@ void FunctionCallVisitor::Visit(FunctionCallExpression* statement) {
   }
 
   FunctionCallVisitor new_visitor(
-      tree_->GetFunctionScopeByName(statement->name_),
+      tree_->GetFunctionScopeByName(full_func_name),
       func_converted
   );
   new_visitor.SetParams(params);
 
   new_visitor.GetFrame().SetParentFrame(&frame);
-  new_visitor.Visit(FunctionStorage::GetInstance().Get(Symbol(statement->name_)));
+  new_visitor.Visit(FunctionStorage::GetInstance().Get(Symbol(full_func_name)));
 
   tos_value_ = frame.GetReturnValue();
 }
@@ -243,6 +250,7 @@ void FunctionCallVisitor::Visit(DeclarationList* declaration_list) {
 }
 
 void FunctionCallVisitor::Visit(ClassDecl* class_decl) {
+  SetThis(class_decl->identifier);
   class_decl->declaration_list_->Accept(this);
 }
 
@@ -264,4 +272,8 @@ void FunctionCallVisitor::SetTree(ScopeLayerTree* tree) {
 
 Frame& FunctionCallVisitor::GetFrame() {
   return frame;
+}
+
+void FunctionCallVisitor::SetThis(std::string identifier) {
+  this_ = identifier;
 }

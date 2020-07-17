@@ -56,6 +56,8 @@ class FunctionCallVisitor: public TemplateVisitor<int> {
 
   Frame& GetFrame();
 
+  void SetThis(std::string identifier);
+
  private:
   ScopeLayer* root_layer;
   ScopeLayer* current_layer_;
@@ -64,6 +66,7 @@ class FunctionCallVisitor: public TemplateVisitor<int> {
   FunctionTable table_;
   ScopeLayerTree* tree_;
   bool returned_ = false;
+  std::string this_;
 };
 
 

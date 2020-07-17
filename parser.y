@@ -208,7 +208,7 @@ exp:
     | exp "%" exp {$$ = new ModuloExpression($1, $3); }
     | "(" exp ")" { $$ = $2; }
     | "new" type_identifier "(" ")" { $$ = new IdentExpression($2); }
-    | "this" { $$ = new ThisExpression(); }
+    | "this" { $$ = new IdentExpression("this"); }
 
 type_identifier:
     "identifier" { $$ = $1; }
