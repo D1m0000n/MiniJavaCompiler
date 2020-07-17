@@ -67,6 +67,10 @@
     IF "if"
     ELSE "else"
     WHILE "while"
+    RETURN "return"
+    NEW "new"
+    DOT "."
+    THIS "this"
 ;
 
 %token <std::string> IDENTIFIER "identifier"
@@ -88,18 +92,15 @@
 %nterm <DeclarationList*> class_declarations
 
 %nterm <ParamList*> formals
-%nterm <ParamList*> empty_param_list
-%nterm <ParamList*> complex_param_list
+%nterm <ParamList*> param_list
 
 %nterm <ParamValueList*> param_value_list
-%nterm <ParamValueList*> empty_param_value_list
-%nterm <ParamValueList*> complex_param_value_list
 
 %nterm <std::string> simple_type
 %nterm <std::string> type
 %nterm <std::string> type_identifier
-%nterm <MethodInvExpression*> method_invocation
-%nterm <std::vector<Expression*>> exp_list
+
+%nterm <Expression*> method_invocation
 
 // %printer { yyo << $$; } <*>;
 
@@ -130,21 +131,8 @@ statement:
     | "if" "(" exp ")" statements "else" statements {$$ = new IfStatement($3, $5, $7); }
     | "while" "(" exp ")" statements {$$ = new WhileStatement($3, $5); }
     | "return" exp ";" { $$ = new ReturnStatement($2); }
-    | method_invocation ";" { $$ = $1; }
+    | method_invocation ";" { $$ = reinterpret_cast<Statement*>($1); }
     ;
-
-method_invocation:
-    exp "." "identifier" "(" ")" {
-      $$ = new MethodInvExpression($1, $3, std::vector<Expression*>());
-    }
-    | exp "." "identifier" "(" exp_list ")" {
-      $$ = new MethodInvExpression($1, $3, $5);
-    }
-
-exp_list:
-    %empty { $$ = std::vector<Expression*>(); }
-    | exp { $$.push_back($1) }
-    | exp_list "," exp { $1.push_back($3); $$ = $1; }
 
 local_variable_declaration:
     variable_declaration { $$ = reinterpret_cast<Statement*>($1); }
@@ -179,27 +167,28 @@ simple_type:
     | "void" { $$ = "void"; }
     | type_identifier { $$ = $1; }
 
-type_identifier:
-    "identifier" { $$ = $1; }
-
 variable_declaration:
     type "identifier" ";" { $$ = new VarDecl($1, $2); }
 
 method_declaration:
-    "public" type "identifier" "(" formals ")" "{" statements "}" ";" {
-      $$ = new MethodDecl($2, $3, $5, $8);
+    "public" type "identifier" "(" formals ")" "{" statements "}" {
+      $$ = new Function($2, $3, $5, $8);
      }
 
 formals:
-    empty_param_list { $$ = $1; }
-    | complex_param_list { $$ = 1; }
+    param_list { $$ = $1; }
+    ;
 
-empty_param_list:
-  %empty { $$ = new ParamList(); }
+param_list:
+    %empty { $$ = new ParamList(); }
+    | type "identifier" { $$ = new ParamList($1, $2); }
+    | param_list "," type "identifier" { $1->AddParam($3, $4); $$ = $1; }
+    ;
 
-complex_param_list:
-  | type "identifier" { $$ = new ParamList($1, $2); }
-  | complex_param_list "," type "identifier" { $1->AddParam($3, $4); $$ = $1; }
+method_invocation:
+    exp "." "identifier" "(" param_value_list ")" {
+      $$ = new FunctionCallExpression($1, $3, $5);
+    }
 
 %left "+" "-";
 %left "*" "/";
@@ -217,7 +206,18 @@ exp:
     | exp "&&" exp {$$ = new AndExpression($1, $3); }
     | exp "||" exp {$$ = new OrExpression($1, $3); }
     | exp "%" exp {$$ = new ModuloExpression($1, $3); }
-    | "(" exp ")" { $$ = $2; };
+    | "(" exp ")" { $$ = $2; }
+    | "new" type_identifier "(" ")" { $$ = new IdentExpression($2); }
+    | "this" { $$ = new ThisExpression(); }
+
+type_identifier:
+    "identifier" { $$ = $1; }
+
+param_value_list:
+    %empty { $$ = new ParamValueList(); }
+    | exp { $$ = new ParamValueList($1); }
+    | param_value_list "," exp { $1->AddParam($3); $$ = $1; }
+    ;
 
 %%
 

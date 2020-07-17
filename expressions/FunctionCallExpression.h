@@ -6,8 +6,9 @@
 
 class FunctionCallExpression: public Expression {
  public:
-  FunctionCallExpression(std::string  name, ParamValueList* param_list);
+  FunctionCallExpression(Expression* expression, std::string name, ParamValueList* param_list);
   void Accept(Visitor *visitor) override;
+  Expression* expression_;
   std::string name_;
   ParamValueList* param_list_;
 };

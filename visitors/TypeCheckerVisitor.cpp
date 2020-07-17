@@ -122,7 +122,7 @@ void TypeCheckerVisitor::Visit(Program* program) {
 }
 
 void TypeCheckerVisitor::Visit(MainClass* main_class) {
-  Accept(main_class->statement_);
+  Accept(main_class->statements_);
 }
 
 void TypeCheckerVisitor::CheckTypes(Program* program) {

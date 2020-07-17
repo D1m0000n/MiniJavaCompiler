@@ -4,7 +4,8 @@ Main class:
 			VarDecl: three
 			Assignment: three
 				NumExpression 3
-IfStatement:
-				IsGreaterExpression: 
-					IdentExpression: three
-					NumExpression 2
+			PrintStatement: 
+				IdentExpression: three
+			CallStatement:
+				Name: TestFunc
+				ParamValueList:

@@ -6,10 +6,11 @@
 
 #include "objects/Integer.h"
 
-Interpreter::Interpreter(ScopeLayer* root) : current_layer_(root) {
+Interpreter::Interpreter(ScopeLayerTree root) : tree_(root) {
 
-  current_layer_->Put(Symbol("true"), std::make_shared<Integer>(1));
-  current_layer_->Put(Symbol("false"), std::make_shared<Integer>(0));
+  current_layer_ = tree_.root_;
+//  current_layer_->Put(Symbol("true"), std::make_shared<Integer>(1));
+//  current_layer_->Put(Symbol("false"), std::make_shared<Integer>(0));
   offsets_.push(0);
   tos_value_ = 0;
 }
@@ -151,7 +152,7 @@ void Interpreter::Visit(Program* program) {
 }
 
 void Interpreter::Visit(MainClass* main_class) {
-  main_class->statement_->Accept(this);
+  main_class->statements_->Accept(this);
 }
 
 void Interpreter::GetResult(Program* program) {
@@ -174,4 +175,7 @@ void Interpreter::Visit(FunctionCallExpression* statement) {
 }
 
 void Interpreter::Visit(ReturnStatement* statement) {
+}
+
+void Interpreter::Visit(ThisExpression* this_expression) {
 }

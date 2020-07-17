@@ -5,23 +5,23 @@
 
 #include "elements.h"
 
-void FunctionCallVisitor::Visit(NumberExpression *expression) {
+void FunctionCallVisitor::Visit(NumberExpression* expression) {
   tos_value_ = expression->value_;
 }
 
-void FunctionCallVisitor::Visit(AddExpression *expression) {
+void FunctionCallVisitor::Visit(AddExpression* expression) {
   tos_value_ = Accept(expression->first) + Accept(expression->second);
 }
 
-void FunctionCallVisitor::Visit(SubtractExpression *expression) {
+void FunctionCallVisitor::Visit(SubtractExpression* expression) {
   tos_value_ = Accept(expression->first) - Accept(expression->second);
 }
 
-void FunctionCallVisitor::Visit(MulExpression *expression) {
+void FunctionCallVisitor::Visit(MulExpression* expression) {
   tos_value_ = Accept(expression->first) * Accept(expression->second);
 }
 
-void FunctionCallVisitor::Visit(DivExpression *expression) {
+void FunctionCallVisitor::Visit(DivExpression* expression) {
   tos_value_ = Accept(expression->first) / Accept(expression->second);
 }
 
@@ -53,33 +53,32 @@ void FunctionCallVisitor::Visit(OrExpression* expression) {
   tos_value_ = (Accept(expression->first) || Accept(expression->second));
 }
 
-
-void FunctionCallVisitor::Visit(IdentExpression *expression) {
+void FunctionCallVisitor::Visit(IdentExpression* expression) {
   int index = table_.Get(Symbol(expression->ident_));
   tos_value_ = frame.Get(index);
 }
 
-void FunctionCallVisitor::Visit(Assignment *assignment) {
+void FunctionCallVisitor::Visit(Assignment* assignment) {
   int value = Accept(assignment->expression_);
 
   int index = table_.Get(Symbol(assignment->variable_));
   frame.Set(index, value);
 }
 
-void FunctionCallVisitor::Visit(VarDecl *var_decl) {
+void FunctionCallVisitor::Visit(VarDecl* var_decl) {
   size_t index = frame.AllocVariable();
   table_.CreateVariable(Symbol(var_decl->variable_));
   table_.Put(Symbol(var_decl->variable_), index);
 
 }
 
-void FunctionCallVisitor::Visit(PrintStatement *statement) {
+void FunctionCallVisitor::Visit(PrintStatement* statement) {
   int value = Accept(statement->expression_);
 
   std::cout << value << std::endl;
 }
 
-void FunctionCallVisitor::Visit(AssignmentList *assignment_list) {
+void FunctionCallVisitor::Visit(AssignmentList* assignment_list) {
   for (Statement* assignment: assignment_list->statements_) {
     if (!returned_) {
       assignment->Accept(this);
@@ -87,7 +86,7 @@ void FunctionCallVisitor::Visit(AssignmentList *assignment_list) {
   }
 }
 
-void FunctionCallVisitor::Visit(ScopeAssignmentList *list) {
+void FunctionCallVisitor::Visit(ScopeAssignmentList* list) {
   std::cout << "Going inside" << std::endl;
 
   current_layer_ = current_layer_->GetChild(offsets_.top());
@@ -108,11 +107,11 @@ void FunctionCallVisitor::Visit(ScopeAssignmentList *list) {
   table_.EndScope();
 }
 
-void FunctionCallVisitor::Visit(Program *program) {
+void FunctionCallVisitor::Visit(Program* program) {
 
 }
 
-void FunctionCallVisitor::Visit(ParamList *param_list) {
+void FunctionCallVisitor::Visit(ParamList* param_list) {
   int index = -1;
   for (auto param: param_list->params_) {
     table_.CreateVariable(Symbol(param));
@@ -121,7 +120,7 @@ void FunctionCallVisitor::Visit(ParamList *param_list) {
   }
 }
 
-void FunctionCallVisitor::Visit(Function *function) {
+void FunctionCallVisitor::Visit(Function* function) {
   function->param_list_->Accept(this);
   function->statements_->Accept(this);
 }
@@ -134,11 +133,11 @@ FunctionCallVisitor::FunctionCallVisitor(
   tos_value_ = 0;
 }
 
-void FunctionCallVisitor::SetParams(const std::vector<int> &params) {
+void FunctionCallVisitor::SetParams(const std::vector<int>& params) {
   frame.SetParams(params);
 }
 
-void FunctionCallVisitor::Visit(FunctionCallExpression *statement) {
+void FunctionCallVisitor::Visit(FunctionCallExpression* statement) {
   std::cerr << "Function called " << statement->name_ << std::endl;
   auto function_type = current_layer_->Get(statement->name_);
 
@@ -163,30 +162,106 @@ void FunctionCallVisitor::Visit(FunctionCallExpression *statement) {
   new_visitor.GetFrame().SetParentFrame(&frame);
   new_visitor.Visit(FunctionStorage::GetInstance().Get(Symbol(statement->name_)));
 
-
   tos_value_ = frame.GetReturnValue();
 }
 
-void FunctionCallVisitor::Visit(FunctionList *function_list) {
+void FunctionCallVisitor::Visit(FunctionList* function_list) {
 
 }
 
-void FunctionCallVisitor::Visit(ParamValueList *value_list) {
+void FunctionCallVisitor::Visit(ParamValueList* value_list) {
 
 }
 
-void FunctionCallVisitor::Visit(ReturnStatement *return_statement) {
+void FunctionCallVisitor::Visit(ReturnStatement* return_statement) {
   if (frame.HasParent()) {
     frame.SetParentReturnValue(Accept(return_statement->return_expression_));
   }
   returned_ = true;
 }
 
-void FunctionCallVisitor::SetTree(ScopeLayerTree *tree) {
+void FunctionCallVisitor::Visit(IfStatement* if_statement) {
+
+  int expression_result = Accept(if_statement->expression_);
+  if (expression_result == 1) {
+    current_layer_ = current_layer_->GetChild(offsets_.top());
+    offsets_.push(0);
+    frame.AllocScope();
+    table_.BeginScope();
+    if_statement->true_statement_->Accept(this);
+    offsets_.pop();
+    size_t index = offsets_.top();
+    offsets_.pop();
+    offsets_.push(index + 2); // skip else child
+    current_layer_ = current_layer_->GetParent();
+    frame.DeallocScope();
+    table_.EndScope();
+  } else {
+    int value = offsets_.top();
+
+    offsets_.push(0);
+
+    current_layer_ = current_layer_->GetChild(value + 1); // else layer
+    frame.AllocScope();
+    table_.BeginScope();
+    if_statement->false_statement_->Accept(this);
+    offsets_.pop();
+    offsets_.pop();
+    offsets_.push(value + 2);
+
+    current_layer_ = current_layer_->GetParent();
+    frame.DeallocScope();
+    table_.EndScope();
+  }
+}
+
+void FunctionCallVisitor::Visit(WhileStatement* while_statement) {
+  int expression_result = Accept(while_statement->expression_);
+  while (expression_result) {
+    current_layer_ = current_layer_->GetChild(offsets_.top());
+    offsets_.push(0);
+    frame.AllocScope();
+    table_.BeginScope();
+
+    while_statement->statement_->Accept(this);
+    offsets_.pop();
+    size_t index = offsets_.top();
+    offsets_.pop();
+    offsets_.push(index + 1);
+
+    frame.DeallocScope();
+    table_.EndScope();
+
+    expression_result = Accept(while_statement->expression_);
+  }
+}
+
+void FunctionCallVisitor::Visit(DeclarationList* declaration_list) {
+  for (auto declaration : declaration_list->declarations_) {
+    declaration->Accept(this);
+  }
+}
+
+void FunctionCallVisitor::Visit(ClassDecl* class_decl) {
+  class_decl->declaration_list_->Accept(this);
+}
+
+void FunctionCallVisitor::Visit(MethodDecl* method_decl) {
+  method_decl->assignment_list_->Accept(this);
+}
+
+void FunctionCallVisitor::Visit(MainClass* main_class) {
+  main_class->statements_->Accept(this);
+}
+
+void FunctionCallVisitor::Visit(ThisExpression* this_expression) {
+}
+
+void FunctionCallVisitor::SetTree(ScopeLayerTree* tree) {
   tree_ = tree;
 
 }
 
-Frame &FunctionCallVisitor::GetFrame() {
+Frame& FunctionCallVisitor::GetFrame() {
   return frame;
 }

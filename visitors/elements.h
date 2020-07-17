@@ -12,7 +12,7 @@
 #include "expressions/IsLessExpression.h"
 #include "expressions/ModuloExpression.h"
 #include "expressions/OrExpression.h"
-#include "expressions/MethodInvExpression.h"
+#include "expressions/ThisExpression.h"
 
 #include "statements/PrintStatement.h"
 #include "statements/Statement.h"

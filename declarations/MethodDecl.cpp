@@ -4,12 +4,12 @@
 
 MethodDecl::MethodDecl(
     std::string type,
-    std::string ide,
+    std::string identifier,
     ParamList* param_list,
     AssignmentList* assignment_list
 )
     : type_(std::move(type)),
-      identifier_(std::move(ide)),
+      identifier_(std::move(identifier)),
       param_list_(param_list),
       assignment_list_(assignment_list) {
 }

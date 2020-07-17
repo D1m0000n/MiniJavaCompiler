@@ -8,9 +8,9 @@
 
 class MainClass : public BaseElement {
  public:
-  MainClass(std::string identifier, Statement* statement);
+  MainClass(std::string identifier, AssignmentList* statement);
   void Accept(Visitor* visitor) override;
 
   std::string identifier;
-  Statement* statement_;
+  AssignmentList* statements_;
 };

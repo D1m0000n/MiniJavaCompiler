@@ -206,7 +206,7 @@ void PrintVisitor::Visit(MainClass* main_class) {
   stream_ << "Main class:" << std::endl;
 
   ++num_tabs_;
-  main_class->statement_->Accept(this);
+  main_class->statements_->Accept(this);
   --num_tabs_;
 }
 
@@ -278,6 +278,11 @@ void PrintVisitor::Visit(ReturnStatement* return_statement) {
   ++num_tabs_;
   return_statement->return_expression_->Accept(this);
   --num_tabs_;
+}
+
+void PrintVisitor::Visit(ThisExpression* this_expression) {
+  PrintTabs();
+  stream_ << "Found this " << std::endl;
 }
 
 void PrintVisitor::PrintTabs() {

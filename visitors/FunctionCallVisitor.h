@@ -50,6 +50,8 @@ class FunctionCallVisitor: public TemplateVisitor<int> {
   void Visit(FunctionCallExpression* statement) override;
   void Visit(ReturnStatement* statement) override;
 
+  void Visit(ThisExpression* this_expression) override;
+
   void Visit(MainClass* main_class) override;
 
   Frame& GetFrame();

@@ -98,12 +98,15 @@ void SymbolTreeVisitor::Visit(VarDecl* var_decl) {
 }
 
 void SymbolTreeVisitor::Visit(ClassDecl* class_decl) {
+  this_ = class_decl->identifier;
+
   std::cout << "Declaring class " << class_decl->identifier << std::endl;
   class_decl->declaration_list_->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(MethodDecl* method_decl) {
-
+  std::cout << "Declaring method " << method_decl->identifier_ << std::endl;
+  method_decl->assignment_list_->Accept(this);
 }
 
 void SymbolTreeVisitor::Visit(DeclarationList* declaration_list) {
@@ -132,7 +135,9 @@ void SymbolTreeVisitor::Visit(IfStatement* if_statement) {
   auto false_layer = new ScopeLayer(current_layer_);
   current_layer_ = false_layer;
 
-  if_statement->false_statement_->Accept(this);
+  if (if_statement->false_statement_) {
+    if_statement->false_statement_->Accept(this);
+  }
   current_layer_ = current_layer_->GetParent();
 
 //  if (if_statement->false_statement_) {
@@ -151,6 +156,8 @@ void SymbolTreeVisitor::Visit(WhileStatement* while_statement) {
 }
 
 void SymbolTreeVisitor::Visit(Function* function) {
+  std::string full_func_name = this_ + "." + function->name_;
+
   current_layer_->DeclareFunction(Symbol(function->name_), function);
 
   auto new_layer = new ScopeLayer(current_layer_);
@@ -204,13 +211,39 @@ void SymbolTreeVisitor::Visit(Program* program) {
     throw std::runtime_error("Syntax error");
   }
   program->main_class_->Accept(this);
+  program->class_declarations_->Accept(this);
 //    program->expression_->Accept(this); // tos value is called
 }
 
 void SymbolTreeVisitor::Visit(MainClass* main_class) {
-  main_class->statement_->Accept(this);
+  this_ = main_class->identifier;
+
+  ParamList* empty_param_list = new ParamList();
+  Function* main_function = new Function("void", "main", empty_param_list, main_class->statements_);
+  current_layer_->DeclareFunction(Symbol(main_function->name_), main_function);
+
+  auto new_layer = new ScopeLayer(current_layer_);
+
+  current_layer_ = new_layer;
+
+  main_function->param_list_->Accept(this);
+  main_function->statements_->Accept(this);
+
+  tree_.AddMapping(Symbol(main_function->name_), new_layer);
+
+  current_layer_ = current_layer_->GetParent();
+
+  functions_[Symbol(main_function->name_)] = main_function;
 }
 
-ScopeLayer* SymbolTreeVisitor::GetRoot() {
-  return current_layer_;
+void SymbolTreeVisitor::Visit(ThisExpression* this_expression) {
+  //// TODO in CE
+}
+
+ScopeLayerTree SymbolTreeVisitor::GetRoot() {
+  return tree_;
+}
+
+std::unordered_map<Symbol, Function*> SymbolTreeVisitor::GetFunctions() const {
+  return functions_;
 }

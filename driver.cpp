@@ -7,6 +7,8 @@
 #include "visitors/TypeCheckerVisitor.h"
 #include "visitors/FunctionCallVisitor.h"
 
+#include <function-mechanisms/FunctionStorage.h>
+
 Driver::Driver() :
     trace_parsing(false),
     trace_scanning(false),
@@ -34,19 +36,38 @@ void Driver::Evaluate() {
   }
   std::cout << "Symbol tree built" << std::endl;
 
-  ScopeLayer* root = visitor.GetRoot();
+  ScopeLayerTree root = visitor.GetRoot();
 
-  TypeCheckerVisitor type_checker(root);
-  try{
-    type_checker.CheckTypes(program);
-  } catch (std::runtime_error& error) {
-    std::cout << error.what() << std::endl;
-    exit(1);
+  //// TODO CE
+//  TypeCheckerVisitor type_checker(root);
+//  try {
+//    type_checker.CheckTypes(program);
+//  } catch (std::runtime_error& error) {
+//    std::cout << error.what() << std::endl;
+//    exit(1);
+//  }
+//  std::cout << "Types checked" << std::endl;
+
+  auto methods = visitor.GetFunctions();
+  FunctionStorage& storage = FunctionStorage::GetInstance();
+  for (auto it : methods) {
+    storage.Set(it.first, it.second);
   }
-  std::cout << "Types checked" << std::endl;
 
-  Interpreter interpreter(root);
-  interpreter.GetResult(program);
+  Function* main_function = storage.Get(Symbol("main"));
+  std::shared_ptr<Method> method_type = std::dynamic_pointer_cast<Method>(
+      root.Get(Symbol("main"))
+  );
+
+  FunctionCallVisitor function_visitor(
+      root.GetFunctionScopeByName(Symbol("main")),
+      method_type
+  );
+  function_visitor.SetTree(&root);
+  function_visitor.Visit(main_function);
+
+//  Interpreter interpreter(root);
+//  interpreter.GetResult(program);
 }
 
 void Driver::scan_begin() {

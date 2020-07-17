@@ -25,7 +25,6 @@ class Visitor {
 
   virtual void Visit(IfStatement* if_statement) = 0;
   virtual void Visit(WhileStatement* while_statement) = 0;
-  virtual void Visit(MethodInvExpression* method_invocation) = 0;
 
   virtual void Visit(VarDecl* var_decl) = 0;
   virtual void Visit(ClassDecl* class_decl) = 0;
@@ -39,6 +38,8 @@ class Visitor {
 
   virtual void Visit(FunctionCallExpression* statement) = 0;
   virtual void Visit(ReturnStatement* statement) = 0;
+
+  virtual void Visit(ThisExpression* this_expression) = 0;
 
   virtual void Visit(MainClass* main_class) = 0;
 };

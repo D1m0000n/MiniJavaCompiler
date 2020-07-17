@@ -90,7 +90,7 @@ set(
         expressions/SubtractExpression.cpp
         expressions/DivExpression.cpp
         expressions/IdentExpression.cpp
-        expressions/MethodInvExpression.cpp
+        expressions/ThisExpression.cpp
         statements/Statement.cpp
         statements/Assignment.cpp
         statements/AssignmentList.cpp
