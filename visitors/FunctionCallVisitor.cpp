@@ -80,9 +80,11 @@ void FunctionCallVisitor::Visit(PrintStatement* statement) {
 
 void FunctionCallVisitor::Visit(AssignmentList* assignment_list) {
   for (Statement* assignment: assignment_list->statements_) {
+    std::string saved_this = this_;
     if (!returned_) {
       assignment->Accept(this);
     }
+    this_ = saved_this;
   }
 }
 
@@ -144,6 +146,7 @@ void FunctionCallVisitor::Visit(FunctionCallExpression* statement) {
   if (ident_expression->ident_ == "this") {
     full_func_name = this_ + "." + statement->name_;
   } else {
+    this_ = ident_expression->ident_;
     full_func_name = ident_expression->ident_ + "." + statement->name_;
   }
   auto function_type = current_layer_->Get(full_func_name);
@@ -165,7 +168,8 @@ void FunctionCallVisitor::Visit(FunctionCallExpression* statement) {
       func_converted
   );
   new_visitor.SetParams(params);
-
+  new_visitor.SetTree(tree_);
+  new_visitor.SetThis(this_);
   new_visitor.GetFrame().SetParentFrame(&frame);
   new_visitor.Visit(FunctionStorage::GetInstance().Get(Symbol(full_func_name)));
 
@@ -211,7 +215,9 @@ void FunctionCallVisitor::Visit(IfStatement* if_statement) {
     current_layer_ = current_layer_->GetChild(value + 1); // else layer
     frame.AllocScope();
     table_.BeginScope();
-    if_statement->false_statement_->Accept(this);
+    if (if_statement->false_statement_) {
+      if_statement->false_statement_->Accept(this);
+    }
     offsets_.pop();
     offsets_.pop();
     offsets_.push(value + 2);
@@ -267,7 +273,6 @@ void FunctionCallVisitor::Visit(ThisExpression* this_expression) {
 
 void FunctionCallVisitor::SetTree(ScopeLayerTree* tree) {
   tree_ = tree;
-
 }
 
 Frame& FunctionCallVisitor::GetFrame() {

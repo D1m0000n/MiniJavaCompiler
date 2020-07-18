@@ -20,6 +20,7 @@
 %define parse.error verbose
 
 %code {
+
     #include "include/driver.hh"
     #include "location.hh"
 
@@ -127,9 +128,9 @@ statement:
     | local_variable_declaration { $$ = $1; }
     | "System.out.println" "(" exp ")" ";" { $$ = new PrintStatement($3); }
     | "{" statements "}" { $$ = new ScopeAssignmentList($2); }
-    | "if" "(" exp ")" statements {$$ = new IfStatement($3, $5, NULL); }
-    | "if" "(" exp ")" statements "else" statements {$$ = new IfStatement($3, $5, $7); }
-    | "while" "(" exp ")" statements {$$ = new WhileStatement($3, $5); }
+    | "if" "(" exp ")" "{" statements "}" { $$ = new IfStatement($3, $6, NULL); }
+    | "if" "(" exp ")" "{" statements "}" "else" "{" statements "}" {$$ = new IfStatement($3, $6, $10); }
+    | "while" "(" exp ")" statements { $$ = new WhileStatement($3, $5); }
     | "return" exp ";" { $$ = new ReturnStatement($2); }
     | method_invocation ";" { $$ = reinterpret_cast<Statement*>($1); }
     ;
@@ -162,7 +163,7 @@ type:
     simple_type { $$ = $1; }
 
 simple_type:
-    "int" {$$ = "int"; }
+    "int" { $$ = "int"; }
     | "boolean" { $$ = "boolean"; }
     | "void" { $$ = "void"; }
     | type_identifier { $$ = $1; }
@@ -209,6 +210,7 @@ exp:
     | "(" exp ")" { $$ = $2; }
     | "new" type_identifier "(" ")" { $$ = new IdentExpression($2); }
     | "this" { $$ = new IdentExpression("this"); }
+    | method_invocation { $$ = $1; }
 
 type_identifier:
     "identifier" { $$ = $1; }
