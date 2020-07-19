@@ -1,4 +1,5 @@
 #include "TypeCheckerVisitor.h"
+#include <FunctionStorage.h>
 
 #include "elements.h"
 
@@ -92,6 +93,7 @@ void TypeCheckerVisitor::Visit(DeclarationList* declaration_list) {
 }
 
 void TypeCheckerVisitor::Visit(ClassDecl* class_decl) {
+  this_ = class_decl->identifier;
   class_decl->declaration_list_->Accept(this);
 }
 
@@ -128,6 +130,9 @@ void TypeCheckerVisitor::Visit(Program* program) {
 }
 
 void TypeCheckerVisitor::Visit(MainClass* main_class) {
+  this_ = main_class->identifier;
+  std::string full_func_name = main_class->identifier + "." + "main";
+  current_layer_ = tree_->GetFunctionScopeByName(full_func_name);
   Accept(main_class->statements_);
 }
 
@@ -145,20 +150,24 @@ void TypeCheckerVisitor::BinaryTypesCheck(BinaryExpression* expression, const st
 }
 
 void TypeCheckerVisitor::Visit(Function* function) {
+  std::string full_func_name = this_ + "." + function->name_;
+  current_function_ = function;
+  current_layer_ = tree_->GetFunctionScopeByName(full_func_name);
   Accept(function->param_list_);
   Accept(function->statements_);
 }
 
 void TypeCheckerVisitor::Visit(ParamList* param_list) {
-  //// TODO in CE checkpoint
 }
 
 void TypeCheckerVisitor::Visit(ParamValueList* param_value_list) {
-  //// TODO in CE checkpoint
-  //  for (auto type : param_value_list->params_) {
-//    Accept(type);
-//    ////need to match expression and parameter type
-//  }
+  for (int i = 0; i < param_value_list->params_.size(); ++i) {
+    auto param = param_value_list->params_[i];
+    param->Accept(this);
+    if (tos_value_ != current_function_->param_list_->types_[i]) {
+      throw std::runtime_error("Wrong parameter type");
+    }
+  }
 }
 
 void TypeCheckerVisitor::Visit(FunctionList* function_list) {
@@ -168,12 +177,13 @@ void TypeCheckerVisitor::Visit(FunctionList* function_list) {
 }
 
 void TypeCheckerVisitor::Visit(FunctionCallExpression* statement) {
-  //// TODO in CE checkpoint
 }
 
 void TypeCheckerVisitor::Visit(ReturnStatement* statement) {
   statement->return_expression_->Accept(this);
-//  current_layer_->
+  if (current_function_->type_ == "void") {
+    throw std::runtime_error("Return value from void type function");
+  }
 }
 
 void TypeCheckerVisitor::Visit(ThisExpression* this_expression) {

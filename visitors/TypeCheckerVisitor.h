@@ -61,4 +61,5 @@ class TypeCheckerVisitor : public TemplateVisitor<std::string> {
   ScopeLayer* current_layer_;
   std::stack<int> offsets_;
   std::string this_;
+  Function* current_function_;
 };
