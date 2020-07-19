@@ -9,7 +9,7 @@
 
 class TypeCheckerVisitor : public TemplateVisitor<std::string> {
  public:
-  explicit TypeCheckerVisitor(ScopeLayer* root);
+  explicit TypeCheckerVisitor(ScopeLayerTree* root);
 
   void Visit(NumberExpression* expression) override;
   void Visit(AddExpression* expression) override;
@@ -48,12 +48,17 @@ class TypeCheckerVisitor : public TemplateVisitor<std::string> {
 
   void Visit(MainClass* main_class) override;
 
+  void Visit(ThisExpression* this_expression) override;
+
+
   void CheckTypes(Program* program);
 
  private:
 
   void BinaryTypesCheck(BinaryExpression* expression, const std::string& name);
 
+  ScopeLayerTree* tree_;
   ScopeLayer* current_layer_;
   std::stack<int> offsets_;
+  std::string this_;
 };

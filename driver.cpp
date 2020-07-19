@@ -38,15 +38,14 @@ void Driver::Evaluate() {
 
   ScopeLayerTree root = visitor.GetRoot();
 
-  //// TODO CE
-//  TypeCheckerVisitor type_checker(root);
-//  try {
-//    type_checker.CheckTypes(program);
-//  } catch (std::runtime_error& error) {
-//    std::cout << error.what() << std::endl;
-//    exit(1);
-//  }
-//  std::cout << "Types checked" << std::endl;
+  TypeCheckerVisitor type_checker(&root);
+  try {
+    type_checker.CheckTypes(program);
+  } catch (std::runtime_error& error) {
+    std::cout << error.what() << std::endl;
+    exit(1);
+  }
+  std::cout << "Types checked" << std::endl;
 
   auto methods = visitor.GetFunctions();
   FunctionStorage& storage = FunctionStorage::GetInstance();

@@ -6,7 +6,7 @@
 
 #include "objects/Integer.h"
 
-TypeCheckerVisitor::TypeCheckerVisitor(ScopeLayer* root) : current_layer_(root) {
+TypeCheckerVisitor::TypeCheckerVisitor(ScopeLayerTree* root) : tree_(root) {
   offsets_.push(0);
   tos_value_ = "";
 }
@@ -86,12 +86,17 @@ void TypeCheckerVisitor::Visit(VarDecl* var_decl) {
 }
 
 void TypeCheckerVisitor::Visit(DeclarationList* declaration_list) {
+  for (auto declaration : declaration_list->declarations_) {
+    declaration->Accept(this);
+  }
 }
 
 void TypeCheckerVisitor::Visit(ClassDecl* class_decl) {
+  class_decl->declaration_list_->Accept(this);
 }
 
 void TypeCheckerVisitor::Visit(MethodDecl* method_decl) {
+  method_decl->assignment_list_->Accept(this);
 }
 
 void TypeCheckerVisitor::Visit(ScopeAssignmentList* list) {
@@ -119,6 +124,7 @@ void TypeCheckerVisitor::Visit(WhileStatement* while_statement) {
 
 void TypeCheckerVisitor::Visit(Program* program) {
   Accept(program->main_class_);
+  Accept(program->class_declarations_);
 }
 
 void TypeCheckerVisitor::Visit(MainClass* main_class) {
@@ -156,7 +162,9 @@ void TypeCheckerVisitor::Visit(ParamValueList* param_value_list) {
 }
 
 void TypeCheckerVisitor::Visit(FunctionList* function_list) {
-  //// TODO in CE checkpoint
+  for (auto function : function_list->functions_) {
+    function->Accept(this);
+  }
 }
 
 void TypeCheckerVisitor::Visit(FunctionCallExpression* statement) {
@@ -164,5 +172,9 @@ void TypeCheckerVisitor::Visit(FunctionCallExpression* statement) {
 }
 
 void TypeCheckerVisitor::Visit(ReturnStatement* statement) {
-  //// TODO in CE checkpoint
+  statement->return_expression_->Accept(this);
+//  current_layer_->
+}
+
+void TypeCheckerVisitor::Visit(ThisExpression* this_expression) {
 }

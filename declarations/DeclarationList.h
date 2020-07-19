@@ -5,7 +5,7 @@
 #include <vector>
 
 
-class DeclarationList : Declaration {
+class DeclarationList : public Declaration {
  public:
   void AddDeclaration(Declaration* declaration);
   void Accept(Visitor* visitor) override;
