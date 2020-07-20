@@ -275,7 +275,7 @@ void FunctionCallVisitor::SetTree(ScopeLayerTree* tree) {
   tree_ = tree;
 }
 
-Frame& FunctionCallVisitor::GetFrame() {
+FrameEmulator& FunctionCallVisitor::GetFrame() {
   return frame;
 }
 

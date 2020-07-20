@@ -1,20 +1,22 @@
+//
+// Created by akhtyamovpavel on 4/8/20.
+//
+
+
 #pragma once
 
-#include <symbol_table/ScopeLayer.h>
-#include <stack>
-#include <function-mechanisms/FrameEmulator.h>
-#include <function-mechanisms/FunctionTable.h>
+#include <include/visitors/Visitor.h>
+#include <irtree/tree_wrapper/SubtreeWrapper.h>
+#include <unordered_map>
+#include <function-mechanisms/FrameTranslator.h>
 #include <symbol_table/ScopeLayerTree.h>
 #include "TemplateVisitor.h"
 
-class FunctionCallVisitor: public TemplateVisitor<int> {
+using IrtMapping = std::unordered_map<std::string, IRT::Statement*>;
+
+class IrtreeBuildVisitor : public TemplateVisitor<IRT::SubtreeWrapper*> {
  public:
-  FunctionCallVisitor(
-      ScopeLayer* function_scope, std::shared_ptr<Method> function);
-
-  void SetTree(ScopeLayerTree* tree);
-
-  void SetParams(const std::vector<int>& params);
+  explicit IrtreeBuildVisitor(ScopeLayerTree* layer_tree);
   void Visit(NumberExpression* expression) override;
   void Visit(AddExpression* expression) override;
   void Visit(SubtractExpression* expression) override;
@@ -54,20 +56,15 @@ class FunctionCallVisitor: public TemplateVisitor<int> {
 
   void Visit(MainClass* main_class) override;
 
-  FrameEmulator& GetFrame();
-
-  void SetThis(std::string identifier);
+  IrtMapping GetTrees();
 
  private:
-  ScopeLayer* root_layer;
-  ScopeLayer* current_layer_;
-  std::stack<int> offsets_;
-  FrameEmulator frame;
-  FunctionTable table_;
-  ScopeLayerTree* tree_;
-  bool returned_ = false;
-  std::string this_;
-};
+  std::unordered_map<std::string, IRT::FrameTranslator*> frame_translator_;
 
+  IRT::FrameTranslator* current_frame_;
+  ScopeLayerTree* tree_;
+
+  IrtMapping method_trees_;
+};
 
 

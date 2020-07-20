@@ -49,6 +49,11 @@ include_directories(
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${MiniJavaCompiler_SOURCE_DIR}/bin)
 
+set(CURRENT_EXECUTABLE "${PROJECT_NAME}Executable")
+set(GRAMMAR_LIB "${PROJECT_NAME}GrammarLib")
+set(GRAMMAR_PROJECT "${PROJECT_NAME}GrammarProject")
+set(IR_LIB "${PROJECT_NAME}IrLib")
+
 set(
         HEADERS
         include/driver.hh
@@ -107,6 +112,8 @@ set(
         visitors/PrintVisitor.cpp
         visitors/TypeCheckerVisitor.cpp
         visitors/FunctionCallVisitor.cpp
+        visitors/IrtreeBuildVisitor.h
+        visitors/IrtreeBuildVisitor.cpp
         symbol_table/Symbol.cpp
         symbol_table/Table.cpp
         symbol_table/ScopeLayer.cpp
@@ -124,17 +131,26 @@ set(
         functions/ParamList.cpp
         functions/FunctionList.cpp
         functions/ParamValueList.cpp
-        function-mechanisms/Frame.cpp
-        function-mechanisms/Frame.h
+        function-mechanisms/FrameEmulator.cpp
+        function-mechanisms/FrameEmulator.h
         function-mechanisms/FunctionStorage.h
         function-mechanisms/FunctionStorage.cpp
         function-mechanisms/FunctionTable.h
         function-mechanisms/FunctionTable.cpp
+        function-mechanisms/address/Address.h
+        function-mechanisms/address/AddressInRegister.h
+        function-mechanisms/address/AddressInRegister.cpp
+        function-mechanisms/address/AddressInFrame.h
+        function-mechanisms/address/AddressInFrame.cpp
+        function-mechanisms/FrameTranslator.h
+        function-mechanisms/FrameTranslator.cpp
         expressions/FunctionCallExpression.cpp
         expressions/FunctionCallExpression.h
         statements/ReturnStatement.cpp
         statements/ReturnStatement.h
 )
+
+add_subdirectory(irtree)
 
 add_executable(
         MiniJavaCompiler

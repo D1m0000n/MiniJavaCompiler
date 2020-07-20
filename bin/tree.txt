@@ -1,14 +1,8 @@
 Program:
 Main class:
 		AssignmentList: 
-			VarDecl: three
-			Assignment: three
-				NumExpression 3
 			PrintStatement: 
-				IdentExpression: three
-			CallStatement:
-				Name: TestFunc
-				ParamValueList:
-			CallStatement:
-				Name: TestFunc
-				ParamValueList:
+				CallStatement:
+					Name: ComputeFac
+					ParamValueList:
+						NumExpression 10

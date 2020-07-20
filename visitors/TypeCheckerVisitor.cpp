@@ -72,9 +72,6 @@ void TypeCheckerVisitor::Visit(Assignment* assignment) {
 
 void TypeCheckerVisitor::Visit(PrintStatement* statement) {
   Accept(statement->expression_);
-  if (tos_value_ != "int") {
-    throw std::runtime_error("Print only ints");
-  }
 }
 
 void TypeCheckerVisitor::Visit(AssignmentList* assignment_list) {

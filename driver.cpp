@@ -38,6 +38,12 @@ void Driver::Evaluate() {
 
   ScopeLayerTree root = visitor.GetRoot();
 
+  auto methods = visitor.GetFunctions();
+  FunctionStorage& storage = FunctionStorage::GetInstance();
+  for (auto it : methods) {
+    storage.Set(it.first, it.second);
+  }
+
   TypeCheckerVisitor type_checker(&root);
   try {
     type_checker.CheckTypes(program);
@@ -47,11 +53,7 @@ void Driver::Evaluate() {
   }
   std::cout << "Types checked" << std::endl;
 
-  auto methods = visitor.GetFunctions();
-  FunctionStorage& storage = FunctionStorage::GetInstance();
-  for (auto it : methods) {
-    storage.Set(it.first, it.second);
-  }
+
   std::string main_func_name = program->main_class_->identifier + "." + "main";
   Function* main_function = storage.Get(Symbol(main_func_name));
   std::shared_ptr<Method> method_type = std::dynamic_pointer_cast<Method>(
