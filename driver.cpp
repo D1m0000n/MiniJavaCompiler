@@ -6,8 +6,12 @@
 #include "visitors/SymbolTreeVisitor.h"
 #include "visitors/TypeCheckerVisitor.h"
 #include "visitors/FunctionCallVisitor.h"
+#include <visitors/IrtreeBuildVisitor.h>
 
 #include <function-mechanisms/FunctionStorage.h>
+
+#include <irtree/visitors/PrintVisitor.h>
+
 
 Driver::Driver() :
     trace_parsing(false),
@@ -68,6 +72,18 @@ void Driver::Evaluate() {
   function_visitor.SetThis(program->main_class_->identifier);
   function_visitor.Visit(main_function);
 
+  root.PrintTree("ir_test_dir/symbol_tree.txt");
+
+  IrtreeBuildVisitor irt_build_visitor(&root);
+  irt_build_visitor.SetMainFunction(main_function);
+  irt_build_visitor.Visit(program);
+
+  IrtMapping irt_methods = irt_build_visitor.GetTrees();
+
+  for (auto func_view = irt_methods.begin(); func_view != irt_methods.end(); ++func_view) {
+    IRT::PrintVisitor print_visitor_irt("ir_test_dir/" + func_view->first + "_irt.txt");
+    irt_methods[func_view->first]->Accept(&print_visitor_irt);
+  }
 //  Interpreter interpreter(root);
 //  interpreter.GetResult(program);
 }

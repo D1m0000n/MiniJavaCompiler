@@ -126,19 +126,19 @@ void SymbolTreeVisitor::Visit(ScopeAssignmentList* list) {
 void SymbolTreeVisitor::Visit(IfStatement* if_statement) {
 //  if_statement->true_statement_->Accept(this);
   if_statement->expression_->Accept(this);
-  auto true_layer = new ScopeLayer(current_layer_);
-  current_layer_ = true_layer;
+//  auto true_layer = new ScopeLayer(current_layer_);
+//  current_layer_ = true_layer;
 
   if_statement->true_statement_->Accept(this);
-  current_layer_ = current_layer_->GetParent();
+//  current_layer_ = current_layer_->GetParent();
 
-  auto false_layer = new ScopeLayer(current_layer_);
-  current_layer_ = false_layer;
+//  auto false_layer = new ScopeLayer(current_layer_);
+//  current_layer_ = false_layer;
 
   if (if_statement->false_statement_) {
     if_statement->false_statement_->Accept(this);
   }
-  current_layer_ = current_layer_->GetParent();
+//  current_layer_ = current_layer_->GetParent();
 
 //  if (if_statement->false_statement_) {
 //    if_statement->false_statement_->Accept(this);
@@ -148,11 +148,11 @@ void SymbolTreeVisitor::Visit(IfStatement* if_statement) {
 void SymbolTreeVisitor::Visit(WhileStatement* while_statement) {
   while_statement->expression_->Accept(this);
 
-  auto while_layer = new ScopeLayer(current_layer_);
-  current_layer_ = while_layer;
+//  auto while_layer = new ScopeLayer(current_layer_);
+//  current_layer_ = while_layer;
 
   while_statement->statement_->Accept(this);
-  current_layer_ = current_layer_->GetParent();
+//  current_layer_ = current_layer_->GetParent();
 }
 
 void SymbolTreeVisitor::Visit(Function* function) {
@@ -238,7 +238,6 @@ void SymbolTreeVisitor::Visit(MainClass* main_class) {
 }
 
 void SymbolTreeVisitor::Visit(ThisExpression* this_expression) {
-  //// TODO in CE
 }
 
 ScopeLayerTree SymbolTreeVisitor::GetRoot() {

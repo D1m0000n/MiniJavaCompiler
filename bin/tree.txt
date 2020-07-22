@@ -1,8 +1,12 @@
 Program:
 Main class:
 		AssignmentList: 
+			VarDecl: three
+			Assignment: three
+				NumExpression 3
+IfStatement:
+				IsGreaterExpression: 
+					IdentExpression: three
+					NumExpression 2
 			PrintStatement: 
-				CallStatement:
-					Name: ComputeFac
-					ParamValueList:
-						NumExpression 10
+				IdentExpression: three

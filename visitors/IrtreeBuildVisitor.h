@@ -1,8 +1,3 @@
-//
-// Created by akhtyamovpavel on 4/8/20.
-//
-
-
 #pragma once
 
 #include <include/visitors/Visitor.h>
@@ -58,12 +53,16 @@ class IrtreeBuildVisitor : public TemplateVisitor<IRT::SubtreeWrapper*> {
 
   IrtMapping GetTrees();
 
+  void SetMainFunction(Function* main_func);
+
  private:
   std::unordered_map<std::string, IRT::FrameTranslator*> frame_translator_;
 
   IRT::FrameTranslator* current_frame_;
   ScopeLayerTree* tree_;
 
+  std::string this_;
+  Function* main_function_;
   IrtMapping method_trees_;
 };
 

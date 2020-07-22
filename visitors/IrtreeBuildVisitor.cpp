@@ -1,7 +1,3 @@
-//
-// Created by akhtyamovpavel on 4/8/20.
-//
-
 #include <irtree/tree_wrapper/ExpressionWrapper.h>
 #include <irtree/nodes/expressions/ConstExpression.h>
 #include <expressions/NumberExpression.h>
@@ -26,9 +22,9 @@
 #include <irtree/nodes/expressions/NameExpression.h>
 #include <irtree/types/LogicOperatorType.h>
 #include <irtree/tree_wrapper/conditional_wrappers/RelativeConditionalWrapper.h>
-#include "elements.h"
+#include <elements.h>
 
-#include "IrtreeBuildVisitor.h"
+#include <IrtreeBuildVisitor.h>
 
 void IrtreeBuildVisitor::Visit(NumberExpression* expression) {
   tos_value_ = new IRT::ExpressionWrapper(
@@ -179,7 +175,8 @@ void IrtreeBuildVisitor::Visit(ParamList* param_list) {
 void IrtreeBuildVisitor::Visit(Function* function) {
   // build new frame
   current_frame_ = new IRT::FrameTranslator(function->name_);
-  frame_translator_[function->name_] = current_frame_;
+  std::string full_func_name = this_ + "::" + function->name_;
+  frame_translator_[full_func_name] = current_frame_;
 
   function->param_list_->Accept(this);
 
@@ -191,23 +188,23 @@ void IrtreeBuildVisitor::Visit(Function* function) {
 
     tos_value_ = new IRT::StatementWrapper(
         new IRT::SeqStatement(
-            new IRT::LabelStatement(IRT::Label(function->name_)),
+            new IRT::LabelStatement(IRT::Label(full_func_name)),
             statements_ir->ToStatement()
         )
     );
-  } else {
-    // generating return 0
-    tos_value_ = new IRT::StatementWrapper(
-        new IRT::SeqStatement(
-            new IRT::LabelStatement(IRT::Label(function->name_)),
-            new IRT::MoveStatement(
-                current_frame_->GetReturnValueAddress()->ToExpression(),
-                new IRT::ConstExpression(0)
-            )
-        )
-    );
   }
-
+//  else {
+//    // generating return 0
+//    tos_value_ = new IRT::StatementWrapper(
+//        new IRT::SeqStatement(
+//            new IRT::LabelStatement(IRT::Label(function->name_)),
+//            new IRT::MoveStatement(
+//                current_frame_->GetReturnValueAddress()->ToExpression(),
+//                new IRT::ConstExpression(0)
+//            )
+//        )
+//    );
+//  }
   method_trees_.emplace(function->name_, tos_value_->ToStatement());
 }
 void IrtreeBuildVisitor::Visit(FunctionCallExpression* statement) {
@@ -264,13 +261,18 @@ void IrtreeBuildVisitor::Visit(OrExpression* or_expression) {
   );
 }
 
-void IrtreeBuildVisitor::Visit(IfStatement* if_statement) { //// TODO add if without else
+void IrtreeBuildVisitor::Visit(IfStatement* if_statement) {
   auto if_cond_expression = Accept(if_statement->expression_);
   current_frame_->SetupScope();
   auto true_stmt = Accept(if_statement->true_statement_);
   current_frame_->TearDownScope();
   current_frame_->SetupScope();
-  auto false_stmt = Accept(if_statement->false_statement_);
+  IRT::SubtreeWrapper* false_stmt;
+  if (if_statement->false_statement_) {
+    false_stmt = Accept(if_statement->false_statement_);
+  } else {
+    false_stmt = nullptr;
+  }
   current_frame_->TearDownScope();
 
   IRT::Label label_true;
@@ -313,14 +315,41 @@ void IrtreeBuildVisitor::Visit(IfStatement* if_statement) { //// TODO add if wit
   );
 
 }
+
 void IrtreeBuildVisitor::Visit(WhileStatement* while_statement) {
   auto while_expression = Accept(while_statement->expression_);
   current_frame_->SetupScope();
-  auto true_stmt = Accept(while_statement->statement_);
+  auto while_stmt = Accept(while_statement->statement_);
   current_frame_->TearDownScope();
 
+  IRT::Label label_begin;
   IRT::Label label_test;
   IRT::Label label_done;
+
+  IRT::Statement* suffix = new IRT::LabelStatement(label_done);
+
+  if (while_stmt) {
+    suffix = new IRT::SeqStatement(
+        while_stmt->ToStatement(),
+        new IRT::SeqStatement(
+            new IRT::JumpStatement(label_test),
+            suffix
+        )
+    );
+  }
+
+  tos_value_ = new IRT::StatementWrapper(
+      new IRT::SeqStatement(
+          new IRT::LabelStatement(label_test),
+          new IRT::SeqStatement(
+              while_expression->ToConditional(label_begin, label_done),
+              new IRT::SeqStatement(
+                  new IRT::LabelStatement(label_begin),
+                  suffix
+              )
+          )
+      )
+  );
 }
 
 void IrtreeBuildVisitor::Visit(IsGreaterExpression* gt_expression) {
@@ -346,6 +375,32 @@ void IrtreeBuildVisitor::Visit(IsEqualExpression* eq_expression) {
   );
 }
 
+void IrtreeBuildVisitor::Visit(DeclarationList* declaration_list) {
+  for (auto declaration : declaration_list->declarations_) {
+    tos_value_ = Accept(declaration);
+  }
+}
+
+void IrtreeBuildVisitor::Visit(ThisExpression* this_expression) {
+}
+
+void IrtreeBuildVisitor::Visit(MainClass* main_class) {
+  this_ = main_class->identifier;
+//  main_class->statements_->Accept(this);
+  main_function_->Accept(this);
+}
+
+void IrtreeBuildVisitor::Visit(ClassDecl* class_decl) {
+  this_ = class_decl->identifier;
+  class_decl->declaration_list_->Accept(this);
+}
+
+void IrtreeBuildVisitor::Visit(MethodDecl* method_decl) {
+  //// to be honest, this class is unused,
+  //// but Im 2 lazy 2 delete it ¯\_(ツ)_/¯
+  //// that's why Im continue fake work on it)
+}
+
 IrtreeBuildVisitor::IrtreeBuildVisitor(ScopeLayerTree* layer_tree) : tree_(layer_tree) {
   // We don't need symbol table but you need with type system
   // Our functions return one type and operate with one type
@@ -353,4 +408,8 @@ IrtreeBuildVisitor::IrtreeBuildVisitor(ScopeLayerTree* layer_tree) : tree_(layer
 
 IrtMapping IrtreeBuildVisitor::GetTrees() {
   return method_trees_;
+}
+
+void IrtreeBuildVisitor::SetMainFunction(Function *main_func) {
+  main_function_ = main_func;
 }

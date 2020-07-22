@@ -33,8 +33,10 @@ set(
         tree_wrapper/conditional_wrappers/NegateConditionalWrapper.h
         tree_wrapper/conditional_wrappers/AndConditionalWrapper.cpp
         tree_wrapper/conditional_wrappers/AndConditionalWrapper.h
-        nodes/statements/SeqStatement.cpp nodes/statements/SeqStatement.h
-        nodes/statements/LabelStatement.cpp nodes/statements/LabelStatement.h
+        nodes/statements/SeqStatement.cpp
+        nodes/statements/SeqStatement.h
+        nodes/statements/LabelStatement.cpp
+        nodes/statements/LabelStatement.h
         tree_wrapper/conditional_wrappers/OrConditionalWrapper.cpp
         tree_wrapper/conditional_wrappers/OrConditionalWrapper.h
         nodes/expressions/BinopExpression.cpp

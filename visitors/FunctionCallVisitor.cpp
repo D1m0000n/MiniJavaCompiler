@@ -199,7 +199,9 @@ void FunctionCallVisitor::Visit(IfStatement* if_statement) {
     offsets_.push(0);
     frame.AllocScope();
     table_.BeginScope();
-    if_statement->true_statement_->Accept(this);
+    ScopeAssignmentList* assignment_list = dynamic_cast<ScopeAssignmentList*>(if_statement->true_statement_);
+//    if_statement->true_statement_->Accept(this);
+    assignment_list->statement_list->Accept(this);
     offsets_.pop();
     size_t index = offsets_.top();
     offsets_.pop();
@@ -216,7 +218,9 @@ void FunctionCallVisitor::Visit(IfStatement* if_statement) {
     frame.AllocScope();
     table_.BeginScope();
     if (if_statement->false_statement_) {
-      if_statement->false_statement_->Accept(this);
+      ScopeAssignmentList* assignment_list = dynamic_cast<ScopeAssignmentList*>(if_statement->false_statement_);
+//      if_statement->false_statement_->Accept(this);
+      assignment_list->statement_list->Accept(this);
     }
     offsets_.pop();
     offsets_.pop();
@@ -235,8 +239,9 @@ void FunctionCallVisitor::Visit(WhileStatement* while_statement) {
     offsets_.push(0);
     frame.AllocScope();
     table_.BeginScope();
-
-    while_statement->statement_->Accept(this);
+    ScopeAssignmentList* assignment_list = dynamic_cast<ScopeAssignmentList*>(while_statement->statement_);
+    assignment_list->statement_list->Accept(this);
+//    while_statement->statement_->Accept(this);
     offsets_.pop();
     size_t index = offsets_.top();
     offsets_.pop();

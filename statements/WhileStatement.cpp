@@ -2,7 +2,7 @@
 
 WhileStatement::WhileStatement(
     Expression* expression,
-    Statement* statement
+    ScopeAssignmentList* statement
 ) : expression_(expression), statement_(statement) {}
 
 void WhileStatement::Accept(Visitor* visitor) {

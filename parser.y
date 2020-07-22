@@ -80,6 +80,7 @@
 %nterm <Statement*> statement
 %nterm <Statement*> local_variable_declaration
 %nterm <AssignmentList*> statements
+%nterm <ScopeAssignmentList*> scope_statements
 
 %nterm <Program*> unit
 %nterm <MainClass*> main_class
@@ -117,6 +118,9 @@ main_class:
     "class" "identifier" "{" "public" "static" "void" "main" "(" ")" "{" statements "}" "}"
     {$$ = new MainClass($2, $11); }
 
+scope_statements:
+    statements { $$ = new ScopeAssignmentList($1); }
+
 statements:
     %empty { $$ = new AssignmentList(); /* A -> eps */}
     | statements statement {
@@ -128,9 +132,9 @@ statement:
     | local_variable_declaration { $$ = $1; }
     | "System.out.println" "(" exp ")" ";" { $$ = new PrintStatement($3); }
     | "{" statements "}" { $$ = new ScopeAssignmentList($2); }
-    | "if" "(" exp ")" "{" statements "}" { $$ = new IfStatement($3, $6, NULL); }
-    | "if" "(" exp ")" "{" statements "}" "else" "{" statements "}" {$$ = new IfStatement($3, $6, $10); }
-    | "while" "(" exp ")" statements { $$ = new WhileStatement($3, $5); }
+    | "if" "(" exp ")" "{" scope_statements "}" { $$ = new IfStatement($3, $6, NULL); }
+    | "if" "(" exp ")" "{" scope_statements "}" "else" "{" scope_statements "}" {$$ = new IfStatement($3, $6, $10); }
+    | "while" "(" exp ")" "{" scope_statements "}" { $$ = new WhileStatement($3, $6); }
     | "return" exp ";" { $$ = new ReturnStatement($2); }
     | method_invocation ";" { $$ = reinterpret_cast<Statement*>($1); }
     ;

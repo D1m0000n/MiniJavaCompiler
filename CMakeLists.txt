@@ -74,8 +74,6 @@ FLEX_TARGET(
         ${MiniJavaCompiler_SOURCE_DIR}/scanner.cpp
 )
 
-
-
 ADD_FLEX_BISON_DEPENDENCY(ScannerScopes ParserScopes)
 
 set(
@@ -108,6 +106,7 @@ set(
         statements/IfStatement.cpp
         statements/WhileStatement.cpp
         visitors/Interpreter.cpp
+        visitors/TemplateVisitor.h
         visitors/TemplateVisitor.cpp
         visitors/PrintVisitor.cpp
         visitors/TypeCheckerVisitor.cpp
@@ -171,6 +170,8 @@ target_include_directories(
 target_include_directories(
         MiniJavaCompiler PRIVATE ${MiniJavaCompiler_SOURCE_DIR}
 )
+
+target_link_libraries(MiniJavaCompiler ${IR_LIB})
 
 add_custom_target(
         ScopesTree
