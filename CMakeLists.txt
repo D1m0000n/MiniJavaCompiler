@@ -79,8 +79,10 @@ ADD_FLEX_BISON_DEPENDENCY(ScannerScopes ParserScopes)
 set(
         SOURCES
         driver.cpp
+
         ${BISON_ParserScopes_OUTPUTS}
         ${FLEX_ScannerScopes_OUTPUTS}
+
         expressions/AndExpression.cpp
         expressions/IsEqualExpression.cpp
         expressions/IsGreaterExpression.cpp
@@ -94,17 +96,22 @@ set(
         expressions/DivExpression.cpp
         expressions/IdentExpression.cpp
         expressions/ThisExpression.cpp
+        expressions/FunctionCallExpression.cpp
+        expressions/FunctionCallExpression.h
+
         statements/Statement.cpp
         statements/Assignment.cpp
         statements/AssignmentList.cpp
         statements/PrintStatement.cpp
+        statements/ScopeAssignmentList.cpp
+        statements/IfStatement.cpp
+        statements/WhileStatement.cpp
+
         declarations/VarDecl.cpp
         declarations/DeclarationList.cpp
         declarations/MethodDecl.cpp
         declarations/ClassDecl.cpp
-        statements/ScopeAssignmentList.cpp
-        statements/IfStatement.cpp
-        statements/WhileStatement.cpp
+
         visitors/Interpreter.cpp
         visitors/TemplateVisitor.h
         visitors/TemplateVisitor.cpp
@@ -113,6 +120,8 @@ set(
         visitors/FunctionCallVisitor.cpp
         visitors/IrtreeBuildVisitor.h
         visitors/IrtreeBuildVisitor.cpp
+        visitors/SymbolTreeVisitor.cpp
+
         symbol_table/Symbol.cpp
         symbol_table/Table.cpp
         symbol_table/ScopeLayer.cpp
@@ -123,13 +132,16 @@ set(
         objects/Boolean.cpp
         objects/Class.cpp
         objects/Method.cpp
+
         Program.cpp
+
         main_class/MainClass.cpp
-        visitors/SymbolTreeVisitor.cpp
+
         functions/Function.cpp
         functions/ParamList.cpp
         functions/FunctionList.cpp
         functions/ParamValueList.cpp
+
         function-mechanisms/FrameEmulator.cpp
         function-mechanisms/FrameEmulator.h
         function-mechanisms/FunctionStorage.h
@@ -143,8 +155,7 @@ set(
         function-mechanisms/address/AddressInFrame.cpp
         function-mechanisms/FrameTranslator.h
         function-mechanisms/FrameTranslator.cpp
-        expressions/FunctionCallExpression.cpp
-        expressions/FunctionCallExpression.h
+
         statements/ReturnStatement.cpp
         statements/ReturnStatement.h
 )
