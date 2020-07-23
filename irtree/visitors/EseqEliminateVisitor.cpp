@@ -1,7 +1,4 @@
-#pragma once
-
 #include "EseqEliminateVisitor.h"
-#include "BaseElements.h"
 
 void IRT::EseqEliminateVisitor::Visit(ConstExpression* const_exp) { //// OK
   tos_value_.expression_ = new ConstExpression(const_exp->Value());
@@ -387,11 +384,13 @@ void IRT::EseqEliminateVisitor::Visit(BinopExpression* binop_expression) { //// 
         new MoveStatement(
             first_expr,
             new TempExpression(T)
-        ),
-        new BinopExpression(
-            binop_expression->operator_type_,
-            new TempExpression(T),
-            second_eseq->expression_
+        ), new EseqExpression(
+            second_eseq->statement_,
+            new BinopExpression(
+                binop_expression->operator_type_,
+                new TempExpression(T),
+                second_eseq->expression_
+            )
         )
     );
     tos_value_.expression_ = result_expr;

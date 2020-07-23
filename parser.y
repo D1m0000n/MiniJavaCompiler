@@ -72,6 +72,7 @@
     NEW "new"
     DOT "."
     THIS "this"
+    COMMA ","
 ;
 
 %token <std::string> IDENTIFIER "identifier"

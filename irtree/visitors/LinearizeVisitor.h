@@ -2,8 +2,9 @@
 
 #include "TemplateVisitor.h"
 #include "VisitorStruct.h"
+#include "BaseElements.h"
 
-#include <vector>
+#include <iostream>
 
 namespace IRT {
 class LinearizeVisitor : public TemplateVisitor<IrtStorage> {

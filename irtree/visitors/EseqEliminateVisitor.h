@@ -2,6 +2,7 @@
 
 #include "TemplateVisitor.h"
 #include "VisitorStruct.h"
+#include "BaseElements.h"
 
 #include <vector>
 

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../nodes/expressions/Expression.h"
 #include "../nodes/statements/Statement.h"
 namespace IRT {

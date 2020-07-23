@@ -1,0 +1,80 @@
+SeqStatement:
+	LabelStatement: MainClass::main
+	SeqStatement:
+		MoveStatement:
+			MemExpression: 
+				BinopExpression: PLUS
+					TempExpression: ::fp
+					ConstExpression 4
+			ConstExpression 3
+		SeqStatement:
+			SeqStatement:
+				JumpConditionalStatement: GT
+				TrueLabel: L2
+				FalseLabel: L1
+					MemExpression: 
+						BinopExpression: PLUS
+							TempExpression: ::fp
+							ConstExpression 4
+					ConstExpression 2
+				SeqStatement:
+					LabelStatement: L1
+					SeqStatement:
+						MoveStatement:
+							MemExpression: 
+								BinopExpression: PLUS
+									TempExpression: ::fp
+									ConstExpression 8
+							BinopExpression: PLUS
+								CallExpression: 
+									NameExpression: FuncFoo
+									ExpressionList: 
+										ConstExpression 1
+										ConstExpression 2
+										ConstExpression 3
+								CallExpression: 
+									NameExpression: FuncBar
+									ExpressionList: 
+										MemExpression: 
+											BinopExpression: PLUS
+												TempExpression: ::fp
+												ConstExpression 8
+						LabelStatement: L2
+			SeqStatement:
+				MoveStatement:
+					MemExpression: 
+						BinopExpression: PLUS
+							TempExpression: ::fp
+							ConstExpression 12
+					EseqExpression:
+						SeqStatement:
+							MoveStatement:
+								TempExpression: %0
+								ConstExpression 1
+							SeqStatement:
+								JumpConditionalStatement: GT
+								TrueLabel: L3
+								FalseLabel: L4
+									MemExpression: 
+										BinopExpression: PLUS
+											TempExpression: ::fp
+											ConstExpression 4
+									ConstExpression 2
+								SeqStatement:
+									LabelStatement: L4
+									SeqStatement:
+										MoveStatement:
+											TempExpression: %0
+											ConstExpression 0
+										LabelStatement: L3
+						TempExpression: %0
+				SeqStatement:
+					JumpConditionalStatement: NE
+					TrueLabel: L7
+					FalseLabel: L7
+						MemExpression: 
+							BinopExpression: PLUS
+								TempExpression: ::fp
+								ConstExpression 4
+						ConstExpression 0
+					LabelStatement: L7

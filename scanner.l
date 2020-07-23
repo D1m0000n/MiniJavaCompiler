@@ -75,6 +75,7 @@ blank [ \t\r]
 "new"                  return yy::parser::make_NEW       (loc);
 "."                    return yy::parser::make_DOT       (loc);
 "this"                 return yy::parser::make_THIS      (loc);
+","                    return yy::parser::make_COMMA     (loc);
 
 {int}      return make_NUMBER(yytext, loc);
 {id}       return yy::parser::make_IDENTIFIER(yytext, loc);

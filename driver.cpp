@@ -1,3 +1,5 @@
+#pragma once
+
 #include "include/driver.hh"
 #include "parser.hh"
 
@@ -11,7 +13,9 @@
 #include <function-mechanisms/FunctionStorage.h>
 
 #include <irtree/visitors/PrintVisitor.h>
-
+#include <irtree/visitors/DoubleCallEliminateVisitor.h>
+#include <irtree/visitors/EseqEliminateVisitor.h>
+#include <irtree/visitors/LinearizeVisitor.h>
 
 Driver::Driver() :
     trace_parsing(false),
@@ -72,7 +76,9 @@ void Driver::Evaluate() {
   function_visitor.SetThis(program->main_class_->identifier);
   function_visitor.Visit(main_function);
 
-  root.PrintTree("ir_test_dir/symbol_tree.txt");
+  std::string prefix_path = "ir_canonic_test/shit_folder/";
+
+  root.PrintTree(prefix_path + "symbol_tree.txt");
 
   IrtreeBuildVisitor irt_build_visitor(&root);
   irt_build_visitor.SetMainFunction(main_function);
@@ -81,8 +87,37 @@ void Driver::Evaluate() {
   IrtMapping irt_methods = irt_build_visitor.GetTrees();
 
   for (auto func_view = irt_methods.begin(); func_view != irt_methods.end(); ++func_view) {
-    IRT::PrintVisitor print_visitor_irt("ir_test_dir/" + func_view->first + "_irt.txt");
+    IRT::PrintVisitor print_visitor_irt(prefix_path + func_view->first + "_irt.txt");
     irt_methods[func_view->first]->Accept(&print_visitor_irt);
+
+    IRT::DoubleCallEliminateVisitor call_eliminate_visitor;
+    irt_methods[func_view->first]->Accept(&call_eliminate_visitor);
+    auto stmt_result = call_eliminate_visitor.GetTree();
+    irt_methods[func_view->first] = stmt_result;
+
+    IRT::PrintVisitor print_visitor_two(
+        prefix_path + func_view->first + "_without_double_call.txt"
+        );
+    stmt_result->Accept(&print_visitor_two);
+
+    IRT::EseqEliminateVisitor eseq_eliminate_visitor;
+    stmt_result->Accept(&eseq_eliminate_visitor);
+    stmt_result = eseq_eliminate_visitor.GetTree();
+    irt_methods[func_view->first] = stmt_result;
+    IRT::PrintVisitor print_visitor_three(
+        prefix_path + func_view->first + "_without_ESEQ.txt"
+        );
+    stmt_result->Accept(&print_visitor_three);
+
+    IRT::LinearizeVisitor linearize_visitor;
+    stmt_result->Accept(&linearize_visitor);
+    stmt_result = linearize_visitor.GetTree();
+    irt_methods[func_view->first] = stmt_result;
+    IRT::PrintVisitor print_visitor_four(
+        prefix_path + func_view->first + "_linearized.txt"
+        );
+    stmt_result->Accept(&print_visitor_four);
+
   }
 //  Interpreter interpreter(root);
 //  interpreter.GetResult(program);

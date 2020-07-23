@@ -1,0 +1,37 @@
+class MainClass {
+  public static void main () {
+    int three;
+    three = 3;
+    System.out.println(three);
+
+    if (three > 2) {
+      System.out.println(three + 2);
+    } else {
+      System.out.println(222);
+      int three;
+      three = (new ClassFoo ().FuncFoo (1, 2, 3)) + (new ClassBar ().FuncBar (three));
+      System.out.println(three);
+    }
+
+    int five;
+    five = three > 2;
+
+    if (three) {
+        System.out.println(three + 3);
+    } else {
+        System.out.println(1000);
+    }
+}
+}
+
+class ClassBar {
+  public int FuncBar (int b) {
+    return b;
+  }
+}
+
+class ClassFoo {
+  public int FuncFoo (int a, int b, int c) {
+    return a + b + c;
+  }
+}

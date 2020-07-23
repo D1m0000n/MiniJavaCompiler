@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../nodes/expressions/NameExpression.h"
 #include "../nodes/expressions/CallExpression.h"
 #include "../nodes/expressions/BinopExpression.h"
