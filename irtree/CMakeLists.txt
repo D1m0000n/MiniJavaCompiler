@@ -75,7 +75,9 @@ set(
         visitors/EseqEliminateVisitor.cpp
         visitors/LinearizeVisitor.h
         visitors/LinearizeVisitor.cpp
-        visitors
+
+        blocks/Block.h
+        blocks/Block.cpp
 )
 
 add_library(${IR_LIB} ${SOURCES})

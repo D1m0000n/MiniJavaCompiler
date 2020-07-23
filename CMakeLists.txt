@@ -78,7 +78,7 @@ ADD_FLEX_BISON_DEPENDENCY(ScannerScopes ParserScopes)
 
 set(
         SOURCES
-        driver.cpp
+        include/driver.cpp
 
         ${BISON_ParserScopes_OUTPUTS}
         ${FLEX_ScannerScopes_OUTPUTS}

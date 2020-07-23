@@ -61,7 +61,6 @@ void Driver::Evaluate() {
   }
   std::cout << "Types checked" << std::endl;
 
-
   std::string main_func_name = program->main_class_->identifier + "." + "main";
   Function* main_function = storage.Get(Symbol(main_func_name));
   std::shared_ptr<Method> method_type = std::dynamic_pointer_cast<Method>(
@@ -97,7 +96,7 @@ void Driver::Evaluate() {
 
     IRT::PrintVisitor print_visitor_two(
         prefix_path + func_view->first + "_without_double_call.txt"
-        );
+    );
     stmt_result->Accept(&print_visitor_two);
 
     IRT::EseqEliminateVisitor eseq_eliminate_visitor;
@@ -106,19 +105,24 @@ void Driver::Evaluate() {
     irt_methods[func_view->first] = stmt_result;
     IRT::PrintVisitor print_visitor_three(
         prefix_path + func_view->first + "_without_ESEQ.txt"
-        );
+    );
     stmt_result->Accept(&print_visitor_three);
 
     IRT::LinearizeVisitor linearize_visitor;
     stmt_result->Accept(&linearize_visitor);
     stmt_result = linearize_visitor.GetTree();
     irt_methods[func_view->first] = stmt_result;
+    statements_sequence_[func_view->first] = MakeStatementsSequence(stmt_result);
+
     IRT::PrintVisitor print_visitor_four(
         prefix_path + func_view->first + "_linearized.txt"
-        );
+    );
     stmt_result->Accept(&print_visitor_four);
 
   }
+
+  MakeBlocks();
+
 //  Interpreter interpreter(root);
 //  interpreter.GetResult(program);
 }
@@ -140,5 +144,70 @@ void Driver::scan_end() {
 void Driver::PrintTree(const std::string& filename) {
   PrintVisitor visitor(filename);
   visitor.Visit(program);
+}
+
+void Driver::MakeBlocks() {
+  for (auto func_view : statements_sequence_) {
+    auto blocks = GetBlocksFromMethod(func_view.second);
+    blocks.back().SetJump(
+        new IRT::JumpStatement(
+            IRT::Label(func_view.first + "_done")
+        )
+    );
+  }
+}
+
+std::vector<IRT::Statement*> Driver::MakeStatementsSequence(IRT::Statement* statement) {
+  std::vector<IRT::Statement*> sequence_stmts;
+  IRT::SeqStatement* current_stmt = dynamic_cast<IRT::SeqStatement*>(statement);
+
+  while (1 > 0) {
+    sequence_stmts.push_back(current_stmt->first_statement_);
+    //// We doesn't check any errors, because we do it before
+
+    IRT::Statement* save_stmt = current_stmt;
+    current_stmt = dynamic_cast<IRT::SeqStatement*>(current_stmt->second_statement_);
+    if (nullptr == current_stmt) {
+      sequence_stmts.push_back(save_stmt);
+      break;
+    }
+  }
+
+  return sequence_stmts;
+}
+
+std::vector<IRT::Block> Driver::GetBlocksFromMethod(std::vector<IRT::Statement*>& statements) {
+  std::vector<IRT::Block> blocks;
+  blocks.emplace_back();
+  for (auto& statement : statements) {
+    IRT::Block& current_block = blocks.back();
+
+    if (statement->GetNodeType() == IRT::NodeType::JUMP) {
+      IRT::JumpStatement* jump_stmt = dynamic_cast<IRT::JumpStatement*>(statement);
+      current_block.SetJump(jump_stmt);
+      continue;
+    }
+
+    if (statement->GetNodeType() == IRT::NodeType::CJUMP) {
+      IRT::JumpConditionalStatement* cjump_stmt = dynamic_cast<IRT::JumpConditionalStatement*>(statement);
+      current_block.SetJump(cjump_stmt);
+      continue;
+    }
+
+    if (statement->GetNodeType() == IRT::NodeType::LABEL) {
+      IRT::LabelStatement* label = dynamic_cast<IRT::LabelStatement*>(statement);
+      if (current_block.GetLabel() == nullptr) { //// first block
+        current_block.SetLabel(label);
+      } else {
+        blocks.emplace_back();
+        blocks.back().SetLabel(label);
+      }
+      continue;
+    }
+
+    current_block.Add(statement);
+  }
+
+  return blocks;
 }
 
