@@ -6,6 +6,8 @@ class CallExpression : public Expression {
  public:
   CallExpression(Expression* expression, ExpressionList* args);
   void Accept(Visitor* visitor) override;
+  IRT::NodeType GetNodeType() override;
+
   Expression* function_name_;
   ExpressionList* args_;
 

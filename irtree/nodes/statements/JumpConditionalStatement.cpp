@@ -4,8 +4,8 @@ namespace IRT {
 
 void JumpConditionalStatement::Accept(Visitor *visitor) {
   visitor->Visit(this);
-
 }
+
 JumpConditionalStatement::JumpConditionalStatement(
     LogicOperatorType type,
     Expression *left,
@@ -19,4 +19,8 @@ JumpConditionalStatement::JumpConditionalStatement(
     label_false_(label_false) {
 
 }
+IRT::NodeType JumpConditionalStatement::GetNodeType() {
+  return NodeType::CJUMP;
+}
+
 }

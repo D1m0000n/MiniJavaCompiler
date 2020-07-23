@@ -5,6 +5,7 @@
 #include "../nodes/expressions/MemExpression.h"
 #include "../nodes/expressions/TempExpression.h"
 #include "../nodes/expressions/EseqExpression.h"
+#include "../nodes/expressions/Expression.h"
 
 #include "../nodes/statements/ExpStatement.h"
 #include "../nodes/statements/JumpConditionalStatement.h"

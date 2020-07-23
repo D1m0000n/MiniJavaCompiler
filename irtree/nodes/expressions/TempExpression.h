@@ -7,6 +7,8 @@ class TempExpression : public Expression {
  public:
   explicit TempExpression(const IRT::Temporary& temporary);
   void Accept(Visitor* visitor) override;
+  IRT::NodeType GetNodeType() override;
+
   Temporary temporary_;
 };
 

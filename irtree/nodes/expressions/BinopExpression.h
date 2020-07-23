@@ -9,6 +9,8 @@ class BinopExpression : public Expression {
                   Expression* first,
                   Expression* second);
   void Accept(Visitor* visitor) override;
+  IRT::NodeType GetNodeType() override;
+
   BinaryOperatorType operator_type_;
   Expression* first_;
   Expression* second_;

@@ -10,6 +10,8 @@ class ConstExpression : public Expression {
   int Value() const;
 
   void Accept(Visitor* visitor) override;
+  IRT::NodeType GetNodeType() override;
+
  private:
   int value_;
 };

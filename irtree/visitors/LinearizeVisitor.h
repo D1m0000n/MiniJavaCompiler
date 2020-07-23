@@ -6,7 +6,7 @@
 #include <vector>
 
 namespace IRT {
-class EseqEliminateVisitor : public TemplateVisitor<IrtStorage> {
+class LinearizeVisitor : public TemplateVisitor<IrtStorage> {
  public:
   void Visit(ExpStatement* stmt) override;
   void Visit(ConstExpression* const_expression) override;
@@ -22,16 +22,6 @@ class EseqEliminateVisitor : public TemplateVisitor<IrtStorage> {
   void Visit(ExpressionList* expression_list) override;
   void Visit(NameExpression* name_expression) override;
   void Visit(EseqExpression* eseq_expression) override;
-
-  struct IRList {
-    void MakeStatementList();
-    void AddStatement(Statement* statement);
-    void SetStatement(Statement* statement);
-
-    IRT::Statement* suffix;
-    IRT::ExpressionList* exp_list;
-    std::vector<IRT::Statement*> statements;
-  };
 
  public:
   Statement* GetTree();

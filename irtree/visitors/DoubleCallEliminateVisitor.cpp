@@ -25,6 +25,7 @@ void DoubleCallEliminateVisitor::Visit(JumpConditionalStatement* jump_conditiona
       jump_conditional_statement->label_false_
   );
 }
+
 void DoubleCallEliminateVisitor::Visit(MoveStatement* move_statement) {
   auto source = Accept(move_statement->source_).expression_;
   auto target = Accept(move_statement->target_).expression_;

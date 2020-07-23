@@ -7,6 +7,8 @@ class NameExpression : public Expression {
  public:
   NameExpression(Label label);
   void Accept(Visitor* visitor) override;
+  IRT::NodeType GetNodeType() override;
+
   Label label_;
 };
 

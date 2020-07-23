@@ -11,3 +11,7 @@ IRT::ConstExpression::ConstExpression(int value): value_(value) {
 int IRT::ConstExpression::Value() const {
   return value_;
 }
+
+IRT::NodeType IRT::ConstExpression::GetNodeType() {
+  return IRT::NodeType::CONST;
+}

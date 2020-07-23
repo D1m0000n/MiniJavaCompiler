@@ -10,6 +10,7 @@ class ExpressionList : public BaseElement {
 
   void Add(Expression* expression);
   void Accept(Visitor* visitor) override;
+  IRT::NodeType GetNodeType() override;
 
   std::vector<Expression*> expressions_;
 

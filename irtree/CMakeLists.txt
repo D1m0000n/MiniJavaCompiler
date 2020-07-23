@@ -73,7 +73,9 @@ set(
         visitors/DoubleCallEliminateVisitor.cpp
         visitors/EseqEliminateVisitor.h
         visitors/EseqEliminateVisitor.cpp
-
+        visitors/LinearizeVisitor.h
+        visitors/LinearizeVisitor.cpp
+        visitors
 )
 
 add_library(${IR_LIB} ${SOURCES})

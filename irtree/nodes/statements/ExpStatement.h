@@ -12,6 +12,7 @@ class ExpStatement : public Statement {
   Expression* GetExpression();
   ~ExpStatement() override = default;
   void Accept(Visitor *visitor) override;
+  IRT::NodeType GetNodeType() override;
 
  private:
   Expression* expression_;

@@ -10,4 +10,8 @@ NameExpression::NameExpression(Label label) : label_(label) {
 
 }
 
+IRT::NodeType NameExpression::GetNodeType() {
+  return NodeType::NAME;
+}
+
 }

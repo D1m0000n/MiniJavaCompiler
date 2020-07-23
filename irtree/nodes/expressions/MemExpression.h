@@ -7,6 +7,8 @@ class MemExpression : public Expression {
  public:
   MemExpression(Expression* expression);
   void Accept(Visitor* visitor) override;
+  IRT::NodeType GetNodeType() override;
+
   Expression* expression_;
 };
 

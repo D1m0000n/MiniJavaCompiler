@@ -15,6 +15,8 @@ class JumpConditionalStatement : public Statement {
       Label label_false
   );
   void Accept(Visitor* visitor) override;
+  IRT::NodeType GetNodeType() override;
+
   LogicOperatorType operator_type_;
   Label label_true_;
   Label label_false_;

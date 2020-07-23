@@ -8,5 +8,8 @@ void ExpressionList::Accept(Visitor* visitor) {
 void ExpressionList::Add(Expression* expression) {
   expressions_.push_back(expression);
 }
+IRT::NodeType ExpressionList::GetNodeType() {
+  return NodeType::EXPLIST;
+}
 
 }
