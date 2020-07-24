@@ -122,7 +122,7 @@ void Driver::Evaluate() {
   }
 
   MakeBlocks();
-
+  PrintTraces();
 //  Interpreter interpreter(root);
 //  interpreter.GetResult(program);
 }
@@ -154,6 +154,8 @@ void Driver::MakeBlocks() {
             IRT::Label(func_view.first + "_done")
         )
     );
+    CompareLabelToBlock(blocks);
+    traces_[func_view.first] = MakeTraces(blocks);
   }
 }
 
@@ -199,6 +201,11 @@ std::vector<IRT::Block> Driver::GetBlocksFromMethod(std::vector<IRT::Statement*>
       if (current_block.GetLabel() == nullptr) { //// first block
         current_block.SetLabel(label);
       } else {
+        if (current_block.GetJump() == nullptr) { //// found 2 labels in a roll =)
+          current_block.SetJump(
+              new IRT::JumpStatement(label->label_)
+          );
+        }
         blocks.emplace_back();
         blocks.back().SetLabel(label);
       }
@@ -209,5 +216,83 @@ std::vector<IRT::Block> Driver::GetBlocksFromMethod(std::vector<IRT::Statement*>
   }
 
   return blocks;
+}
+
+void Driver::CompareLabelToBlock(std::vector<IRT::Block>& blocks) {
+  for (auto& block : blocks) {
+    label_to_block_[block.GetLabel()->label_.ToString()] = &block;
+  }
+}
+
+std::vector<IRT::Trace> Driver::MakeTraces(std::vector<IRT::Block>& blocks) {
+  std::vector<IRT::Trace> traces;
+  std::unordered_map<std::string, bool> used;
+  for (auto& current_block : blocks) {
+    std::string block_label = current_block.GetLabel()->label_.ToString();
+    used[block_label] = false;
+  }
+  for (auto& current_block : blocks) {
+    std::string block_label = current_block.GetLabel()->label_.ToString();
+    if (used[block_label]) {
+      continue;
+    }
+    traces.emplace_back(); //// build another trace
+    auto& current_trace = traces.back();
+    IRT::Block* current_trace_pointer = &current_block;
+    block_label = current_trace_pointer->GetLabel()->label_.ToString();
+    while (current_trace_pointer != nullptr &&
+        !used[block_label]) {
+      used[block_label] = true;
+      current_trace.AddNextBlock(*current_trace_pointer);
+      if (current_trace_pointer->GetJump()->GetNodeType() == IRT::NodeType::CJUMP) {
+        IRT::JumpConditionalStatement* jump_stmt = dynamic_cast<IRT::JumpConditionalStatement*>(
+            current_trace_pointer->GetJump()
+        );
+//        if (label_to_block_.find(jump_stmt))
+        std::string false_label = jump_stmt->label_false_.ToString();
+        std::string true_label = jump_stmt->label_true_.ToString();
+        if (!used[false_label]) {
+          current_trace_pointer = label_to_block_[false_label];
+        } else {
+          current_trace_pointer = label_to_block_[true_label];
+        }
+//        current_trace_pointer = &label_to_block_[jump_stmt->label_false_.ToString()];
+      } else {
+        IRT::JumpStatement* jump_stmt = dynamic_cast<IRT::JumpStatement*>(
+            current_trace_pointer->GetJump()
+        );
+        current_trace_pointer = label_to_block_[jump_stmt->label_.ToString()];
+      }
+
+      if (current_trace_pointer != nullptr) {
+        block_label = current_trace_pointer->GetLabel()->label_.ToString();
+      }
+    }
+  }
+  return traces;
+}
+
+void Driver::PrintTraces() {
+  std::string prefix_path = "ir_canonic_test/shit_folder/";
+  for (auto& trace_vector : traces_) {
+    IRT::PrintVisitor traces_print_visitor(prefix_path + trace_vector.first + "_traces.txt");
+    size_t trace_index = 0;
+    for (auto& trace : trace_vector.second) {
+      std::string trace_str = "Trace separator EKKEKEKEKEKKEKEKEKEKKEKEKKEKEKEKEKEKEKKEKEKEKEKKEKEKE\n";
+      traces_print_visitor.PrintString(trace_str);
+      size_t block_index = 0;
+      for (auto& block : trace.GetBlockSequence()) {
+        std::string block_str = "Block separator EHHEHEHEHHEHEHEHEHHEHEHEHHEHEHEHHEHEHEHHEHEHEHEHHEH\n";
+        traces_print_visitor.PrintString(block_str);
+        block.GetLabel()->Accept(&traces_print_visitor);
+        for (auto stmt : block.GetStatements()) {
+          stmt->Accept(&traces_print_visitor);
+        }
+        block.GetJump()->Accept(&traces_print_visitor);
+        ++block_index;
+      }
+      ++trace_index;
+    }
+  }
 }
 

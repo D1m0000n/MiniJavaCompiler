@@ -4,9 +4,7 @@
 #include "../nodes/expressions/EseqExpression.h"
 namespace IRT {
 
-PrintVisitor::PrintVisitor(const std::string& filename) : stream_(filename) {
-
-}
+PrintVisitor::PrintVisitor(const std::string& filename) : stream_(filename) {}
 
 void PrintVisitor::Visit(ExpStatement* stmt) {
   PrintTabs();
@@ -128,4 +126,8 @@ void PrintVisitor::Visit(EseqExpression* eseq_expression) {
   --num_tabs_;
 
 }
+void PrintVisitor::PrintString(std::string s) {
+  stream_ << s << std::endl;
+}
+
 }

@@ -9,6 +9,7 @@
 
 #include "Program.h"
 #include "../irtree/blocks/Block.h"
+#include "../irtree/traces/Trace.h"
 
 class Driver {
  public:
@@ -19,8 +20,11 @@ class Driver {
   void PrintTree(const std::string& filename);
 
   void MakeBlocks();
-  std::vector<IRT::Block> GetBlocksFromMethod(std::vector<IRT::Statement*>& statements); //// add args
+  void PrintTraces();
+  void CompareLabelToBlock(std::vector<IRT::Block>& blocks);
+  std::vector<IRT::Block> GetBlocksFromMethod(std::vector<IRT::Statement*>& statements);
   std::vector<IRT::Statement*> MakeStatementsSequence(IRT::Statement* statement);
+  std::vector<IRT::Trace> MakeTraces(std::vector<IRT::Block>& blocks);
 
   std::string file;
   bool trace_parsing;
@@ -37,6 +41,8 @@ class Driver {
   Program* program;
 
   std::unordered_map<std::string, std::vector<IRT::Statement*>> statements_sequence_;
+  std::unordered_map<std::string, IRT::Block*> label_to_block_;
+  std::unordered_map<std::string, std::vector<IRT::Trace>> traces_;
 
  private:
   std::ifstream stream;

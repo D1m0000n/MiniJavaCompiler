@@ -78,6 +78,9 @@ set(
 
         blocks/Block.h
         blocks/Block.cpp
+
+        traces/Trace.h
+        traces/Trace.cpp
 )
 
 add_library(${IR_LIB} ${SOURCES})

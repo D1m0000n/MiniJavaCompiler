@@ -24,6 +24,7 @@ class PrintVisitor : public Visitor {
   void Visit(NameExpression* name_expression) override;
   void Visit(EseqExpression* eseq_expression) override;
 
+  void PrintString(std::string s);
  private:
   std::ofstream stream_;
   int num_tabs_ = 0;
