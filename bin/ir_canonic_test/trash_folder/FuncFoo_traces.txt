@@ -1,0 +1,22 @@
+Trace separator EKKEKEKEKEKKEKEKEKEKKEKEKKEKEKEKEKEKEKKEKEKEKEKKEKEKE
+
+Block separator EHHEHEHEHHEHEHEHEHHEHEHEHHEHEHEHHEHEHEHHEHEHEHEHHEH
+
+LabelStatement: ClassFoo::FuncFoo
+SeqStatement:
+	LabelStatement: ClassFoo::FuncFoo
+	MoveStatement:
+		TempExpression: ::return_value
+		BinopExpression: PLUS
+			BinopExpression: PLUS
+				MemExpression: 
+					TempExpression: ::fp
+				MemExpression: 
+					BinopExpression: PLUS
+						TempExpression: ::fp
+						ConstExpression 4
+			MemExpression: 
+				BinopExpression: PLUS
+					TempExpression: ::fp
+					ConstExpression 8
+JumpStatement: FuncFoo_done
