@@ -104,6 +104,8 @@ IRT::EseqEliminateVisitor::IRList ShiftEseq(IRT::ExpressionList* expression_list
   size_t list_size = expression_list->expressions_.size();
   size_t check_index = 0;
   IRT::EseqEliminateVisitor::IRList ir_list;
+//  std::vector<IRT::Expression*> temp_vector(list_size);
+//  ir_list.exp_list->expressions_ = temp_vector;
   auto& list_of_expressions = ir_list.exp_list->expressions_;
   list_of_expressions.resize(list_size);
 
@@ -533,6 +535,22 @@ void IRT::EseqEliminateVisitor::Visit(ExpStatement* exp_stmt) { //// OK
 
   //// Other cases (just return ExpStatement)
   tos_value_.statement_ = new IRT::ExpStatement(expression);
+}
+
+void IRT::EseqEliminateVisitor::Visit(PrintStatement* statement) {
+  IrtStorage elements = Accept(statement->expression_);
+  Expression* expr = elements.expression_;
+  if (expr->GetNodeType() == IRT::NodeType::ESEQ) {
+    EseqExpression* eseq_expr = dynamic_cast<EseqExpression*>(expr);
+    tos_value_.statement_ = new SeqStatement(
+        eseq_expr->statement_,
+        new IRT::PrintStatement(
+            eseq_expr->expression_
+        )
+    );
+  } else {
+    tos_value_.statement_ = new PrintStatement(expr);
+  }
 }
 
 //// I've tried to divide nodes to make code clearer,

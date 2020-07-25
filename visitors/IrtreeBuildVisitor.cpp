@@ -23,6 +23,7 @@
 #include <irtree/types/LogicOperatorType.h>
 #include <irtree/tree_wrapper/conditional_wrappers/RelativeConditionalWrapper.h>
 #include <elements.h>
+#include <irtree/nodes/statements/PrintStatement.h>
 
 #include <IrtreeBuildVisitor.h>
 
@@ -111,7 +112,7 @@ void IrtreeBuildVisitor::Visit(Assignment* assignment) {
   tos_value_ = new IRT::StatementWrapper(new IRT::MoveStatement(
       source,
       rvalue
-      )
+                                         )
   );
 }
 
@@ -121,7 +122,10 @@ void IrtreeBuildVisitor::Visit(VarDecl* var_decl) {
 }
 
 void IrtreeBuildVisitor::Visit(PrintStatement* statement) {
-  tos_value_ = nullptr;
+  auto expression = Accept(statement->expression_);
+  tos_value_ = new IRT::StatementWrapper(
+      new IRT::PrintStatement(expression->ToExpression())
+  );
 }
 
 void IrtreeBuildVisitor::Visit(AssignmentList* assignment_list) {

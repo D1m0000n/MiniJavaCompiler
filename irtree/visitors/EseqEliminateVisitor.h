@@ -23,8 +23,13 @@ class EseqEliminateVisitor : public TemplateVisitor<IrtStorage> {
   void Visit(ExpressionList* expression_list) override;
   void Visit(NameExpression* name_expression) override;
   void Visit(EseqExpression* eseq_expression) override;
+  void Visit(PrintStatement* print_statement) override;
 
   struct IRList {
+    IRList() {
+      exp_list = new ExpressionList();
+      statements.resize(0);
+    }
     void MakeStatementList();
     void AddStatement(Statement* statement);
     void SetStatement(Statement* statement);

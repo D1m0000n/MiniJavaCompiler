@@ -77,11 +77,11 @@ void DoubleCallEliminateVisitor::Visit(CallExpression* call_expression) {
 
   tos_value_.expression_ = new EseqExpression(
       new MoveStatement(
-          new TempExpression(temp),
           new CallExpression(
               func,
               args
-          )
+          ),
+          new TempExpression(temp)
       ),
       new TempExpression(temp)
   );
@@ -105,6 +105,12 @@ void DoubleCallEliminateVisitor::Visit(EseqExpression* eseq_expression) {
   auto expr = Accept(eseq_expression->expression_).expression_;
 
   tos_value_.expression_ = new EseqExpression(stmt, expr);
+}
+
+void DoubleCallEliminateVisitor::Visit(PrintStatement* print_statement) {
+  tos_value_.statement_ = new PrintStatement(
+      Accept(print_statement->expression_).expression_
+  );
 }
 
 Statement* DoubleCallEliminateVisitor::GetTree() {

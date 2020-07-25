@@ -23,6 +23,7 @@ class PrintVisitor : public Visitor {
   void Visit(ExpressionList* expression_list) override;
   void Visit(NameExpression* name_expression) override;
   void Visit(EseqExpression* eseq_expression) override;
+  void Visit(PrintStatement* print_statement) override;
 
   void PrintString(std::string s);
  private:

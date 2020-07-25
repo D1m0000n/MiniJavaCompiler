@@ -15,5 +15,6 @@
 #include "../nodes/statements/LabelStatement.h"
 #include "../nodes/statements/MoveStatement.h"
 #include "../nodes/statements/SeqStatement.h"
+#include "../nodes/statements/PrintStatement.h"
 
 #include "../nodes/ExpressionList.h"

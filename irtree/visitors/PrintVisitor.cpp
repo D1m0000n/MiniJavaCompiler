@@ -126,6 +126,15 @@ void PrintVisitor::Visit(EseqExpression* eseq_expression) {
   --num_tabs_;
 
 }
+
+void PrintVisitor::Visit(PrintStatement* statement) {
+  PrintTabs();
+  stream_ << "PrintStatement:" << std::endl;
+  ++num_tabs_;
+  statement->expression_->Accept(this);
+  --num_tabs_;
+}
+
 void PrintVisitor::PrintString(std::string s) {
   stream_ << s << std::endl;
 }

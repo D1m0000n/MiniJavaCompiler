@@ -17,7 +17,8 @@ enum class NodeType : char {
   LABEL,
   MOVE,
   SEQ,
-  EXPLIST
+  EXPLIST,
+  PRINT
 };
 
 class BaseElement {

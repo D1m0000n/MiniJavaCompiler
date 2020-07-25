@@ -94,6 +94,11 @@ void IRT::LinearizeVisitor::Visit(NameExpression* expression) {
 void IRT::LinearizeVisitor::Visit(EseqExpression* expression) {
 }
 
+void IRT::LinearizeVisitor::Visit(PrintStatement* print_statement) {
+  IrtStorage elements = Accept(print_statement->expression_);
+  tos_value_.statement_ = new IRT::PrintStatement(elements.expression_);
+}
+
 IRT::Statement* IRT::LinearizeVisitor::GetTree() {
   return tos_value_.statement_;
 }

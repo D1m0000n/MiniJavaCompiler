@@ -16,7 +16,7 @@ class MainClass {
     int five;
     five = three > 2;
 
-    if (three) {
+    if (three > 2) {
         System.out.println(three + 3);
     } else {
         System.out.println(1000);
