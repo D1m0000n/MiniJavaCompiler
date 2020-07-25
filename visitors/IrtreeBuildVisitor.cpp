@@ -103,15 +103,15 @@ void IrtreeBuildVisitor::Visit(IdentExpression* expression) {
 }
 
 void IrtreeBuildVisitor::Visit(Assignment* assignment) {
-  auto var_expression = current_frame_->GetAddress(
+  auto rvalue = current_frame_->GetAddress(
       assignment->variable_
   )->ToExpression();
-  auto rvalue = Accept(assignment->expression_);
+  auto source = Accept(assignment->expression_)->ToExpression();
 
   tos_value_ = new IRT::StatementWrapper(new IRT::MoveStatement(
-      var_expression,
-      rvalue->ToExpression()
-                                         )
+      source,
+      rvalue
+      )
   );
 }
 
@@ -410,6 +410,6 @@ IrtMapping IrtreeBuildVisitor::GetTrees() {
   return method_trees_;
 }
 
-void IrtreeBuildVisitor::SetMainFunction(Function *main_func) {
+void IrtreeBuildVisitor::SetMainFunction(Function* main_func) {
   main_function_ = main_func;
 }

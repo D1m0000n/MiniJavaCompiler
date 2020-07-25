@@ -245,7 +245,8 @@ void FunctionCallVisitor::Visit(WhileStatement* while_statement) {
     offsets_.pop();
     size_t index = offsets_.top();
     offsets_.pop();
-    offsets_.push(index + 1);
+    offsets_.push(index);
+    current_layer_ = current_layer_->GetParent();
 
     frame.DeallocScope();
     table_.EndScope();

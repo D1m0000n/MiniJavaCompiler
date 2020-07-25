@@ -4,16 +4,6 @@ Main class:
 			VarDecl: three
 			Assignment: three
 				NumExpression 3
-			PrintStatement: 
-				IdentExpression: three
-IfStatement:
-				IsGreaterExpression: 
+WhileStatement:
+				PrintStatement: 
 					IdentExpression: three
-					NumExpression 2
-			VarDecl: five
-			Assignment: five
-				IsGreaterExpression: 
-					IdentExpression: three
-					NumExpression 2
-IfStatement:
-				IdentExpression: three

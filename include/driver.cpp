@@ -75,7 +75,7 @@ void Driver::Evaluate() {
   function_visitor.SetThis(program->main_class_->identifier);
   function_visitor.Visit(main_function);
 
-  std::string prefix_path = "ir_canonic_test/shit_folder/";
+  std::string prefix_path = "ir_canonic_test/trash_folder/";
 
   root.PrintTree(prefix_path + "symbol_tree.txt");
 
@@ -94,6 +94,8 @@ void Driver::Evaluate() {
     auto stmt_result = call_eliminate_visitor.GetTree();
     irt_methods[func_view->first] = stmt_result;
 
+
+    std::string file_name = prefix_path + func_view->first + "_without_double_call.txt";
     IRT::PrintVisitor print_visitor_two(
         prefix_path + func_view->first + "_without_double_call.txt"
     );
@@ -273,7 +275,7 @@ std::vector<IRT::Trace> Driver::MakeTraces(std::vector<IRT::Block>& blocks) {
 }
 
 void Driver::PrintTraces() {
-  std::string prefix_path = "ir_canonic_test/shit_folder/";
+  std::string prefix_path = "ir_canonic_test/trash_folder/";
   for (auto& trace_vector : traces_) {
     IRT::PrintVisitor traces_print_visitor(prefix_path + trace_vector.first + "_traces.txt");
     size_t trace_index = 0;

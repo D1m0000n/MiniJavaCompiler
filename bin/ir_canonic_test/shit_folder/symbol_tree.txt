@@ -1,7 +1,0 @@
-	three
-	five
-		three
-	b
-	a
-	b
-	c
