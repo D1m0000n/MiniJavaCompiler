@@ -81,12 +81,24 @@ set(
         visitors/EseqEliminateVisitor.cpp
         visitors/LinearizeVisitor.h
         visitors/LinearizeVisitor.cpp
+        visitors/AssemblyCodeGenerator.h
+        visitors/AssemblyCodeGenerator.cpp
 
         blocks/Block.h
         blocks/Block.cpp
 
         traces/Trace.h
         traces/Trace.cpp
+
+        opcodes/OpCode.h
+        opcodes/AddCode.h
+        opcodes/AddCode.cpp
+        opcodes/AndCode.h
+        opcodes/AndCode.cpp
+        opcodes/OrCode.h
+        opcodes/OrCode.cpp
+        opcodes/SubCode.h
+        opcodes/SubCode.cpp
 )
 
 add_library(${IR_LIB} ${SOURCES})

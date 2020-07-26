@@ -18,3 +18,9 @@
 #include "../nodes/statements/PrintStatement.h"
 
 #include "../nodes/ExpressionList.h"
+
+#include "../opcodes/AddCode.h"
+#include "../opcodes/AndCode.h"
+#include "../opcodes/OrCode.h"
+#include "../opcodes/SubCode.h"
+

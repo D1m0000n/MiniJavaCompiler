@@ -10,4 +10,5 @@ T TemplateVisitor<T>::Accept(BaseElement* element) {
 
 template int TemplateVisitor<int>::Accept(BaseElement* element);
 template IrtStorage TemplateVisitor<IrtStorage>::Accept(IRT::BaseElement* element);
+template OpCode TemplateVisitor<OpCode>::Accept(OpCode* op_code);
 }

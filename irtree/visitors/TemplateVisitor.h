@@ -2,6 +2,7 @@
 
 #include "./Visitor.h"
 #include "../nodes/BaseElement.h"
+#include "../opcodes/OpCode.h"
 
 namespace IRT {
 template<typename T>
