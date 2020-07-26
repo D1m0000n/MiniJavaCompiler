@@ -7,7 +7,7 @@
 #include <vector>
 
 namespace IRT {
-class AssemblyCodeGenerator : public TemplateVisitor<IrtStorage> {
+class AssemblyCodeGenerator : public TemplateVisitor<std::string> {
  public:
   void Visit(ExpStatement* stmt) override;
   void Visit(ConstExpression* const_expression) override;
@@ -25,8 +25,11 @@ class AssemblyCodeGenerator : public TemplateVisitor<IrtStorage> {
   void Visit(EseqExpression* eseq_expression) override;
   void Visit(PrintStatement* print_statement) override;
 
+  std::vector<OpCode*> GetOpCodes();
+
  public:
   Statement* GetTree();
+  std::vector<OpCode*> op_codes_;
 };
 
 }

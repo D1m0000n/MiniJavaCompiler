@@ -2,6 +2,7 @@
 
 #include "OpCode.h"
 
+namespace IRT{
 class OrCode : public OpCode {
 
   OrCode(std::string regd, std::string rega, std::string argb);
@@ -11,3 +12,4 @@ class OrCode : public OpCode {
   std::string rega_;
   std::string argb_;
 };
+}

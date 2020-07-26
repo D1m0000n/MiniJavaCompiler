@@ -3,9 +3,11 @@
 #include "BaseElement.h"
 #include <string>
 
-class OpCode : public BaseElement {
+namespace IRT{
+class OpCode {
  public:
-
+//  OpCode() = default;
   std::string operation_;
   std::string suffix_;
 };
+}

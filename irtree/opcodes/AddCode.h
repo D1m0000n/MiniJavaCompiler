@@ -2,6 +2,7 @@
 
 #include "OpCode.h"
 
+namespace IRT{
 class AddCode : public OpCode {
 
   AddCode(std::string regd, std::string rega, std::string argb);
@@ -11,3 +12,4 @@ class AddCode : public OpCode {
   std::string rega_;
   std::string argb_;
 };
+}
