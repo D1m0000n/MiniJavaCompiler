@@ -3,21 +3,19 @@
 #include "OpCode.h"
 
 namespace IRT{
-class AddCode : public OpCode {
+class CmpCode : public OpCode {
  public:
-  AddCode(
-      std::string regd,
-      OpType regd_tp,
+
+  CmpCode(
       std::string rega,
       OpType rega_tp,
       std::string argb,
       OpType argb_tp
       );
+
   void Accept(OpCodeVisitor* visitor) override;
   void SetSuffix(std::string suffix) override;
 
-  std::string regd_;
-  OpType regd_type_;
   std::string rega_;
   OpType rega_type_;
   std::string argb_;

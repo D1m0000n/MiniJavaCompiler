@@ -4,7 +4,7 @@
 
 namespace IRT{
 class AndCode : public OpCode {
-
+ public:
   AndCode(
       std::string regd,
   OpType regd_tp,
@@ -14,7 +14,8 @@ class AndCode : public OpCode {
   OpType argb_tp
   );
 
-  void SetSuffix(std::string suffix);
+  void Accept(OpCodeVisitor* visitor) override;
+  void SetSuffix(std::string suffix) override;
 
   std::string regd_;
   OpType regd_type_;

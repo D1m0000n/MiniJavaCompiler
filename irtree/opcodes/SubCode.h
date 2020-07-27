@@ -4,8 +4,8 @@
 
 namespace IRT{
 class SubCode : public OpCode {
-
-  AddCode(
+ public:
+  SubCode(
       std::string regd,
   OpType regd_tp,
       std::string rega,
@@ -13,8 +13,8 @@ class SubCode : public OpCode {
       std::string argb,
   OpType argb_tp
   );
-
-  void SetSuffix(std::string suffix);
+  void Accept(OpCodeVisitor* visitor) override;
+  void SetSuffix(std::string suffix) override;
 
   std::string regd_;
   OpType regd_type_;

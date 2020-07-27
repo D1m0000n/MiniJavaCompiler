@@ -14,3 +14,7 @@ IRT::AddCode::AddCode(
 void IRT::AddCode::SetSuffix(std::string suffix) {
   suffix_ = suffix;
 }
+
+void IRT::AddCode::Accept(IRT::OpCodeVisitor* visitor) {
+  visitor->Visit(this);
+}

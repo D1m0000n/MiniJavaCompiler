@@ -14,3 +14,7 @@ IRT::OrCode::OrCode(
 void IRT::OrCode::SetSuffix(std::string suffix) {
   suffix_ = suffix;
 }
+
+void IRT::OrCode::Accept(IRT::OpCodeVisitor* visitor) {
+  visitor->Visit(this);
+}

@@ -5,9 +5,12 @@
 #include "BaseElements.h"
 
 #include <vector>
+#include <algorithm>
+#include <stdexcept>
+
 
 namespace IRT {
-class AssemblyCodeGenerator : public TemplateVisitor<std::string> {
+ class AssemblyCodeGenerator : public TemplateVisitor<std::pair<std::string, IRT::OpType>> {
  public:
   void Visit(ExpStatement* stmt) override;
   void Visit(ConstExpression* const_expression) override;
@@ -25,10 +28,20 @@ class AssemblyCodeGenerator : public TemplateVisitor<std::string> {
   void Visit(EseqExpression* eseq_expression) override;
   void Visit(PrintStatement* print_statement) override;
 
+  void MakeBinOperation(
+      std::string regd,
+      OpType regd_tp,
+      std::string rega,
+      OpType rega_tp,
+      std::string argb,
+      OpType argb_tp,
+      IRT::BinaryOperatorType operator_type,
+      );
+
   std::vector<OpCode*> GetOpCodes();
 
  public:
-  Statement* GetTree();
+  std::vector<OpCode*> GetCodes();
   std::vector<OpCode*> op_codes_;
 };
 

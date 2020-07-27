@@ -4,7 +4,7 @@
 
 namespace IRT{
 class OrCode : public OpCode {
-
+ public:
   OrCode(
       std::string regd,
   OpType regd_tp,
@@ -13,8 +13,8 @@ class OrCode : public OpCode {
       std::string argb,
   OpType argb_tp
   );
-
-  void SetSuffix(std::string suffix);
+  void Accept(OpCodeVisitor* visitor) override;
+  void SetSuffix(std::string suffix) override;
 
   std::string regd_;
   OpType regd_type_;

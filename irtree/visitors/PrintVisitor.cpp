@@ -110,8 +110,8 @@ void PrintVisitor::Visit(NameExpression* name_expression) {
 
 PrintVisitor::~PrintVisitor() {
   stream_.close();
-
 }
+
 void PrintVisitor::PrintTabs() {
   for (int i = 0; i < num_tabs_; ++i) {
     stream_ << '\t';

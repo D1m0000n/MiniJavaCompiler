@@ -2,21 +2,25 @@
 
 #include "OpCode.h"
 
-namespace IRT{
-class MovCode : public OpCode {
+namespace IRT {
+class LdrCode : public OpCode {
  public:
-  MovCode(
+  LdrCode(
       std::string regd,
       OpType regd_tp,
-      std::string arg,
-      OpType arg_tp
-      );
+      std::string regaddr,
+      OpType regaddr_tp,
+      int shift
+  );
   void Accept(OpCodeVisitor* visitor) override;
   void SetSuffix(std::string suffix) override;
 
   std::string regd_;
   OpType regd_type_;
-  std::string arg_;
-  OpType arg_type_;
+  std::string regaddr_;
+  OpType regaddr_type_;
+
+  int offset_;
+
 };
 }

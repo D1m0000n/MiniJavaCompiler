@@ -1,6 +1,6 @@
-#include "AndCode.h"
+#include "DivCode.h"
 
-IRT::AndCode::AndCode(
+IRT::DivCode::DivCode(
     std::string regd,
     OpType regd_tp,
     std::string rega,
@@ -8,13 +8,13 @@ IRT::AndCode::AndCode(
     std::string argb,
     OpType argb_tp
 ) : regd_(regd), regd_type_(regd_tp), rega_(rega), rega_type_(rega_tp), argb_(argb), argb_type_(argb_tp) {
-  operation_ = "and";
+  operation_ = "sdiv";
 }
 
-void IRT::AndCode::SetSuffix(std::string suffix) {
+void IRT::DivCode::SetSuffix(std::string suffix) {
   suffix_ = suffix;
 }
 
-void IRT::AndCode::Accept(IRT::OpCodeVisitor* visitor) {
+void IRT::DivCode::Accept(IRT::OpCodeVisitor* visitor) {
   visitor->Visit(this);
 }

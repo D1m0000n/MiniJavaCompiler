@@ -14,3 +14,7 @@ IRT::SubCode::SubCode(
 void IRT::SubCode::SetSuffix(std::string suffix) {
   suffix_ = suffix;
 }
+
+void IRT::SubCode::Accept(IRT::OpCodeVisitor* visitor) {
+  visitor->Visit(this);
+}

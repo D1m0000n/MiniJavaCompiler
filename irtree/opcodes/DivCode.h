@@ -3,16 +3,17 @@
 #include "OpCode.h"
 
 namespace IRT{
-class AddCode : public OpCode {
+class DivCode : public OpCode {
  public:
-  AddCode(
+  DivCode(
       std::string regd,
       OpType regd_tp,
       std::string rega,
       OpType rega_tp,
       std::string argb,
       OpType argb_tp
-      );
+  );
+
   void Accept(OpCodeVisitor* visitor) override;
   void SetSuffix(std::string suffix) override;
 

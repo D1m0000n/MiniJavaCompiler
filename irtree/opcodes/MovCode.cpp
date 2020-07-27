@@ -12,3 +12,7 @@ IRT::MovCode::MovCode(
 void IRT::MovCode::SetSuffix(std::string suffix) {
   suffix_ = suffix;
 }
+
+void IRT::MovCode::Accept(IRT::OpCodeVisitor* visitor) {
+  visitor->Visit(this);
+}

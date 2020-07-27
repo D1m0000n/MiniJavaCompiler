@@ -83,6 +83,9 @@ set(
         visitors/LinearizeVisitor.cpp
         visitors/AssemblyCodeGenerator.h
         visitors/AssemblyCodeGenerator.cpp
+        visitors/OpCodeVisitor.h
+        visitors/PrintOpCodeVisitor.h
+        visitors/PrintOpCodeVisitor.cpp
 
         blocks/Block.h
         blocks/Block.cpp
@@ -101,7 +104,24 @@ set(
         opcodes/SubCode.cpp
         opcodes/MovCode.h
         opcodes/MovCode.cpp
-
+        opcodes/JumpCode.h
+        opcodes/JumpCode.cpp
+        opcodes/CmpCode.h
+        opcodes/CmpCode.cpp
+        opcodes/StrCode.h
+        opcodes/StrCode.cpp
+        opcodes/LabelCode.h
+        opcodes/LabelCode.cpp
+        opcodes/MulCode.h
+        opcodes/MulCode.cpp
+        opcodes/DivCode.h
+        opcodes/DivCode.cpp
+        opcodes/LdrCode.h
+        opcodes/LdrCode.cpp
+        opcodes/PushCode.h
+        opcodes/PushCode.cpp
+        opcodes/PopCode.h
+        opcodes/PopCode.cpp
 )
 
 add_library(${IR_LIB} ${SOURCES})
