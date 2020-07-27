@@ -2,6 +2,7 @@
 
 IRT::JumpCode::JumpCode(std::string label) : label_(label) {
   operation_ = "b";
+  suffix_ = "";
 }
 
 void IRT::JumpCode::SetSuffix(std::string suffix) {

@@ -7,6 +7,7 @@ IRT::MovCode::MovCode(
     OpType arg_tp
     ) : regd_(regd), regd_type_(reg_tp), arg_(arg), arg_type_(arg_tp) {
   operation_ = "mov";
+  suffix_ = "";
 }
 
 void IRT::MovCode::SetSuffix(std::string suffix) {

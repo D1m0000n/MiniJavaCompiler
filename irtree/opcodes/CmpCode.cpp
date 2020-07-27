@@ -7,6 +7,7 @@ IRT::CmpCode::CmpCode(
     IRT::OpType argb_tp
     ) : rega_(rega), rega_type_(rega_tp), argb_(argb), argb_type_(argb_tp) {
   operation_ = "cmp";
+  suffix_ = "";
 }
 
 void IRT::CmpCode::SetSuffix(std::string suffix) {

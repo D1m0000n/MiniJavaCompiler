@@ -5,17 +5,18 @@ void IRT::AssemblyCodeGenerator::Visit(IRT::ExpStatement* stmt) {
 }
 
 void IRT::AssemblyCodeGenerator::Visit(IRT::ConstExpression* const_expression) {
-  Temporary T;
-  std::string reg = T.ToString();
+//  Temporary T;
+//  std::string reg = T.ToString();
   std::string const_str = std::to_string(const_expression->Value());
-  IRT::MovCode* mov_code = new IRT::MovCode(
-      reg,
-      IRT::OpType::TEMP,
-      const_str,
-      IRT::OpType::CONST
-  );
-  op_codes_.push_back(mov_code);
-  tos_value_ = {reg, IRT::OpType::TEMP};
+//  IRT::MovCode* mov_code = new IRT::MovCode(
+//      reg,
+//      IRT::OpType::TEMP,
+//      const_str,
+//      IRT::OpType::CONST
+//  );
+//  op_codes_.push_back(mov_code);
+//  tos_value_ = {reg, IRT::OpType::TEMP};
+  tos_value_ = {const_str, OpType::CONST};
 }
 
 void IRT::AssemblyCodeGenerator::Visit(JumpConditionalStatement* statement) {
@@ -155,7 +156,7 @@ void IRT::AssemblyCodeGenerator::Visit(IRT::MoveStatement* statement) {
         StrCode* str = new StrCode(
             src.first,
             src.second,
-            "nullptr",
+            "",
             IRT::OpType::NONE,
             const_expr->Value()
         );
@@ -188,15 +189,30 @@ void IRT::AssemblyCodeGenerator::Visit(IRT::MoveStatement* statement) {
   }
 }
 
-std::vector<IRT::OpCode*> IRT::AssemblyCodeGenerator::GetOpCodes() {
-  return op_codes_;
-}
-
 void IRT::AssemblyCodeGenerator::Visit(IRT::SeqStatement* statement) {}
 
 void IRT::AssemblyCodeGenerator::Visit(IRT::LabelStatement* statement) {
   LabelCode* label = new LabelCode(statement->label_.ToString());
   op_codes_.push_back(label);
+}
+
+int IRT::AssemblyCodeGenerator::CountConst(int first, int second, IRT::BinaryOperatorType operator_type) {
+  switch (operator_type) {
+    case IRT::BinaryOperatorType::PLUS:
+      return first + second;
+    case IRT::BinaryOperatorType::MINUS:
+      return first - second;
+    case IRT::BinaryOperatorType::MUL:
+      return first * second;
+    case IRT::BinaryOperatorType::DIV:
+      return first / second;
+    case IRT::BinaryOperatorType::MOD:
+      return first % second;
+    case IRT::BinaryOperatorType::AND:
+      return (first && second);
+    case IRT::BinaryOperatorType::OR:
+      return (first || second);
+  }
 }
 
 void IRT::AssemblyCodeGenerator::Visit(IRT::BinopExpression* expression) {
@@ -207,8 +223,11 @@ void IRT::AssemblyCodeGenerator::Visit(IRT::BinopExpression* expression) {
     int const_first = dynamic_cast<ConstExpression*>(first)->Value();
     int const_second = dynamic_cast<ConstExpression*>(second)->Value();
     Temporary T;
-    MakeBinOperation(T.ToString(), IRT::OpType::TEMP, std::to_string(const_first), IRT::OpType::CONST,
-                     std::to_string(const_second), IRT::OpType::CONST, expression->operator_type_);
+    int result_const = CountConst(const_first, const_second, expression->operator_type_);
+    auto mov = new MovCode(T.ToString(), OpType::TEMP, std::to_string(result_const), OpType::CONST);
+    op_codes_.push_back(mov);
+//    MakeBinOperation(T.ToString(), IRT::OpType::TEMP, std::to_string(const_first), IRT::OpType::CONST,
+//                     std::to_string(const_second), IRT::OpType::CONST, expression->operator_type_);
     tos_value_ = {T.ToString(), IRT::OpType::TEMP};
     return;
   }
@@ -254,7 +273,7 @@ void IRT::AssemblyCodeGenerator::Visit(IRT::MemExpression* expression) {
   Expression* expr = expression->expression_;
   if (expr->GetNodeType() == IRT::NodeType::CONST) {
     int const_val = dynamic_cast<ConstExpression*>(expr)->Value();
-    auto ldr = new LdrCode(T.ToString(), IRT::OpType::TEMP, "nullptr", IRT::OpType::NONE, const_val);
+    auto ldr = new LdrCode(T.ToString(), IRT::OpType::TEMP, "", IRT::OpType::NONE, const_val);
     op_codes_.push_back(ldr);
     tos_value_ = {T.ToString(), IRT::OpType::TEMP};
     return;
@@ -292,6 +311,7 @@ void IRT::AssemblyCodeGenerator::Visit(IRT::MemExpression* expression) {
   auto reg = Accept(binop_expr->first_);
   int offset = dynamic_cast<ConstExpression*>(binop_expr->second_)->Value();
   auto ldr = new LdrCode(T.ToString(), OpType::TEMP, reg.first, reg.second, offset);
+  op_codes_.push_back(ldr);
   tos_value_ = {T.ToString(), OpType::TEMP};
 }
 
@@ -309,14 +329,14 @@ void IRT::AssemblyCodeGenerator::Visit(CallExpression* call_expression) {
     op_codes_.push_back(push);
   }
   int beg_ind;
-  if (call_expression->args_->expressions_.size() >= 3) {
+  if (call_expression->args_->expressions_.size() >= 4) {
     beg_ind = 3;
   } else {
-    beg_ind = call_expression->args_->expressions_.size();
+    beg_ind = call_expression->args_->expressions_.size() - 1;
   }
-  for (size_t i = beg_ind; i >= 0; --i) {
+  for (int i = beg_ind; i >= 0; --i) {
     auto reg = Accept(call_expression->args_->expressions_[i]);
-    auto mov = new MovCode("r" + std::to_string(beg_ind), OpType::REG, reg.first, reg.second);
+    auto mov = new MovCode("r" + std::to_string(i), OpType::REG, reg.first, reg.second);
     op_codes_.push_back(mov);
   }
   auto func_name = Accept(call_expression->function_name_);
@@ -406,5 +426,3 @@ void IRT::AssemblyCodeGenerator::MakeBinOperation(std::string regd,
 std::vector<IRT::OpCode*> IRT::AssemblyCodeGenerator::GetCodes() {
   return op_codes_;
 }
-
-

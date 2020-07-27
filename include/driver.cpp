@@ -16,6 +16,8 @@
 #include <irtree/visitors/DoubleCallEliminateVisitor.h>
 #include <irtree/visitors/EseqEliminateVisitor.h>
 #include <irtree/visitors/LinearizeVisitor.h>
+#include <irtree/visitors/AssemblyCodeGenerator.h>
+#include <irtree/visitors/PrintOpCodeVisitor.h>
 
 Driver::Driver() :
     trace_parsing(false),
@@ -125,6 +127,7 @@ void Driver::Evaluate() {
 
   MakeBlocks();
   PrintTraces();
+  GenerateArmCode();
 //  Interpreter interpreter(root);
 //  interpreter.GetResult(program);
 }
@@ -294,6 +297,30 @@ void Driver::PrintTraces() {
         ++block_index;
       }
       ++trace_index;
+    }
+  }
+}
+
+void Driver::GenerateArmCode() {
+  std::string file_name = "ir_canonic_test/arm_code.S";
+  IRT::PrintOpCodeVisitor print_op_code_visitor(file_name);
+  for (auto& method : traces_) {
+    for (auto& trace : method.second) {
+      for (auto& block : trace.GetBlockSequence()) {
+        IRT::AssemblyCodeGenerator code_generator;
+        block.GetLabel()->Accept(&code_generator);
+        for (auto& statement : block.GetStatements()) {
+          statement->Accept(&code_generator);
+        }
+        block.GetJump()->Accept(&code_generator);
+
+
+        auto op_code = code_generator.GetCodes();
+
+        for (auto& code : op_code) {
+          code->Accept(&print_op_code_visitor);
+        }
+      }
     }
   }
 }

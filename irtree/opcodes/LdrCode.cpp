@@ -8,6 +8,7 @@ IRT::LdrCode::LdrCode(
     int offset
 ) : regd_(regd), regd_type_(regd_tp), regaddr_(regaddr), regaddr_type_(regaddr_tp), offset_(offset) {
   operation_ = "ldr";
+  suffix_ = "";
 }
 
 void IRT::LdrCode::SetSuffix(std::string suffix) {

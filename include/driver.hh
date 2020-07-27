@@ -21,6 +21,7 @@ class Driver {
 
   void MakeBlocks();
   void PrintTraces();
+  void GenerateArmCode();
   void CompareLabelToBlock(std::vector<IRT::Block>& blocks);
   std::vector<IRT::Block> GetBlocksFromMethod(std::vector<IRT::Statement*>& statements);
   std::vector<IRT::Statement*> MakeStatementsSequence(IRT::Statement* statement);

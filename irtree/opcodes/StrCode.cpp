@@ -8,6 +8,7 @@ IRT::StrCode::StrCode(
     int offset
 ) : regs_(regs), regs_type_(regs_tp), regaddr_(regaddr), regaddr_type_(regaddr_tp), offset_(offset) {
   operation_ = "str";
+  suffix_ = "";
 }
 
 void IRT::StrCode::SetSuffix(std::string suffix) {

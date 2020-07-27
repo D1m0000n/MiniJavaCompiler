@@ -9,6 +9,7 @@ IRT::DivCode::DivCode(
     OpType argb_tp
 ) : regd_(regd), regd_type_(regd_tp), rega_(rega), rega_type_(rega_tp), argb_(argb), argb_type_(argb_tp) {
   operation_ = "sdiv";
+  suffix_ = "";
 }
 
 void IRT::DivCode::SetSuffix(std::string suffix) {

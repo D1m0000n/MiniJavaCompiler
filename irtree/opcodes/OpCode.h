@@ -1,6 +1,5 @@
 #pragma once
 
-#include "BaseElement.h"
 #include <string>
 #include "../visitors/OpCodeVisitor.h"
 
@@ -15,7 +14,7 @@ enum class OpType : char {
 
 class OpCode {
  public:
-//  OpCode() = default;
+  OpCode() = default;
   virtual void SetSuffix(std::string) = 0;
   virtual void Accept(OpCodeVisitor* visitor) = 0;
 

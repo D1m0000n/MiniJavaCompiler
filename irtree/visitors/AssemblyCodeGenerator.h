@@ -35,10 +35,10 @@ namespace IRT {
       OpType rega_tp,
       std::string argb,
       OpType argb_tp,
-      IRT::BinaryOperatorType operator_type,
+      IRT::BinaryOperatorType operator_type
       );
 
-  std::vector<OpCode*> GetOpCodes();
+  int CountConst(int first, int second, IRT::BinaryOperatorType operator_type);
 
  public:
   std::vector<OpCode*> GetCodes();
