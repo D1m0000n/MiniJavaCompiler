@@ -5,18 +5,17 @@ void IRT::AssemblyCodeGenerator::Visit(IRT::ExpStatement* stmt) {
 }
 
 void IRT::AssemblyCodeGenerator::Visit(IRT::ConstExpression* const_expression) {
-//  Temporary T;
-//  std::string reg = T.ToString();
+  Temporary T;
+  std::string reg = T.ToString();
   std::string const_str = std::to_string(const_expression->Value());
-//  IRT::MovCode* mov_code = new IRT::MovCode(
-//      reg,
-//      IRT::OpType::TEMP,
-//      const_str,
-//      IRT::OpType::CONST
-//  );
-//  op_codes_.push_back(mov_code);
-//  tos_value_ = {reg, IRT::OpType::TEMP};
-  tos_value_ = {const_str, OpType::CONST};
+  IRT::MovCode* mov_code = new IRT::MovCode(
+      reg,
+      IRT::OpType::TEMP,
+      const_str,
+      IRT::OpType::CONST
+  );
+  op_codes_.push_back(mov_code);
+  tos_value_ = {reg, IRT::OpType::TEMP};
 }
 
 void IRT::AssemblyCodeGenerator::Visit(JumpConditionalStatement* statement) {
@@ -178,7 +177,7 @@ void IRT::AssemblyCodeGenerator::Visit(IRT::MoveStatement* statement) {
   } else {
     auto reg_src = Accept(statement->source_);
     auto reg_trg = Accept(statement->target_);
-    MovCode* mov = new MovCode(reg_src.first, reg_src.second, reg_trg.first, reg_trg.second);
+    MovCode* mov = new MovCode(reg_trg.first, reg_trg.second, reg_src.first, reg_src.second);
     op_codes_.push_back(mov);
   }
 
