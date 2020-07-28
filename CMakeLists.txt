@@ -56,7 +56,7 @@ set(IR_LIB "${PROJECT_NAME}IrLib")
 
 set(
         HEADERS
-        include/driver.hh
+        driver/driver.hh
         parser.hh
 )
 
@@ -78,7 +78,7 @@ ADD_FLEX_BISON_DEPENDENCY(ScannerScopes ParserScopes)
 
 set(
         SOURCES
-        include/driver.cpp
+        driver/driver.cpp
 
         ${BISON_ParserScopes_OUTPUTS}
         ${FLEX_ScannerScopes_OUTPUTS}

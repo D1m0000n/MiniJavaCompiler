@@ -9,7 +9,8 @@ enum class OpType : char {
   CONST,
   REG,
   NONE,
-  NAME
+  NAME,
+  FP
 };
 
 class OpCode {

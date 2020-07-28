@@ -8,8 +8,8 @@
 #include "parser.hh"
 
 #include "Program.h"
-#include "../irtree/blocks/Block.h"
-#include "../irtree/traces/Trace.h"
+#include "irtree/blocks/Block.h"
+#include "irtree/traces/Trace.h"
 
 class Driver {
  public:

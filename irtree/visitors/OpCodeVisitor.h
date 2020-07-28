@@ -17,6 +17,8 @@ class PopCode;
 class PushCode;
 class StrCode;
 class SubCode;
+class PushListCode;
+class PopListCode;
 
 class OpCodeVisitor {
  public:
@@ -36,6 +38,8 @@ class OpCodeVisitor {
   virtual void Visit(PushCode* code) = 0;
   virtual void Visit(StrCode* code) = 0;
   virtual void Visit(SubCode* code) = 0;
+  virtual void Visit(PushListCode* list) = 0;
+  virtual void Visit(PopListCode* list) = 0;
 
 };
 };

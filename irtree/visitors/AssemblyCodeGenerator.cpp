@@ -264,7 +264,13 @@ void IRT::AssemblyCodeGenerator::Visit(IRT::BinopExpression* expression) {
 }
 
 void IRT::AssemblyCodeGenerator::Visit(IRT::TempExpression* expression) {
-  tos_value_ = {expression->temporary_.ToString(), IRT::OpType::TEMP};
+  std::string out_str = expression->temporary_.ToString();
+  size_t found = out_str.find("::fp");
+  if (found != std::string::npos) {
+    tos_value_ = {out_str, OpType::FP};
+  } else {
+    tos_value_ = {out_str, OpType::TEMP};
+  }
 }
 
 void IRT::AssemblyCodeGenerator::Visit(IRT::MemExpression* expression) {
@@ -424,4 +430,14 @@ void IRT::AssemblyCodeGenerator::MakeBinOperation(std::string regd,
 
 std::vector<IRT::OpCode*> IRT::AssemblyCodeGenerator::GetCodes() {
   return op_codes_;
+}
+
+void IRT::AssemblyCodeGenerator::PushRegisters(std::vector<int> regs) {
+  auto push_list = new PushListCode(regs);
+  op_codes_.push_back(push_list);
+}
+
+void IRT::AssemblyCodeGenerator::PopRegisters(std::vector<int> regs) {
+  auto pop_list = new PopListCode(regs);
+  op_codes_.push_back(pop_list);
 }

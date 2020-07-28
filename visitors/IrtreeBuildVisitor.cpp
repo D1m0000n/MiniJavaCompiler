@@ -239,8 +239,8 @@ void IrtreeBuildVisitor::Visit(ReturnStatement* return_statement) {
   auto return_expr = Accept(return_statement->return_expression_);
   tos_value_ = new IRT::StatementWrapper(
       new IRT::MoveStatement(
-          current_frame_->GetReturnValueAddress()->ToExpression(),
-          return_expr->ToExpression()
+          return_expr->ToExpression(),
+          current_frame_->GetReturnValueAddress()->ToExpression()
       )
   );
 }

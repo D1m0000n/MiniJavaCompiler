@@ -63,7 +63,7 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::LdrCode* code) {
     comma = ", ";
   }
   stream_ << code->operation_ << code->suffix_ << " " <<  code->regd_
-  << ", [" << code->regaddr_ << comma << code->offset_ << "]\n";
+  << ", [" << code->regaddr_ << comma << '#' <<  code->offset_ << "]\n";
 }
 
 void IRT::PrintOpCodeVisitor::Visit(IRT::MovCode* code) {
@@ -113,7 +113,7 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::StrCode* code) {
     comma = ", ";
   }
   stream_ << code->operation_ << code->suffix_ << " " <<  code->regs_
-          << ", [" << code->regaddr_ << comma << code->offset_ << "]\n";
+          << ", [" << code->regaddr_ << comma << '#' << code->offset_ << "]\n";
 }
 
 void IRT::PrintOpCodeVisitor::Visit(IRT::SubCode* code) {
@@ -128,4 +128,22 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::SubCode* code) {
 
 void IRT::PrintOpCodeVisitor::PrintTab() {
   stream_ << '\t';
+}
+
+void IRT::PrintOpCodeVisitor::Visit(IRT::PushListCode* list) {
+  PrintTab();
+  stream_ << list->operation_ << " {";
+  for (size_t i = 0; i < list->registers_.size() - 1; ++i) {
+    stream_ << "r" << list->registers_[i] << ", ";
+  }
+  stream_ << "r" << list->registers_.back() << "}\n";
+}
+
+void IRT::PrintOpCodeVisitor::Visit(IRT::PopListCode* list) {
+  PrintTab();
+  stream_ << list->operation_ << " {";
+  for (size_t i = 0; i < list->registers_.size() - 1; ++i) {
+    stream_ << "r" << list->registers_[i] << ", ";
+  }
+  stream_ << "r" << list->registers_.back() << "}\n";
 }

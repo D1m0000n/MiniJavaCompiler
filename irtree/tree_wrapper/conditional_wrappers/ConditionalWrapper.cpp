@@ -14,13 +14,13 @@ Expression* IRT::ConditionalWrapper::ToExpression() {
   Label label_false;
   return new EseqExpression(
       new SeqStatement(
-          new MoveStatement(temp_expression, new ConstExpression(1)),
+          new MoveStatement(new ConstExpression(1), temp_expression),
           new SeqStatement(
               ToConditional(label_true, label_false),
               new SeqStatement(
                   new LabelStatement(label_false),
                   new SeqStatement(
-                      new MoveStatement(temp_expression, new ConstExpression(0)),
+                      new MoveStatement(new ConstExpression(0), temp_expression),
                       new LabelStatement(label_true)
                   )
               )

@@ -7,8 +7,6 @@ Expression* AddressInRegister::ToExpression() {
   return new TempExpression(temp_);
 }
 AddressInRegister::AddressInRegister(const Temporary& temp)
-    : temp_(temp) {
-
-}
+    : temp_(temp) {}
 
 }

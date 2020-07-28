@@ -122,6 +122,10 @@ set(
         opcodes/PushCode.cpp
         opcodes/PopCode.h
         opcodes/PopCode.cpp
+        opcodes/PushListCode.h
+        opcodes/PushListCode.cpp
+        opcodes/PopListCode.h
+        opcodes/PopListCode.cpp
 )
 
 add_library(${IR_LIB} ${SOURCES})

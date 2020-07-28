@@ -1,6 +1,6 @@
 #pragma once
 
-#include "include/driver.hh"
+#include "driver/driver.hh"
 #include "parser.hh"
 
 #include "visitors/Interpreter.h"
@@ -304,13 +304,38 @@ void Driver::PrintTraces() {
 void Driver::GenerateArmCode() {
   std::string file_name = "ir_canonic_test/arm_code.S";
   IRT::PrintOpCodeVisitor print_op_code_visitor(file_name);
+  std::vector<int> save_regs = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+
   for (auto& method : traces_) {
     for (auto& trace : method.second) {
       for (auto& block : trace.GetBlockSequence()) {
         IRT::AssemblyCodeGenerator code_generator;
+        std::string label_name = block.GetLabel()->label_.ToString();
+        bool is_func = false;
+        bool main_begin = false;
+        bool main_done = false;
+        size_t found = label_name.find("::");
+        if (found != std::string::npos) {
+          is_func = true;
+        }
+        found = label_name.find("main");
+        if (found != std::string::npos) {
+          main_begin = true;
+        }
+        found = label_name.find("main_done");
+        if (found != std::string::npos) {
+          main_done = true;
+        }
+
         block.GetLabel()->Accept(&code_generator);
+        if (!main_done && (main_begin || is_func)) {
+          code_generator.PushRegisters(save_regs);
+        }
         for (auto& statement : block.GetStatements()) {
           statement->Accept(&code_generator);
+        }
+        if (!main_begin && (main_done || is_func)) {
+          code_generator.PopRegisters(save_regs);
         }
         block.GetJump()->Accept(&code_generator);
 

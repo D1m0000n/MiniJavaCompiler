@@ -6,7 +6,6 @@ LabelStatement: ClassFoo::FuncFoo
 SeqStatement:
 	LabelStatement: ClassFoo::FuncFoo
 	MoveStatement:
-		TempExpression: ::return_value
 		BinopExpression: PLUS
 			BinopExpression: PLUS
 				MemExpression: 
@@ -19,4 +18,5 @@ SeqStatement:
 				BinopExpression: PLUS
 					TempExpression: ::fp
 					ConstExpression 8
+		TempExpression: ::return_value
 JumpStatement: FuncFoo_done

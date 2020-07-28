@@ -34,3 +34,5 @@
 #include "../opcodes/PushCode.h"
 #include "../opcodes/PopCode.h"
 #include "../opcodes/OpCode.h"
+#include "../opcodes/PushListCode.h"
+#include "../opcodes/PopListCode.h"

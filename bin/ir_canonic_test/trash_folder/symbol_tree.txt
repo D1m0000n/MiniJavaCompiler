@@ -1,7 +1,4 @@
 	three
-	five
-		three
-	b
-	a
-	b
-	c
+	two
+		four
+		five

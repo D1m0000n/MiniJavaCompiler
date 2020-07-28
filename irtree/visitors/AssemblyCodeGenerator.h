@@ -40,6 +40,8 @@ namespace IRT {
 
   int CountConst(int first, int second, IRT::BinaryOperatorType operator_type);
 
+  void PushRegisters(std::vector<int> regs);
+  void PopRegisters(std::vector<int> regs);
  public:
   std::vector<OpCode*> GetCodes();
   std::vector<OpCode*> op_codes_;

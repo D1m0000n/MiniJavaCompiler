@@ -24,6 +24,8 @@ class PrintOpCodeVisitor : public OpCodeVisitor {
   void Visit(PushCode* code) override;
   void Visit(StrCode* code) override;
   void Visit(SubCode* code) override;
+  void Visit(PushListCode* list) override;
+  void Visit(PopListCode* list) override;
 
  private:
   std::ofstream stream_;

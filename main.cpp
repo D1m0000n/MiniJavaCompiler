@@ -1,5 +1,5 @@
 #include <iostream>
-#include <include/driver.hh>
+#include <driver/driver.hh>
 
 int main(int argc, char** argv) {
   int result = 0;
