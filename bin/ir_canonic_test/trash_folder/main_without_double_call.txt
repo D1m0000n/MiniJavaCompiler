@@ -1,5 +1,5 @@
 SeqStatement:
-	LabelStatement: TestClass::main
+	LabelStatement: MainClass::main
 	SeqStatement:
 		MoveStatement:
 			ConstExpression 3
@@ -8,12 +8,11 @@ SeqStatement:
 					TempExpression: ::fp
 					ConstExpression 4
 		SeqStatement:
-			MoveStatement:
-				ConstExpression 2
+			PrintStatement:
 				MemExpression: 
 					BinopExpression: PLUS
 						TempExpression: ::fp
-						ConstExpression 8
+						ConstExpression 4
 			SeqStatement:
 				SeqStatement:
 					JumpConditionalStatement: GT
@@ -22,62 +21,112 @@ SeqStatement:
 						MemExpression: 
 							BinopExpression: PLUS
 								TempExpression: ::fp
-								ConstExpression 8
-						ConstExpression 0
+								ConstExpression 4
+						ConstExpression 2
 					SeqStatement:
 						LabelStatement: L0
 						SeqStatement:
-							SeqStatement:
-								MoveStatement:
-									BinopExpression: PLUS
-										MemExpression: 
-											BinopExpression: PLUS
-												TempExpression: ::fp
-												ConstExpression 4
-										ConstExpression 1
+							PrintStatement:
+								BinopExpression: PLUS
 									MemExpression: 
 										BinopExpression: PLUS
 											TempExpression: ::fp
-											ConstExpression 12
-								PrintStatement:
-									MemExpression: 
-										BinopExpression: PLUS
-											TempExpression: ::fp
-											ConstExpression 12
+											ConstExpression 4
+									ConstExpression 2
 							SeqStatement:
 								JumpStatement: L2
 								SeqStatement:
 									LabelStatement: L1
 									SeqStatement:
 										SeqStatement:
-											MoveStatement:
-												BinopExpression: PLUS
+											PrintStatement:
+												ConstExpression 222
+											SeqStatement:
+												MoveStatement:
+													BinopExpression: PLUS
+														EseqExpression:
+															MoveStatement:
+																CallExpression: 
+																	NameExpression: FuncFoo
+																	ExpressionList: 
+																		ConstExpression 1
+																		ConstExpression 2
+																		ConstExpression 3
+																TempExpression: %1
+															TempExpression: %1
+														EseqExpression:
+															MoveStatement:
+																CallExpression: 
+																	NameExpression: FuncBar
+																	ExpressionList: 
+																		MemExpression: 
+																			BinopExpression: PLUS
+																				TempExpression: ::fp
+																				ConstExpression 8
+																TempExpression: %2
+															TempExpression: %2
 													MemExpression: 
 														BinopExpression: PLUS
 															TempExpression: ::fp
 															ConstExpression 8
+												PrintStatement:
 													MemExpression: 
 														BinopExpression: PLUS
 															TempExpression: ::fp
-															ConstExpression 4
-												MemExpression: 
-													BinopExpression: PLUS
-														TempExpression: ::fp
-														ConstExpression 16
-											PrintStatement:
-												MemExpression: 
-													BinopExpression: PLUS
-														TempExpression: ::fp
-														ConstExpression 16
+															ConstExpression 8
 										LabelStatement: L2
 				SeqStatement:
-					PrintStatement:
+					MoveStatement:
+						EseqExpression:
+							SeqStatement:
+								MoveStatement:
+									ConstExpression 1
+									TempExpression: %0
+								SeqStatement:
+									JumpConditionalStatement: GT
+									TrueLabel: L3
+									FalseLabel: L4
+										MemExpression: 
+											BinopExpression: PLUS
+												TempExpression: ::fp
+												ConstExpression 4
+										ConstExpression 2
+									SeqStatement:
+										LabelStatement: L4
+										SeqStatement:
+											MoveStatement:
+												ConstExpression 0
+												TempExpression: %0
+											LabelStatement: L3
+							TempExpression: %0
 						MemExpression: 
 							BinopExpression: PLUS
 								TempExpression: ::fp
-								ConstExpression 4
-					PrintStatement:
-						MemExpression: 
-							BinopExpression: PLUS
-								TempExpression: ::fp
-								ConstExpression 8
+								ConstExpression 12
+					SeqStatement:
+						JumpConditionalStatement: GT
+						TrueLabel: L5
+						FalseLabel: L6
+							MemExpression: 
+								BinopExpression: PLUS
+									TempExpression: ::fp
+									ConstExpression 4
+							ConstExpression 2
+						SeqStatement:
+							LabelStatement: L5
+							SeqStatement:
+								PrintStatement:
+									BinopExpression: PLUS
+										MemExpression: 
+											BinopExpression: PLUS
+												TempExpression: ::fp
+												ConstExpression 4
+										ConstExpression 3
+								SeqStatement:
+									JumpStatement: L7
+									SeqStatement:
+										LabelStatement: L6
+										SeqStatement:
+											PrintStatement:
+												ConstExpression 1000
+											LabelStatement: L7

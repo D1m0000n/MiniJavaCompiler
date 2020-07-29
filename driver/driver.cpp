@@ -18,6 +18,8 @@
 #include <irtree/visitors/LinearizeVisitor.h>
 #include <irtree/visitors/AssemblyCodeGenerator.h>
 #include <irtree/visitors/PrintOpCodeVisitor.h>
+#include <irtree/visitors/ConflictsGraphVisitor.h>
+#include <irtree/visitors/PrintPhysRegVisitor.h>
 
 Driver::Driver() :
     trace_parsing(false),
@@ -304,10 +306,14 @@ void Driver::PrintTraces() {
 void Driver::GenerateArmCode() {
   std::string file_name = "ir_canonic_test/arm_code.S";
   IRT::PrintOpCodeVisitor print_op_code_visitor(file_name);
-  std::vector<int> save_regs = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+  IRT::PrintPhysRegVisitor reg_visitor("ir_canonic_test/arm_reg_code.S");
+  std::vector<int> save_regs = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+  //// let r11 be base pointer
 
   for (auto& method : traces_) {
     for (auto& trace : method.second) {
+      std::unordered_map<std::string, std::set<int>> live_in;
+
       for (auto& block : trace.GetBlockSequence()) {
         IRT::AssemblyCodeGenerator code_generator;
         std::string label_name = block.GetLabel()->label_.ToString();
@@ -330,11 +336,13 @@ void Driver::GenerateArmCode() {
         block.GetLabel()->Accept(&code_generator);
         if (!main_done && (main_begin || is_func)) {
           code_generator.PushRegisters(save_regs);
+          code_generator.MakeBasePointer();
         }
         for (auto& statement : block.GetStatements()) {
           statement->Accept(&code_generator);
         }
         if (!main_begin && (main_done || is_func)) {
+          code_generator.EraseBasePointer();
           code_generator.PopRegisters(save_regs);
         }
         block.GetJump()->Accept(&code_generator);
@@ -344,6 +352,24 @@ void Driver::GenerateArmCode() {
 
         for (auto& code : op_code) {
           code->Accept(&print_op_code_visitor);
+        }
+
+        //// Conflicts calculated in JumpCode
+        std::set<int> current_live_in;
+        if (live_in.find(label_name) != live_in.end()){
+          current_live_in = live_in[label_name];
+        }
+        IRT::ConflictsGraphVisitor conflicst_graph(current_live_in, op_code.size());
+        for (auto& code : op_code) {
+          code->Accept(&conflicst_graph);
+        }
+
+        auto registers = conflicst_graph.GetPhysRegs();
+        auto saved_in_memory = conflicst_graph.GetSavedInMemory();
+        reg_visitor.SetRegsters(registers);
+        reg_visitor.SetSavedInMemory(saved_in_memory);
+        for (auto& code : op_code) {
+          code->Accept(&reg_visitor);
         }
       }
     }

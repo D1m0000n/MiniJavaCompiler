@@ -441,3 +441,15 @@ void IRT::AssemblyCodeGenerator::PopRegisters(std::vector<int> regs) {
   auto pop_list = new PopListCode(regs);
   op_codes_.push_back(pop_list);
 }
+
+void IRT::AssemblyCodeGenerator::MakeBasePointer() {
+  auto push = new PushCode("r11", OpType::REG);
+  auto mov = new MovCode("r11", OpType::REG, "sp", OpType::REG);
+  op_codes_.push_back(push);
+  op_codes_.push_back(mov);
+}
+
+void IRT::AssemblyCodeGenerator::EraseBasePointer() {
+  auto pop = new PopCode("r11", OpType::REG);
+  op_codes_.push_back(pop);
+}

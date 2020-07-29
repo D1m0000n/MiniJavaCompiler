@@ -86,6 +86,10 @@ set(
         visitors/OpCodeVisitor.h
         visitors/PrintOpCodeVisitor.h
         visitors/PrintOpCodeVisitor.cpp
+        visitors/ConflictsGraphVisitor.h
+        visitors/ConflictsGraphVisitor.cpp
+        visitors/PrintPhysRegVisitor.h
+        visitors/PrintPhysRegVisitor.cpp
 
         blocks/Block.h
         blocks/Block.cpp

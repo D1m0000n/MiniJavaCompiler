@@ -1,7 +1,7 @@
 #include "PushCode.h"
 
 IRT::PushCode::PushCode(std::string reg, OpType reg_tp) : reg_(reg), reg_type_(reg_tp) {
-  operation_ = "pop";
+  operation_ = "push";
   suffix_ = "";
 }
 
