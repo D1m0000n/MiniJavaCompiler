@@ -12,6 +12,6 @@ class TempExpression : public Expression {
   Temporary temporary_;
 };
 
-}
+}  // namespace IRT
 
 

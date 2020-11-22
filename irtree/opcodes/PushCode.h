@@ -2,7 +2,7 @@
 
 #include "OpCode.h"
 
-namespace IRT{
+namespace IRT {
 class PushCode : public OpCode {
  public:
   PushCode(std::string reg, OpType reg_tp);

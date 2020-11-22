@@ -8,9 +8,8 @@
 #include <algorithm>
 #include <stdexcept>
 
-
 namespace IRT {
- class AssemblyCodeGenerator : public TemplateVisitor<std::pair<std::string, IRT::OpType>> {
+class AssemblyCodeGenerator : public TemplateVisitor<std::pair<std::string, IRT::OpType>> {
  public:
   void Visit(ExpStatement* stmt) override;
   void Visit(ConstExpression* const_expression) override;
@@ -36,7 +35,7 @@ namespace IRT {
       std::string argb,
       OpType argb_tp,
       IRT::BinaryOperatorType operator_type
-      );
+  );
 
   int CountConst(int first, int second, IRT::BinaryOperatorType operator_type);
 
@@ -49,6 +48,6 @@ namespace IRT {
   std::vector<OpCode*> op_codes_;
 };
 
-}
+}  // namespace IRT
 
 

@@ -25,4 +25,4 @@ AddressInFrame::AddressInFrame(
 
 }
 
-}
+}  // namespace IRT

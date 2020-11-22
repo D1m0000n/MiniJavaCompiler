@@ -14,8 +14,6 @@ Statement* StatementWrapper::ToConditional(Label true_label, Label false_label) 
   assert(false);
 }
 
-StatementWrapper::StatementWrapper(Statement* statement) : statement_(statement) {
+StatementWrapper::StatementWrapper(Statement* statement) : statement_(statement) {}
 
-}
-
-}
+}  // namespace IRT

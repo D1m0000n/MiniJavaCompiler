@@ -15,7 +15,7 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::AddCode* code) {
     hash = "#";
   }
   stream_ << code->operation_ << code->suffix_ << " " << code->regd_ << ", " << code->rega_
-  << ", " << hash << code->argb_ << "\n";
+          << ", " << hash << code->argb_ << "\n";
 }
 
 void IRT::PrintOpCodeVisitor::Visit(IRT::AndCode* code) {
@@ -25,7 +25,7 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::AndCode* code) {
     hash = "#";
   }
   stream_ << code->operation_ << code->suffix_ << " " << code->regd_ << ", " << code->rega_
-  << ", " << hash << code->argb_ << "\n";
+          << ", " << hash << code->argb_ << "\n";
 }
 
 void IRT::PrintOpCodeVisitor::Visit(IRT::CmpCode* code) {
@@ -34,7 +34,7 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::CmpCode* code) {
   if (code->argb_type_ == OpType::CONST) {
     hash = "#";
   }
-  stream_ << code->operation_ << code->suffix_  << " " << code->rega_ << ", " << hash << code->argb_ << '\n';
+  stream_ << code->operation_ << code->suffix_ << " " << code->rega_ << ", " << hash << code->argb_ << '\n';
 }
 
 void IRT::PrintOpCodeVisitor::Visit(IRT::DivCode* code) {
@@ -43,8 +43,8 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::DivCode* code) {
   if (code->argb_type_ == OpType::CONST) {
     hash = "#";
   }
-  stream_ << code->operation_ << code->suffix_ << " "  << code->regd_ << ", " << code->rega_
-  << ", " << hash << code->argb_ << "\n";
+  stream_ << code->operation_ << code->suffix_ << " " << code->regd_ << ", " << code->rega_
+          << ", " << hash << code->argb_ << "\n";
 }
 
 void IRT::PrintOpCodeVisitor::Visit(IRT::JumpCode* code) {
@@ -62,8 +62,8 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::LdrCode* code) {
   if (code->regaddr_type_ != OpType::NONE) {
     comma = ", ";
   }
-  stream_ << code->operation_ << code->suffix_ << " " <<  code->regd_
-  << ", [" << code->regaddr_ << comma << '#' <<  code->offset_ << "]\n";
+  stream_ << code->operation_ << code->suffix_ << " " << code->regd_
+          << ", [" << code->regaddr_ << comma << '#' << code->offset_ << "]\n";
 }
 
 void IRT::PrintOpCodeVisitor::Visit(IRT::MovCode* code) {
@@ -73,7 +73,7 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::MovCode* code) {
     hash = "#";
   }
   stream_ << code->operation_ << code->suffix_ << " " << code->regd_
-  << ", " << hash << code->arg_ << '\n';
+          << ", " << hash << code->arg_ << '\n';
 }
 
 void IRT::PrintOpCodeVisitor::Visit(IRT::MulCode* code) {
@@ -83,7 +83,7 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::MulCode* code) {
     hash = "#";
   }
   stream_ << code->operation_ << code->suffix_ << " " << code->regd_ << ", " << code->rega_
-  << ", " << hash << code->argb_ << "\n";
+          << ", " << hash << code->argb_ << "\n";
 }
 
 void IRT::PrintOpCodeVisitor::Visit(IRT::OrCode* code) {
@@ -93,7 +93,7 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::OrCode* code) {
     hash = "#";
   }
   stream_ << code->operation_ << code->suffix_ << " " << code->regd_ << ", " << code->rega_
-  << ", " << hash << code->argb_ << "\n";
+          << ", " << hash << code->argb_ << "\n";
 }
 
 void IRT::PrintOpCodeVisitor::Visit(IRT::PopCode* code) {
@@ -112,7 +112,7 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::StrCode* code) {
   if (code->regaddr_type_ != OpType::NONE) {
     comma = ", ";
   }
-  stream_ << code->operation_ << code->suffix_ << " " <<  code->regs_
+  stream_ << code->operation_ << code->suffix_ << " " << code->regs_
           << ", [" << code->regaddr_ << comma << '#' << code->offset_ << "]\n";
 }
 
@@ -123,7 +123,7 @@ void IRT::PrintOpCodeVisitor::Visit(IRT::SubCode* code) {
     hash = "#";
   }
   stream_ << code->operation_ << code->suffix_ << " " << code->regd_ << ", " << code->rega_
-  << ", " << hash << code->argb_ << "\n";
+          << ", " << hash << code->argb_ << "\n";
 }
 
 void IRT::PrintOpCodeVisitor::PrintTab() {

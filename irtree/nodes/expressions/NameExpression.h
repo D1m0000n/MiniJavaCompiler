@@ -12,6 +12,6 @@ class NameExpression : public Expression {
   Label label_;
 };
 
-}
+}  // namespace IRT
 
 

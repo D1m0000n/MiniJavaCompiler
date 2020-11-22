@@ -197,20 +197,13 @@ void IRT::AssemblyCodeGenerator::Visit(IRT::LabelStatement* statement) {
 
 int IRT::AssemblyCodeGenerator::CountConst(int first, int second, IRT::BinaryOperatorType operator_type) {
   switch (operator_type) {
-    case IRT::BinaryOperatorType::PLUS:
-      return first + second;
-    case IRT::BinaryOperatorType::MINUS:
-      return first - second;
-    case IRT::BinaryOperatorType::MUL:
-      return first * second;
-    case IRT::BinaryOperatorType::DIV:
-      return first / second;
-    case IRT::BinaryOperatorType::MOD:
-      return first % second;
-    case IRT::BinaryOperatorType::AND:
-      return (first && second);
-    case IRT::BinaryOperatorType::OR:
-      return (first || second);
+    case IRT::BinaryOperatorType::PLUS:return first + second;
+    case IRT::BinaryOperatorType::MINUS:return first - second;
+    case IRT::BinaryOperatorType::MUL:return first * second;
+    case IRT::BinaryOperatorType::DIV:return first / second;
+    case IRT::BinaryOperatorType::MOD:return first % second;
+    case IRT::BinaryOperatorType::AND:return (first && second);
+    case IRT::BinaryOperatorType::OR:return (first || second);
   }
 }
 
@@ -225,8 +218,6 @@ void IRT::AssemblyCodeGenerator::Visit(IRT::BinopExpression* expression) {
     int result_const = CountConst(const_first, const_second, expression->operator_type_);
     auto mov = new MovCode(T.ToString(), OpType::TEMP, std::to_string(result_const), OpType::CONST);
     op_codes_.push_back(mov);
-//    MakeBinOperation(T.ToString(), IRT::OpType::TEMP, std::to_string(const_first), IRT::OpType::CONST,
-//                     std::to_string(const_second), IRT::OpType::CONST, expression->operator_type_);
     tos_value_ = {T.ToString(), IRT::OpType::TEMP};
     return;
   }

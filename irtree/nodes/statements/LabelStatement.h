@@ -12,5 +12,5 @@ class LabelStatement : public Statement {
   Label label_;
 };
 
-}
+}  // namespace IRT
 

@@ -8,6 +8,6 @@ void IRT::PopListCode::SetSuffix(std::string suffix) {
   suffix_ = suffix;
 }
 
-IRT::PopListCode::PopListCode(std::vector<int> registers) : registers_(registers){
+IRT::PopListCode::PopListCode(std::vector<int> registers) : registers_(registers) {
   operation_ = "pop";
 }

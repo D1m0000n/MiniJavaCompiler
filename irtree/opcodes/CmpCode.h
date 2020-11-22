@@ -21,4 +21,4 @@ class CmpCode : public OpCode {
   std::string argb_;
   OpType argb_type_;
 };
-}
+}  // namespace IRT

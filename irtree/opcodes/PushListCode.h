@@ -3,7 +3,7 @@
 #include "OpCode.h"
 #include <vector>
 
-namespace IRT{
+namespace IRT {
 class PushListCode : public OpCode {
  public:
   PushListCode(std::vector<int> registers);
@@ -12,4 +12,4 @@ class PushListCode : public OpCode {
 
   std::vector<int> registers_;
 };
-}
+}  // namespace IRT

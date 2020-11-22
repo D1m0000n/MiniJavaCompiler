@@ -2,7 +2,6 @@
 
 #include "ConditionalWrapper.h"
 namespace IRT {
-
 class AndConditionalWrapper : public ConditionalWrapper {
  public:
   AndConditionalWrapper(SubtreeWrapper* first, SubtreeWrapper* second);
@@ -12,5 +11,5 @@ class AndConditionalWrapper : public ConditionalWrapper {
   SubtreeWrapper* second_;
 };
 
-}
+}  // namespace IRT
 

@@ -37,5 +37,5 @@ class FrameTranslator {
   int max_offset_ = 0;
 };
 
-}
+}  // namespace IRT
 

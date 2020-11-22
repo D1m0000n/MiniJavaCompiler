@@ -2,5 +2,4 @@
 
 #include "base_elements/BaseElement.h"
 
-class Statement : public BaseElement {
-};
+class Statement : public BaseElement {};

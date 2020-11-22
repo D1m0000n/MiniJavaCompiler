@@ -13,4 +13,5 @@ class Label {
   std::string label_;
   static int counter_;
 };
-}
+
+}  // namespace IRT

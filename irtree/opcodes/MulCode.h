@@ -2,7 +2,7 @@
 
 #include "OpCode.h"
 
-namespace IRT{
+namespace IRT {
 class MulCode : public OpCode {
  public:
   MulCode(
@@ -23,4 +23,4 @@ class MulCode : public OpCode {
   std::string argb_;
   OpType argb_type_;
 };
-}
+}  // namespace IRT

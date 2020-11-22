@@ -29,6 +29,6 @@ class LinearizeVisitor : public TemplateVisitor<IrtStorage> {
   Statement* GetTree();
 };
 
-}
+}  // namespace IRT
 
 

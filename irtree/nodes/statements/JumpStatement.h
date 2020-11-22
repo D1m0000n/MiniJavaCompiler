@@ -3,7 +3,6 @@
 #include "Statement.h"
 #include "../../generators/Label.h"
 namespace IRT {
-
 class JumpStatement : public Statement {
  public:
   explicit JumpStatement(Label label);
@@ -11,7 +10,7 @@ class JumpStatement : public Statement {
   IRT::NodeType GetNodeType() override;
 
   Label label_;
-
 };
-}
+
+}  // namespace IRT
 

@@ -5,10 +5,10 @@
 
 #include <string>
 
-class PrintStatement: public Statement {
+class PrintStatement : public Statement {
  public:
-    PrintStatement(Expression* expression);
-    void Accept(Visitor* visitor) override;
+  PrintStatement(Expression* expression);
+  void Accept(Visitor* visitor) override;
 
-    Expression* expression_;
+  Expression* expression_;
 };

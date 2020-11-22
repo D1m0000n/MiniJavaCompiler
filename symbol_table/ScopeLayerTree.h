@@ -5,11 +5,10 @@
 #include <fstream>
 #include <unordered_map>
 
-
 class ScopeLayerTree {
  public:
   explicit ScopeLayerTree(ScopeLayer* root);
-  ScopeLayerTree(const ScopeLayerTree &other);
+  ScopeLayerTree(const ScopeLayerTree& other);
   void PrintTree(const std::string& filename);
 
   std::shared_ptr<Object> Get(const Symbol& symbol);

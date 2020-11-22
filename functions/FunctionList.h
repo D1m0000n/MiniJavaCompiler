@@ -6,7 +6,7 @@
 #include <vector>
 class FunctionList : public BaseElement {
  public:
-  void Accept(Visitor *visitor) override;
+  void Accept(Visitor* visitor) override;
 
   FunctionList();
 

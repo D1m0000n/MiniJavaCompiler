@@ -26,4 +26,4 @@ class Block {
   Statement* jump_;
   std::vector<Statement*> statements_;
 };
-}
+}  // namespace IRT

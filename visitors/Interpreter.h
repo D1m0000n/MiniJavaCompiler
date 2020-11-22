@@ -48,7 +48,6 @@ class Interpreter : public TemplateVisitor<int> {
   void GetResult(Program* program);
 
  private:
-  //  Table table_;
   ScopeLayerTree tree_;
   ScopeLayer* current_layer_;
   std::stack<int> offsets_;

@@ -17,4 +17,4 @@ class AddressInFrame : public Address {
 
 };
 
-}
+}  // namespace IRT

@@ -1,7 +1,6 @@
 #include "PrintVisitor.h"
 
 #include "BaseElements.h"
-#include "../nodes/expressions/EseqExpression.h"
 namespace IRT {
 
 PrintVisitor::PrintVisitor(const std::string& filename) : stream_(filename) {}
@@ -139,4 +138,4 @@ void PrintVisitor::PrintString(std::string s) {
   stream_ << s << std::endl;
 }
 
-}
+}  // namespace IRT

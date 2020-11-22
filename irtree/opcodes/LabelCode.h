@@ -2,7 +2,7 @@
 
 #include "OpCode.h"
 
-namespace IRT{
+namespace IRT {
 class LabelCode : public OpCode {
  public:
   LabelCode(std::string label);
@@ -11,4 +11,4 @@ class LabelCode : public OpCode {
 
   std::string label_;
 };
-}
+}  // namespace IRT

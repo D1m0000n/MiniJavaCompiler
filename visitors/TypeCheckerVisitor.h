@@ -50,7 +50,6 @@ class TypeCheckerVisitor : public TemplateVisitor<std::string> {
 
   void Visit(ThisExpression* this_expression) override;
 
-
   void CheckTypes(Program* program);
 
  private:

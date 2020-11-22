@@ -16,6 +16,6 @@ class BinopExpression : public Expression {
   Expression* second_;
 };
 
-}
+}  // namespace IRT
 
 

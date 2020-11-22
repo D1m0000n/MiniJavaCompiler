@@ -12,4 +12,4 @@ IRT::NodeType ExpressionList::GetNodeType() {
   return NodeType::EXPLIST;
 }
 
-}
+}  // namespace IRT

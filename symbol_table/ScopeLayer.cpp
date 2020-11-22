@@ -81,7 +81,7 @@ ScopeLayer* ScopeLayer::GetParent() const {
   return parent_;
 }
 
-void ScopeLayer::PrintLayer(std::ostream &stream, int num_tabs) const {
+void ScopeLayer::PrintLayer(std::ostream& stream, int num_tabs) const {
 
   for (const auto& symbol : symbols_) {
     for (int i = 0; i < num_tabs; ++i) {

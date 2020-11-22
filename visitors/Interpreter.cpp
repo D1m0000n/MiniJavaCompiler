@@ -9,8 +9,6 @@
 Interpreter::Interpreter(ScopeLayerTree root) : tree_(root) {
 
   current_layer_ = tree_.root_;
-//  current_layer_->Put(Symbol("true"), std::make_shared<Integer>(1));
-//  current_layer_->Put(Symbol("false"), std::make_shared<Integer>(0));
   offsets_.push(0);
   tos_value_ = 0;
 }
@@ -35,7 +33,6 @@ void Interpreter::Visit(DivExpression* expression) {
   tos_value_ = Accept(expression->first) / Accept(expression->second);
 }
 
-////
 void Interpreter::Visit(AndExpression* expression) {
   tos_value_ = Accept(expression->first) && Accept(expression->second);
 }
@@ -59,8 +56,6 @@ void Interpreter::Visit(ModuloExpression* expression) {
 void Interpreter::Visit(OrExpression* expression) {
   tos_value_ = Accept(expression->first) || Accept(expression->second);
 }
-
-////
 
 void Interpreter::Visit(IdentExpression* expression) {
   try {
@@ -159,23 +154,16 @@ void Interpreter::GetResult(Program* program) {
   Visit(program);
 }
 
-void Interpreter::Visit(Function* function) {
-}
+void Interpreter::Visit(Function* function) {}
 
-void Interpreter::Visit(ParamList* param_list) {
-}
+void Interpreter::Visit(ParamList* param_list) {}
 
-void Interpreter::Visit(FunctionList* function_list) {
-}
+void Interpreter::Visit(FunctionList* function_list) {}
 
-void Interpreter::Visit(ParamValueList* param_value_list) {
-}
+void Interpreter::Visit(ParamValueList* param_value_list) {}
 
-void Interpreter::Visit(FunctionCallExpression* statement) {
-}
+void Interpreter::Visit(FunctionCallExpression* statement) {}
 
-void Interpreter::Visit(ReturnStatement* statement) {
-}
+void Interpreter::Visit(ReturnStatement* statement) {}
 
-void Interpreter::Visit(ThisExpression* this_expression) {
-}
+void Interpreter::Visit(ThisExpression* this_expression) {}

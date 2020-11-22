@@ -1,6 +1,6 @@
 #include "PrintStatement.h"
 
-IRT::PrintStatement::PrintStatement(Expression *expression) : expression_(expression) {}
+IRT::PrintStatement::PrintStatement(Expression* expression) : expression_(expression) {}
 
 void IRT::PrintStatement::Accept(IRT::Visitor* visitor) {
   visitor->Visit(this);

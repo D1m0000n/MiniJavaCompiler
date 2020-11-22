@@ -25,6 +25,6 @@ class JumpConditionalStatement : public Statement {
 
 };
 
-}
+}  // namespace IRT
 
 

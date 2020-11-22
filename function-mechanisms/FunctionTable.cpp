@@ -1,11 +1,10 @@
 #include <iostream>
 #include "FunctionTable.h"
 
-
 void FunctionTable::Put(Symbol symbol, int value) {
   std::cout << "Put " << symbol.GetName() << " value " << value << std::endl;
   if (values_.find(symbol) == values_.end()) {
-    throw std::runtime_error(symbol.GetName() +  ": variable not declared");
+    throw std::runtime_error(symbol.GetName() + ": variable not declared");
   }
   values_[symbol].pop();
   values_[symbol].push(value);

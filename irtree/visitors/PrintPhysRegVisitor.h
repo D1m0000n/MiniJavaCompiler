@@ -40,7 +40,10 @@ class PrintPhysRegVisitor : public OpCodeVisitor {
   std::unordered_map<std::string, int> saved_in_memory_;
   void PrintTab();
   int MexCalc(std::set<int> colors);
-  void SavePrint(std::string operation, std::vector<std::string> args, std::vector<OpType> args_type, std::vector<bool> saved);
+  void SavePrint(std::string operation,
+                 std::vector<std::string> args,
+                 std::vector<OpType> args_type,
+                 std::vector<bool> saved);
   std::string GetReg(std::string name, bool& is_saved);
 };
-}
+}  // namespace IRT

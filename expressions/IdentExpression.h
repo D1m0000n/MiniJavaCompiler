@@ -3,10 +3,10 @@
 
 #include <string>
 
-class IdentExpression: public Expression {
+class IdentExpression : public Expression {
  public:
-    IdentExpression(const std::string& ident);
-    void Accept(Visitor* visitor) override;
+  IdentExpression(const std::string& ident);
+  void Accept(Visitor* visitor) override;
 
-    std::string ident_;
+  std::string ident_;
 };

@@ -1,4 +1,5 @@
 #include "CallExpression.h"
+
 void IRT::CallExpression::Accept(IRT::Visitor* visitor) {
   visitor->Visit(this);
 

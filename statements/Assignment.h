@@ -5,11 +5,11 @@
 
 #include <string>
 
-class Assignment: public Statement {
+class Assignment : public Statement {
  public:
-    Assignment(std::string  variable, Expression* expression);
-    void Accept(Visitor* visitor) override;
+  Assignment(std::string variable, Expression* expression);
+  void Accept(Visitor* visitor) override;
 
-    std::string variable_;
-    Expression* expression_;
+  std::string variable_;
+  Expression* expression_;
 };

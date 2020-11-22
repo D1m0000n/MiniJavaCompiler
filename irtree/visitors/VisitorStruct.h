@@ -9,4 +9,4 @@ struct IrtStorage {
   Statement* statement_ = nullptr;
   ExpressionList* expression_list_ = nullptr;
 };
-}
+}  // namespace IRT

@@ -9,7 +9,7 @@
 class Function : public Declaration {
  public:
   Function(std::string type, std::string name, ParamList* param_list, AssignmentList* statements);
-  void Accept(Visitor *visitor) override;
+  void Accept(Visitor* visitor) override;
 
   std::string type_;
   std::string name_;

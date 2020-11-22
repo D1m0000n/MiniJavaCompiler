@@ -1,4 +1,5 @@
 #include "BinopExpression.h"
+
 void IRT::BinopExpression::Accept(IRT::Visitor* visitor) {
   visitor->Visit(this);
 

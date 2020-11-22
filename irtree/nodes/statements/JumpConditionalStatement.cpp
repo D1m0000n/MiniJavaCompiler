@@ -2,14 +2,14 @@
 
 namespace IRT {
 
-void JumpConditionalStatement::Accept(Visitor *visitor) {
+void JumpConditionalStatement::Accept(Visitor* visitor) {
   visitor->Visit(this);
 }
 
 JumpConditionalStatement::JumpConditionalStatement(
     LogicOperatorType type,
-    Expression *left,
-    Expression *right,
+    Expression* left,
+    Expression* right,
     Label label_true,
     Label label_false
 ) : operator_type_(type),
@@ -23,4 +23,4 @@ IRT::NodeType JumpConditionalStatement::GetNodeType() {
   return NodeType::CJUMP;
 }
 
-}
+}  // namespace IRT

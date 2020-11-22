@@ -25,6 +25,6 @@ class DoubleCallEliminateVisitor : public TemplateVisitor<IrtStorage> {
 
 };
 
-}
+}  // namespace IRT
 
 

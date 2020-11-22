@@ -12,6 +12,7 @@ class CallExpression : public Expression {
   ExpressionList* args_;
 
 };
-}
+
+}  // namespace IRT
 
 

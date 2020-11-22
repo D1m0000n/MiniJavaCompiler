@@ -3,7 +3,7 @@
 #include <string>
 #include "../visitors/OpCodeVisitor.h"
 
-namespace IRT{
+namespace IRT {
 enum class OpType : char {
   TEMP,
   CONST,
@@ -22,4 +22,4 @@ class OpCode {
   std::string operation_;
   std::string suffix_;
 };
-}
+}  // namespace IRT

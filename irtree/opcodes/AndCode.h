@@ -2,16 +2,16 @@
 
 #include "OpCode.h"
 
-namespace IRT{
+namespace IRT {
 class AndCode : public OpCode {
  public:
   AndCode(
       std::string regd,
-  OpType regd_tp,
+      OpType regd_tp,
       std::string rega,
-  OpType rega_tp,
+      OpType rega_tp,
       std::string argb,
-  OpType argb_tp
+      OpType argb_tp
   );
 
   void Accept(OpCodeVisitor* visitor) override;
@@ -24,4 +24,4 @@ class AndCode : public OpCode {
   std::string argb_;
   OpType argb_type_;
 };
-}
+}  // namespace IRT

@@ -1,5 +1,4 @@
 #pragma once
-//#include "BaseElements.h"
 
 namespace IRT {
 
@@ -42,4 +41,4 @@ class OpCodeVisitor {
   virtual void Visit(PopListCode* list) = 0;
 
 };
-};
+}  // namespace IRT

@@ -2,7 +2,7 @@
 
 #include "OpCode.h"
 
-namespace IRT{
+namespace IRT {
 class JumpCode : public OpCode {
  public:
   JumpCode(std::string label);
@@ -11,4 +11,4 @@ class JumpCode : public OpCode {
 
   std::string label_;
 };
-}
+}  // namespace IRT

@@ -80,8 +80,7 @@ void TypeCheckerVisitor::Visit(AssignmentList* assignment_list) {
   }
 }
 
-void TypeCheckerVisitor::Visit(VarDecl* var_decl) {
-}
+void TypeCheckerVisitor::Visit(VarDecl* var_decl) {}
 
 void TypeCheckerVisitor::Visit(DeclarationList* declaration_list) {
   for (auto declaration : declaration_list->declarations_) {
@@ -112,7 +111,7 @@ void TypeCheckerVisitor::Visit(ScopeAssignmentList* list) {
 
 void TypeCheckerVisitor::Visit(IfStatement* if_statement) {
   Accept(if_statement->true_statement_);
-  if (if_statement->false_statement_){
+  if (if_statement->false_statement_) {
     Accept(if_statement->false_statement_);
   }
 }
@@ -154,8 +153,7 @@ void TypeCheckerVisitor::Visit(Function* function) {
   Accept(function->statements_);
 }
 
-void TypeCheckerVisitor::Visit(ParamList* param_list) {
-}
+void TypeCheckerVisitor::Visit(ParamList* param_list) {}
 
 void TypeCheckerVisitor::Visit(ParamValueList* param_value_list) {
   for (int i = 0; i < param_value_list->params_.size(); ++i) {
@@ -173,8 +171,7 @@ void TypeCheckerVisitor::Visit(FunctionList* function_list) {
   }
 }
 
-void TypeCheckerVisitor::Visit(FunctionCallExpression* statement) {
-}
+void TypeCheckerVisitor::Visit(FunctionCallExpression* statement) {}
 
 void TypeCheckerVisitor::Visit(ReturnStatement* statement) {
   statement->return_expression_->Accept(this);
@@ -183,5 +180,4 @@ void TypeCheckerVisitor::Visit(ReturnStatement* statement) {
   }
 }
 
-void TypeCheckerVisitor::Visit(ThisExpression* this_expression) {
-}
+void TypeCheckerVisitor::Visit(ThisExpression* this_expression) {}

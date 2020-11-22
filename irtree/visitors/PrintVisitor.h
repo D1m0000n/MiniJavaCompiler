@@ -34,5 +34,5 @@ class PrintVisitor : public Visitor {
 
 };
 
-}
+}  // namespace IRT
 

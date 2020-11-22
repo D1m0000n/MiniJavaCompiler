@@ -12,5 +12,5 @@ class Temporary {
   static int counter_;
 };
 
-}
+}  // namespace IRT
 

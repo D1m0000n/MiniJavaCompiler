@@ -2,7 +2,7 @@
 
 #include "OpCode.h"
 
-namespace IRT{
+namespace IRT {
 class MovCode : public OpCode {
  public:
   MovCode(
@@ -10,7 +10,7 @@ class MovCode : public OpCode {
       OpType regd_tp,
       std::string arg,
       OpType arg_tp
-      );
+  );
   void Accept(OpCodeVisitor* visitor) override;
   void SetSuffix(std::string suffix) override;
 
@@ -19,4 +19,4 @@ class MovCode : public OpCode {
   std::string arg_;
   OpType arg_type_;
 };
-}
+}  // namespace IRT

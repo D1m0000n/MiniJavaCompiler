@@ -2,7 +2,6 @@
 
 #include "../visitors/Visitor.h"
 namespace IRT {
-
 enum class NodeType : char {
   BINOP,
   CALL,
@@ -27,4 +26,5 @@ class BaseElement {
   virtual void Accept(Visitor* visitor) = 0;
   virtual NodeType GetNodeType() = 0;
 };
-}
+
+}  // namespace IRT

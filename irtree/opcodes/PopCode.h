@@ -2,7 +2,7 @@
 
 #include "OpCode.h"
 
-namespace IRT{
+namespace IRT {
 class PopCode : public OpCode {
  public:
   PopCode(std::string reg, OpType reg_tp);
@@ -12,4 +12,4 @@ class PopCode : public OpCode {
   std::string reg_;
   OpType reg_type_;
 };
-}
+}  // namespace IRT

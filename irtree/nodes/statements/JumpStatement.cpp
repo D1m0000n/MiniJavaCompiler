@@ -12,4 +12,4 @@ IRT::NodeType JumpStatement::GetNodeType() {
   return NodeType::JUMP;
 }
 
-}
+}  // namespace IRT

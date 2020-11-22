@@ -10,7 +10,6 @@ class FunctionTable {
 
   void CreateVariable(Symbol symbol);
 
-
   int Get(Symbol key);
 
   void BeginScope();

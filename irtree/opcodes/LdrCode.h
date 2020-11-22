@@ -23,4 +23,4 @@ class LdrCode : public OpCode {
   int offset_;
 
 };
-}
+}  // namespace IRT

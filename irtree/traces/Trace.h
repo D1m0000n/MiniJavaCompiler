@@ -13,4 +13,4 @@ class Trace {
 
   std::vector<Block> block_sequence_;
 };
-}
+}  // namespace IRT

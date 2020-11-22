@@ -8,4 +8,5 @@ class Expression : public BaseElement {
  public:
   virtual ~Expression() = default;
 };
-}
+
+}  // namespace IRT

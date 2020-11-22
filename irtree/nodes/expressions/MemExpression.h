@@ -12,6 +12,6 @@ class MemExpression : public Expression {
   Expression* expression_;
 };
 
-}
+}  // namespace IRT
 
 

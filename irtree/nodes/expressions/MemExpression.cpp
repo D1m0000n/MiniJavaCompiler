@@ -12,4 +12,4 @@ IRT::NodeType MemExpression::GetNodeType() {
   return NodeType::MEM;
 }
 
-}
+}  // namespace IRT

@@ -3,7 +3,7 @@
 #include "OpCode.h"
 #include <vector>
 
-namespace IRT{
+namespace IRT {
 class PopListCode : public OpCode {
  public:
   PopListCode(std::vector<int> registers);
@@ -12,4 +12,4 @@ class PopListCode : public OpCode {
 
   std::vector<int> registers_;
 };
-}
+}  // namespace IRT

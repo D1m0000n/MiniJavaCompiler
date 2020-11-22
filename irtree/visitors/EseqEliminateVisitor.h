@@ -43,6 +43,6 @@ class EseqEliminateVisitor : public TemplateVisitor<IrtStorage> {
   Statement* GetTree();
 };
 
-}
+}  // namespace IRT
 
 

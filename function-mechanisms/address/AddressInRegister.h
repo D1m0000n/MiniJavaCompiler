@@ -11,5 +11,5 @@ class AddressInRegister : public Address {
   Temporary temp_;
 };
 
-}
+}  // namespace IRT
 

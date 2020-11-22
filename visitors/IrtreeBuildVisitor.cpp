@@ -1,7 +1,6 @@
 #include <irtree/tree_wrapper/ExpressionWrapper.h>
 #include <irtree/nodes/expressions/ConstExpression.h>
 #include <expressions/NumberExpression.h>
-#include <irtree/tree_wrapper/conditional_wrappers/NegateConditionalWrapper.h>
 #include <irtree/tree_wrapper/conditional_wrappers/AndConditionalWrapper.h>
 #include <expressions/AndExpression.h>
 #include <expressions/OrExpression.h>
@@ -139,7 +138,6 @@ void IrtreeBuildVisitor::Visit(AssignmentList* assignment_list) {
   } else {
     std::vector<IRT::Statement*> statements;
     statements.reserve(assignment_list->statements_.size());
-//    size_t index = 0;
     for (auto statement: assignment_list->statements_) {
       auto stmt = Accept(statement);
       if (stmt) {
@@ -197,18 +195,6 @@ void IrtreeBuildVisitor::Visit(Function* function) {
         )
     );
   }
-//  else {
-//    // generating return 0
-//    tos_value_ = new IRT::StatementWrapper(
-//        new IRT::SeqStatement(
-//            new IRT::LabelStatement(IRT::Label(function->name_)),
-//            new IRT::MoveStatement(
-//                current_frame_->GetReturnValueAddress()->ToExpression(),
-//                new IRT::ConstExpression(0)
-//            )
-//        )
-//    );
-//  }
   method_trees_.emplace(function->name_, tos_value_->ToStatement());
 }
 void IrtreeBuildVisitor::Visit(FunctionCallExpression* statement) {

@@ -10,6 +10,6 @@ class NegateConditionalWrapper : public ConditionalWrapper {
   SubtreeWrapper* wrapper_;
 };
 
-}
+}  // namespace IRT
 
 

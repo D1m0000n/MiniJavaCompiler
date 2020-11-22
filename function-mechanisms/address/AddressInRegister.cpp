@@ -9,4 +9,4 @@ Expression* AddressInRegister::ToExpression() {
 AddressInRegister::AddressInRegister(const Temporary& temp)
     : temp_(temp) {}
 
-}
+}  // namespace IRT

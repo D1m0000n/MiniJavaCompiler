@@ -3,7 +3,7 @@
 #include "FrameTranslator.h"
 
 namespace IRT {
-FrameTranslator::FrameTranslator(const std::string &function_name)
+FrameTranslator::FrameTranslator(const std::string& function_name)
     : function_name_(function_name) {
 
   addresses_[frame_pointer_address_].push(new AddressInRegister(
@@ -33,11 +33,11 @@ void FrameTranslator::TearDownScope() {
   symbols_.pop();
 }
 
-void FrameTranslator::AddLocalVariable(const std::string &name) {
+void FrameTranslator::AddLocalVariable(const std::string& name) {
   AddVariable(name);
 }
 
-Address *FrameTranslator::FramePointer() {
+Address* FrameTranslator::FramePointer() {
   return addresses_[frame_pointer_address_].top();
 }
 
@@ -46,11 +46,11 @@ int FrameTranslator::GetOffset() {
   max_offset_ += word_size_;
   return tmp;
 }
-void FrameTranslator::AddArgumentAddress(const std::string &name) {
+void FrameTranslator::AddArgumentAddress(const std::string& name) {
   AddVariable(name);
 }
 
-void FrameTranslator::AddVariable(const std::string &name) {
+void FrameTranslator::AddVariable(const std::string& name) {
   symbols_.push(name);
 
   if (addresses_.find(name) == addresses_.end()) {
@@ -60,15 +60,15 @@ void FrameTranslator::AddVariable(const std::string &name) {
       new AddressInFrame(FramePointer(), GetOffset())
   );
 }
-Address *FrameTranslator::GetAddress(const std::string &name) {
+Address* FrameTranslator::GetAddress(const std::string& name) {
   return addresses_[name].top();
 }
 void FrameTranslator::AddReturnAddress() {
   AddVariable(return_address_);
 }
 
-Address *FrameTranslator::GetReturnValueAddress() {
-  return  GetAddress(return_value_address_);
+Address* FrameTranslator::GetReturnValueAddress() {
+  return GetAddress(return_value_address_);
 }
 
-}
+}  // namespace IRT

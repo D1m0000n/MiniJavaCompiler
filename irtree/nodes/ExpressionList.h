@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "BaseElement.h"
+
 namespace IRT {
 class Expression;
 class ExpressionList : public BaseElement {
@@ -16,5 +17,5 @@ class ExpressionList : public BaseElement {
 
 };
 
-}
+}  // namespace IRT
 

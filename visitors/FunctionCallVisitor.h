@@ -7,7 +7,7 @@
 #include <symbol_table/ScopeLayerTree.h>
 #include "TemplateVisitor.h"
 
-class FunctionCallVisitor: public TemplateVisitor<int> {
+class FunctionCallVisitor : public TemplateVisitor<int> {
  public:
   FunctionCallVisitor(
       ScopeLayer* function_scope, std::shared_ptr<Method> function);

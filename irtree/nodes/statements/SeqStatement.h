@@ -1,5 +1,6 @@
 #pragma once
 #include "Statement.h"
+
 namespace IRT {
 class SeqStatement : public Statement {
  public:
@@ -11,6 +12,6 @@ class SeqStatement : public Statement {
   Statement* second_statement_;
 };
 
-}
+}  // namespace IRT
 
 

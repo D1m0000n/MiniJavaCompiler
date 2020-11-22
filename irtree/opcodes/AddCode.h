@@ -2,7 +2,7 @@
 
 #include "OpCode.h"
 
-namespace IRT{
+namespace IRT {
 class AddCode : public OpCode {
  public:
   AddCode(
@@ -12,7 +12,7 @@ class AddCode : public OpCode {
       OpType rega_tp,
       std::string argb,
       OpType argb_tp
-      );
+  );
   void Accept(OpCodeVisitor* visitor) override;
   void SetSuffix(std::string suffix) override;
 
@@ -23,4 +23,4 @@ class AddCode : public OpCode {
   std::string argb_;
   OpType argb_type_;
 };
-}
+}  // namespace IRT

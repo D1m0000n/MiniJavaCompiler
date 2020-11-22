@@ -14,7 +14,7 @@ class FunctionStorage {
  private:
   FunctionStorage() = default;
   ~FunctionStorage() = default;
-  FunctionStorage& operator= (const FunctionStorage&) = delete;
+  FunctionStorage& operator=(const FunctionStorage&) = delete;
   std::unordered_map<Symbol, Function*> functions_;
 };
 

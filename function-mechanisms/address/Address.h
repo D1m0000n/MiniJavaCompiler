@@ -9,4 +9,4 @@ class Address {
   virtual Expression* ToExpression() = 0;
 };
 
-}
+}  // namespace IRT

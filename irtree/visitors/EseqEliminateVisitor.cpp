@@ -1,10 +1,14 @@
 #include "EseqEliminateVisitor.h"
 
-void IRT::EseqEliminateVisitor::Visit(ConstExpression* const_exp) { //// OK
+//// I've tried to divide nodes to make code clearer,
+//// but it's very difficult to think. That's why code below would
+//// would be worse ¯\_(ツ)_/¯
+
+void IRT::EseqEliminateVisitor::Visit(ConstExpression* const_exp) {
   tos_value_.expression_ = new ConstExpression(const_exp->Value());
 }
 
-void IRT::EseqEliminateVisitor::Visit(JumpConditionalStatement* jump_cond_stmt) { //// OK
+void IRT::EseqEliminateVisitor::Visit(JumpConditionalStatement* jump_cond_stmt) {
   IrtStorage left_elements = Accept(jump_cond_stmt->left_operand_);
   IrtStorage right_elements = Accept(jump_cond_stmt->right_operand_);
   IRT::Expression* left_side = left_elements.expression_;
@@ -104,8 +108,6 @@ IRT::EseqEliminateVisitor::IRList ShiftEseq(IRT::ExpressionList* expression_list
   size_t list_size = expression_list->expressions_.size();
   size_t check_index = 0;
   IRT::EseqEliminateVisitor::IRList ir_list;
-//  std::vector<IRT::Expression*> temp_vector(list_size);
-//  ir_list.exp_list->expressions_ = temp_vector;
   auto& list_of_expressions = ir_list.exp_list->expressions_;
   list_of_expressions.resize(list_size);
 
@@ -159,7 +161,7 @@ IRT::EseqEliminateVisitor::IRList ShiftEseq(IRT::ExpressionList* expression_list
   }
   return ir_list;
 }
-//// shas zdohnu((
+
 void IRT::EseqEliminateVisitor::Visit(MoveStatement* move_statement) {
   IrtStorage source_elements = Accept(move_statement->source_);
   IrtStorage target_elements = Accept(move_statement->target_);
@@ -302,7 +304,7 @@ void IRT::EseqEliminateVisitor::Visit(MoveStatement* move_statement) {
   tos_value_.statement_ = new MoveStatement(source_expr, target_expr); //// 5(other)
 }
 
-void IRT::EseqEliminateVisitor::Visit(SeqStatement* seq_statement) { //// OK
+void IRT::EseqEliminateVisitor::Visit(SeqStatement* seq_statement) {
   IrtStorage elements_first = Accept(seq_statement->first_statement_);
   IrtStorage elements_second = Accept(seq_statement->second_statement_);
   SeqStatement* result_stmt = new SeqStatement(
@@ -312,12 +314,12 @@ void IRT::EseqEliminateVisitor::Visit(SeqStatement* seq_statement) { //// OK
   tos_value_.statement_ = result_stmt;
 }
 
-void IRT::EseqEliminateVisitor::Visit(LabelStatement* label_statement) { //// OK
+void IRT::EseqEliminateVisitor::Visit(LabelStatement* label_statement) {
   Statement* result_stmt = new LabelStatement(label_statement->label_);
   tos_value_.statement_ = result_stmt;
 }
 
-void IRT::EseqEliminateVisitor::Visit(BinopExpression* binop_expression) { //// OK
+void IRT::EseqEliminateVisitor::Visit(BinopExpression* binop_expression) {
   IrtStorage elements_first = Accept(binop_expression->first_);
   IrtStorage elements_second = Accept(binop_expression->second_);
   Expression* first_expr = elements_first.expression_;
@@ -407,12 +409,12 @@ void IRT::EseqEliminateVisitor::Visit(BinopExpression* binop_expression) { //// 
   tos_value_.expression_ = result_expr;
 }
 
-void IRT::EseqEliminateVisitor::Visit(TempExpression* temp_expression) { //// OK
+void IRT::EseqEliminateVisitor::Visit(TempExpression* temp_expression) {
   TempExpression* result_expr = new TempExpression(temp_expression->temporary_);
   tos_value_.expression_ = result_expr;
 }
 
-void IRT::EseqEliminateVisitor::Visit(MemExpression* mem_expression) { //// OK
+void IRT::EseqEliminateVisitor::Visit(MemExpression* mem_expression) {
   IrtStorage elements = Accept(mem_expression->expression_);
   Expression* expr = elements.expression_;
 
@@ -431,12 +433,12 @@ void IRT::EseqEliminateVisitor::Visit(MemExpression* mem_expression) { //// OK
   tos_value_.expression_ = result_expr;
 }
 
-void IRT::EseqEliminateVisitor::Visit(JumpStatement* jump_statement) { //// OK
+void IRT::EseqEliminateVisitor::Visit(JumpStatement* jump_statement) {
   JumpStatement* result_stmt = new JumpStatement(jump_statement->label_);
   tos_value_.statement_ = result_stmt;
 }
 
-void IRT::EseqEliminateVisitor::Visit(CallExpression* call_expression) { //// OK
+void IRT::EseqEliminateVisitor::Visit(CallExpression* call_expression) {
   IrtStorage expr_elements = Accept(call_expression->function_name_);
   IrtStorage list_elements = Accept(call_expression->args_);
   CallExpression* result_expr = new CallExpression(
@@ -446,7 +448,7 @@ void IRT::EseqEliminateVisitor::Visit(CallExpression* call_expression) { //// OK
   tos_value_.expression_ = result_expr;
 }
 
-void IRT::EseqEliminateVisitor::Visit(ExpressionList* expression_list) { //// OK
+void IRT::EseqEliminateVisitor::Visit(ExpressionList* expression_list) {
   ExpressionList* result_list = new ExpressionList();
 
   for (auto& expression : expression_list->expressions_) {
@@ -455,7 +457,7 @@ void IRT::EseqEliminateVisitor::Visit(ExpressionList* expression_list) { //// OK
   tos_value_.expression_list_ = result_list;
 }
 
-void IRT::EseqEliminateVisitor::Visit(NameExpression* name_expression) { //// OK
+void IRT::EseqEliminateVisitor::Visit(NameExpression* name_expression) {
   tos_value_.expression_ = new NameExpression(name_expression->label_);
 }
 
@@ -484,7 +486,7 @@ void IRT::EseqEliminateVisitor::Visit(EseqExpression* eseq_expression) {
   }
 }
 
-void IRT::EseqEliminateVisitor::Visit(ExpStatement* exp_stmt) { //// OK
+void IRT::EseqEliminateVisitor::Visit(ExpStatement* exp_stmt) {
   IrtStorage elements = Accept(exp_stmt->GetExpression());
   auto expression = elements.expression_;
 
@@ -552,10 +554,6 @@ void IRT::EseqEliminateVisitor::Visit(PrintStatement* statement) {
     tos_value_.statement_ = new PrintStatement(expr);
   }
 }
-
-//// I've tried to divide nodes to make code clearer,
-//// but it's very difficult to think. That's why code below would
-//// would be worse ¯\_(ツ)_/¯
 
 void IRT::EseqEliminateVisitor::IRList::MakeStatementList() {
   suffix = statements.back();

@@ -18,4 +18,4 @@ RelativeConditionalWrapper::RelativeConditionalWrapper(
     Expression* rhs
 ) : operator_type_(type), lhs_(lhs), rhs_(rhs) {
 }
-}
+}  // namespace IRT

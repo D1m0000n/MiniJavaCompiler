@@ -23,4 +23,4 @@ class StrCode : public OpCode {
   int offset_;
 
 };
-}
+}  // namespace IRT

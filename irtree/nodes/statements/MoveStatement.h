@@ -3,7 +3,6 @@
 #include "Statement.h"
 #include "../expressions/Expression.h"
 namespace IRT {
-
 class MoveStatement : public Statement {
  public:
   MoveStatement(Expression* source, Expression* target);
@@ -14,6 +13,6 @@ class MoveStatement : public Statement {
   Expression* target_;
 };
 
-};
+};  // namespace IRT
 
 

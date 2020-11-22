@@ -12,5 +12,5 @@ class StatementWrapper : public SubtreeWrapper {
   Statement* statement_;
 };
 
-}
+}  // namespace IRT
 

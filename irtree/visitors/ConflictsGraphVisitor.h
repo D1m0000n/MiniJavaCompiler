@@ -60,4 +60,4 @@ class ConflictsGraphVisitor : public OpCodeVisitor {
   std::unordered_map<std::string, int> saved_in_memory_; //// second if offset from base pointer
   int base_point_offset_;
 };
-}
+}  // namespace IRT

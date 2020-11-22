@@ -38,4 +38,4 @@ class Visitor {
   virtual void Visit(EseqExpression* eseq_expression) = 0;
   virtual void Visit(PrintStatement* print_statement) = 0;
 };
-};
+}  // namespace IRT

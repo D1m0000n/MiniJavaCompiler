@@ -13,4 +13,4 @@ IRT::NodeType MoveStatement::GetNodeType() {
   return NodeType::MOVE;
 }
 
-}
+}  // namespace IRT

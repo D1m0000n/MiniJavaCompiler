@@ -18,4 +18,4 @@ OrConditionalWrapper::OrConditionalWrapper(SubtreeWrapper* first, SubtreeWrapper
     : first_(first), second_(second) {
 
 }
-}
+}  // namespace IRT

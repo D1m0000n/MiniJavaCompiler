@@ -11,6 +11,6 @@ class ConditionalWrapper : public SubtreeWrapper {
 
 };
 
-}
+}  // namespace IRT
 
 

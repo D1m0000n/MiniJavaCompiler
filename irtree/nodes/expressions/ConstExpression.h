@@ -16,5 +16,5 @@ class ConstExpression : public Expression {
   int value_;
 };
 
-}
+}  // namespace IRT
 

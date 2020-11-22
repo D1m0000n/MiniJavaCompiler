@@ -14,6 +14,6 @@ class TemplateVisitor : public Visitor {
 
 };
 
-}
+}  // namespace IRT
 
 

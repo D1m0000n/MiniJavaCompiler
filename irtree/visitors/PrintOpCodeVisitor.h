@@ -31,4 +31,4 @@ class PrintOpCodeVisitor : public OpCodeVisitor {
   std::ofstream stream_;
   void PrintTab();
 };
-}
+}  // namespace IRT

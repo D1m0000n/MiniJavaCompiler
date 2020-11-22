@@ -8,7 +8,7 @@ IRT::PrintPhysRegVisitor::~PrintPhysRegVisitor() {
   stream_.close();
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::AddCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::AddCode* code) {
   std::string regd;
   std::string rega;
   std::string argb;
@@ -64,7 +64,7 @@ void IRT::PrintPhysRegVisitor::Visit(IRT::AddCode* code) { //// OK
   }
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::AndCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::AndCode* code) {
   std::string regd;
   std::string rega;
   std::string argb;
@@ -122,7 +122,7 @@ void IRT::PrintPhysRegVisitor::Visit(IRT::AndCode* code) { //// OK
 
 IRT::PrintPhysRegVisitor::PrintPhysRegVisitor(const std::string& filename) : stream_(filename) {}
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::CmpCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::CmpCode* code) {
   std::string hash = "";
   std::string rega;
   std::string argb;
@@ -145,7 +145,7 @@ void IRT::PrintPhysRegVisitor::Visit(IRT::CmpCode* code) { //// OK
   stream_ << code->operation_ << code->suffix_ << " " << rega << ", " << argb << '\n';
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::DivCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::DivCode* code) {
   std::string regd;
   std::string rega;
   std::string argb;
@@ -201,16 +201,16 @@ void IRT::PrintPhysRegVisitor::Visit(IRT::DivCode* code) { //// OK
   }
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::JumpCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::JumpCode* code) {
   PrintTab();
   stream_ << code->operation_ << code->suffix_ << " " << code->label_ << '\n';
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::LabelCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::LabelCode* code) {
   stream_ << code->label_ << ":\n";
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::LdrCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::LdrCode* code) {
   std::string comma = "";
   std::string regaddr;
   std::string regd;
@@ -239,7 +239,7 @@ void IRT::PrintPhysRegVisitor::Visit(IRT::LdrCode* code) { //// OK
           << ", [" << regaddr << comma << '#' << code->offset_ << "]\n";
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::MovCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::MovCode* code) {
   PrintTab();
   std::string regd;
   std::string arg;
@@ -261,7 +261,7 @@ void IRT::PrintPhysRegVisitor::Visit(IRT::MovCode* code) { //// OK
   stream_ << code->operation_ << code->suffix_ << " " << regd << ", " << arg << '\n';
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::MulCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::MulCode* code) {
   std::string regd;
   std::string rega;
   std::string argb;
@@ -317,7 +317,7 @@ void IRT::PrintPhysRegVisitor::Visit(IRT::MulCode* code) { //// OK
   }
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::OrCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::OrCode* code) {
   std::string regd;
   std::string rega;
   std::string argb;
@@ -373,7 +373,7 @@ void IRT::PrintPhysRegVisitor::Visit(IRT::OrCode* code) { //// OK
   }
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::PopCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::PopCode* code) {
   std::string reg;
   if (code->reg_type_ == OpType::TEMP) {
     bool is_saved = false;
@@ -385,7 +385,7 @@ void IRT::PrintPhysRegVisitor::Visit(IRT::PopCode* code) { //// OK
   stream_ << code->operation_ << " " << reg << '\n';
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::PushCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::PushCode* code) {
   std::string reg;
   if (code->reg_type_ == OpType::TEMP) {
     bool is_saved = false;
@@ -397,7 +397,7 @@ void IRT::PrintPhysRegVisitor::Visit(IRT::PushCode* code) { //// OK
   stream_ << code->operation_ << " " << reg << '\n';
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::StrCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::StrCode* code) {
   std::string comma = "";
   std::string regaddr;
   std::string regs;
@@ -426,7 +426,7 @@ void IRT::PrintPhysRegVisitor::Visit(IRT::StrCode* code) { //// OK
           << ", [" << regaddr << comma << '#' << code->offset_ << "]\n";
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::SubCode* code) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::SubCode* code) {
   std::string regd;
   std::string rega;
   std::string argb;
@@ -486,7 +486,7 @@ void IRT::PrintPhysRegVisitor::PrintTab() {
   stream_ << '\t';
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::PushListCode* list) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::PushListCode* list) {
   PrintTab();
   stream_ << list->operation_ << " {";
   for (size_t i = 0; i < list->registers_.size() - 1; ++i) {
@@ -495,7 +495,7 @@ void IRT::PrintPhysRegVisitor::Visit(IRT::PushListCode* list) { //// OK
   stream_ << "r" << list->registers_.back() << "}\n";
 }
 
-void IRT::PrintPhysRegVisitor::Visit(IRT::PopListCode* list) { //// OK
+void IRT::PrintPhysRegVisitor::Visit(IRT::PopListCode* list) {
   PrintTab();
   stream_ << list->operation_ << " {";
   for (size_t i = 0; i < list->registers_.size() - 1; ++i) {
@@ -508,7 +508,7 @@ std::string IRT::PrintPhysRegVisitor::GetReg(std::string name, bool& is_saved) {
   std::string result;
   if (registers_.find(name) != registers_.end()) {
     result = 'r' + std::to_string(registers_[name]);
-  } else if(saved_in_memory_.find(name) != saved_in_memory_.end()) {
+  } else if (saved_in_memory_.find(name) != saved_in_memory_.end()) {
     result = "";
     is_saved = true;
   } else {

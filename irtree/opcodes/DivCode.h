@@ -2,7 +2,7 @@
 
 #include "OpCode.h"
 
-namespace IRT{
+namespace IRT {
 class DivCode : public OpCode {
  public:
   DivCode(
@@ -24,4 +24,4 @@ class DivCode : public OpCode {
   std::string argb_;
   OpType argb_type_;
 };
-}
+}  // namespace IRT

@@ -19,4 +19,4 @@ AndConditionalWrapper::AndConditionalWrapper(SubtreeWrapper* first, SubtreeWrapp
     : first_(first), second_(second) {
 
 }
-}
+}  // namespace IRT

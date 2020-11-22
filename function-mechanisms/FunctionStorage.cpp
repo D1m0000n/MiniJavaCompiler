@@ -1,16 +1,15 @@
 #include "FunctionStorage.h"
 
-FunctionStorage &FunctionStorage::GetInstance() {
+FunctionStorage& FunctionStorage::GetInstance() {
   static FunctionStorage storage;
   return storage;
 }
 
-void FunctionStorage::Set(Symbol symbol, Function *function) {
+void FunctionStorage::Set(Symbol symbol, Function* function) {
   functions_[symbol] = function;
 }
 
-
-Function *FunctionStorage::Get(Symbol symbol) const {
+Function* FunctionStorage::Get(Symbol symbol) const {
   if (functions_.find(symbol) != functions_.end()) {
     return functions_.at(symbol);
   } else {

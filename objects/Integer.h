@@ -2,12 +2,12 @@
 
 #include "Object.h"
 
-class Integer: public Object {
+class Integer : public Object {
  public:
-    explicit Integer(int value);
-    int ToInt() override;
-    std::string Type() override;
+  explicit Integer(int value);
+  int ToInt() override;
+  std::string Type() override;
 
  private:
-    int value_;
+  int value_;
 };

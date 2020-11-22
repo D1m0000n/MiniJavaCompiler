@@ -7,16 +7,7 @@
 #include "objects/Integer.h"
 
 SymbolTreeVisitor::SymbolTreeVisitor() : tree_(new ScopeLayer) {
-
-//  tree_.root_->DeclareVariable(Symbol("true"), "int");
-//  tree_.root_->DeclareVariable(Symbol("false"), "int");
-
-//  tree_.root_->Put(Symbol("true"), std::make_shared<Integer>(1));
-//  tree_.root_->Put(Symbol("false"), std::make_shared<Integer>(0));
-
   current_layer_ = tree_.root_;
-
-//    path_.push_back(tree_.root_);
 }
 
 void SymbolTreeVisitor::Visit(NumberExpression* expression) {
@@ -124,35 +115,16 @@ void SymbolTreeVisitor::Visit(ScopeAssignmentList* list) {
 }
 
 void SymbolTreeVisitor::Visit(IfStatement* if_statement) {
-//  if_statement->true_statement_->Accept(this);
   if_statement->expression_->Accept(this);
-//  auto true_layer = new ScopeLayer(current_layer_);
-//  current_layer_ = true_layer;
-
   if_statement->true_statement_->Accept(this);
-//  current_layer_ = current_layer_->GetParent();
-
-//  auto false_layer = new ScopeLayer(current_layer_);
-//  current_layer_ = false_layer;
-
   if (if_statement->false_statement_) {
     if_statement->false_statement_->Accept(this);
   }
-//  current_layer_ = current_layer_->GetParent();
-
-//  if (if_statement->false_statement_) {
-//    if_statement->false_statement_->Accept(this);
-//  }
 }
 
 void SymbolTreeVisitor::Visit(WhileStatement* while_statement) {
   while_statement->expression_->Accept(this);
-
-//  auto while_layer = new ScopeLayer(current_layer_);
-//  current_layer_ = while_layer;
-
   while_statement->statement_->Accept(this);
-//  current_layer_ = current_layer_->GetParent();
 }
 
 void SymbolTreeVisitor::Visit(Function* function) {
@@ -186,15 +158,12 @@ void SymbolTreeVisitor::Visit(ParamValueList* value_list) {
   }
 }
 
-void SymbolTreeVisitor::Visit(ParamList *param_list) {
+void SymbolTreeVisitor::Visit(ParamList* param_list) {
   for (size_t i = 0; i < param_list->params_.size(); ++i) {
     const std::string& param = param_list->params_[i];
     const std::string& type = param_list->types_[i];
     current_layer_->DeclareVariable(Symbol(param), type);
   }
-//  for (const std::string& param: param_list->params_) {
-//    current_layer_->DeclareVariable(Symbol(param), "int"); //// check for type
-//  }
 }
 
 void SymbolTreeVisitor::Visit(FunctionCallExpression* statement) {
@@ -212,7 +181,6 @@ void SymbolTreeVisitor::Visit(Program* program) {
   }
   program->main_class_->Accept(this);
   program->class_declarations_->Accept(this);
-//    program->expression_->Accept(this); // tos value is called
 }
 
 void SymbolTreeVisitor::Visit(MainClass* main_class) {

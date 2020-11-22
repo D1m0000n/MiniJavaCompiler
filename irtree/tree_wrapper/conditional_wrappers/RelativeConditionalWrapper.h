@@ -15,6 +15,6 @@ class RelativeConditionalWrapper : public ConditionalWrapper {
 
 };
 
-}
+}  // namespace IRT
 
 

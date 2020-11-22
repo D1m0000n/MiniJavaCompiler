@@ -51,8 +51,6 @@ void PrintVisitor::Visit(DivExpression* expression) {
   --num_tabs_;
 }
 
-////
-
 void PrintVisitor::Visit(AndExpression* expression) {
   PrintTabs();
   stream_ << "AndExpression: " << std::endl;
@@ -106,8 +104,6 @@ void PrintVisitor::Visit(OrExpression* expression) {
   expression->second->Accept(this);
   --num_tabs_;
 }
-
-////
 
 void PrintVisitor::Visit(IdentExpression* expression) {
   PrintTabs();
@@ -197,7 +193,6 @@ void PrintVisitor::Visit(Program* program) {
   ++num_tabs_;
 
   program->main_class_->Accept(this);
-//    program->expression_->Accept(this);
 
   --num_tabs_;
 }
@@ -253,9 +248,8 @@ void PrintVisitor::Visit(ParamValueList* param_value_list) {
 
   ++num_tabs_;
 
-  for (Expression* param: param_value_list->params_) {;
+  for (Expression* param: param_value_list->params_) { ;
     param->Accept(this);
-//        stream_ << param << std::endl;
   }
   --num_tabs_;
 }

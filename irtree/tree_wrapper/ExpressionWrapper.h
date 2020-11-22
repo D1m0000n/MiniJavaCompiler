@@ -16,5 +16,5 @@ class ExpressionWrapper : public SubtreeWrapper {
   Expression* expression_;
 };
 
-}
+}  // namespace IRT
 

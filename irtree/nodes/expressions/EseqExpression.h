@@ -4,7 +4,6 @@
 #include "Expression.h"
 
 namespace IRT {
-
 class EseqExpression : public Expression {
  public:
   EseqExpression(Statement* statement, Expression* expression);
@@ -15,6 +14,6 @@ class EseqExpression : public Expression {
   Expression* expression_;
 };
 
-}
+}  // namespace IRT
 
 

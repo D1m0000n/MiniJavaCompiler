@@ -11,6 +11,6 @@ class OrConditionalWrapper : public ConditionalWrapper {
   SubtreeWrapper* second_;
 };
 
-}
+}  // namespace IRT
 
 

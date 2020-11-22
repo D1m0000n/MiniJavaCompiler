@@ -98,7 +98,6 @@ void Driver::Evaluate() {
     auto stmt_result = call_eliminate_visitor.GetTree();
     irt_methods[func_view->first] = stmt_result;
 
-
     std::string file_name = prefix_path + func_view->first + "_without_double_call.txt";
     IRT::PrintVisitor print_visitor_two(
         prefix_path + func_view->first + "_without_double_call.txt"
@@ -130,8 +129,6 @@ void Driver::Evaluate() {
   MakeBlocks();
   PrintTraces();
   GenerateArmCode();
-//  Interpreter interpreter(root);
-//  interpreter.GetResult(program);
 }
 
 void Driver::scan_begin() {
@@ -255,7 +252,6 @@ std::vector<IRT::Trace> Driver::MakeTraces(std::vector<IRT::Block>& blocks) {
         IRT::JumpConditionalStatement* jump_stmt = dynamic_cast<IRT::JumpConditionalStatement*>(
             current_trace_pointer->GetJump()
         );
-//        if (label_to_block_.find(jump_stmt))
         std::string false_label = jump_stmt->label_false_.ToString();
         std::string true_label = jump_stmt->label_true_.ToString();
         if (!used[false_label]) {
@@ -263,7 +259,6 @@ std::vector<IRT::Trace> Driver::MakeTraces(std::vector<IRT::Block>& blocks) {
         } else {
           current_trace_pointer = label_to_block_[true_label];
         }
-//        current_trace_pointer = &label_to_block_[jump_stmt->label_false_.ToString()];
       } else {
         IRT::JumpStatement* jump_stmt = dynamic_cast<IRT::JumpStatement*>(
             current_trace_pointer->GetJump()
@@ -347,7 +342,6 @@ void Driver::GenerateArmCode() {
         }
         block.GetJump()->Accept(&code_generator);
 
-
         auto op_code = code_generator.GetCodes();
 
         for (auto& code : op_code) {
@@ -356,7 +350,7 @@ void Driver::GenerateArmCode() {
 
         //// Conflicts calculated in JumpCode
         std::set<int> current_live_in;
-        if (live_in.find(label_name) != live_in.end()){
+        if (live_in.find(label_name) != live_in.end()) {
           current_live_in = live_in[label_name];
         }
         IRT::ConflictsGraphVisitor conflicst_graph(current_live_in, op_code.size());

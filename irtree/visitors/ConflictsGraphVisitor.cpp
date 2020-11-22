@@ -19,12 +19,6 @@ int IRT::ConflictsGraphVisitor::GetTempNumber(std::string temp) {
   }
   int result = std::stoi(res);
   return result;
-//  int mul = 1;
-//  for (int i = temp.size() - 1; i >= 1; --i) {
-//    result += (temp[i] - '0') * mul;
-//    mul *= 10;
-//  }
-//  return result;
 }
 
 void IRT::ConflictsGraphVisitor::Visit(IRT::LabelCode* code) {
@@ -247,7 +241,6 @@ void IRT::ConflictsGraphVisitor::CalculateConflicts() {
     return;
   }
 
-//  std::unordered_map<int, std::set<std::pair<int, int>>> conflicts;
   std::unordered_map<int, int> degs;
   std::unordered_map<int, bool> used;
   for (auto e : graph) {
@@ -255,7 +248,7 @@ void IRT::ConflictsGraphVisitor::CalculateConflicts() {
     used[e.first] = false;
   }
   std::stack<std::pair<int, int>> color_order; //// second parameter means candidate type of vertex
-                                               //// 0 - normal vertex, 1 - candidate to save in memory
+  //// 0 - normal vertex, 1 - candidate to save in memory
   for (int j = 0; j < graph.size(); ++j) {
     bool vertex_deleted = false;
     for (auto vertex : degs) {

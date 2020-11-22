@@ -13,4 +13,4 @@ class SubtreeWrapper {
   virtual Statement* ToConditional(Label true_label, Label false_label) = 0;
 };
 
-}
+}  // namespace IRT

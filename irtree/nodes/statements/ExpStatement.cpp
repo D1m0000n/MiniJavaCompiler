@@ -2,13 +2,13 @@
 
 using namespace IRT;
 
-Expression *ExpStatement::GetExpression() {
+Expression* ExpStatement::GetExpression() {
   return expression_;
 }
 
-ExpStatement::ExpStatement(Expression *expression): expression_(expression) {}
+ExpStatement::ExpStatement(Expression* expression) : expression_(expression) {}
 
-void ExpStatement::Accept(Visitor *visitor) {
+void ExpStatement::Accept(Visitor* visitor) {
   visitor->Visit(this);
 }
 
