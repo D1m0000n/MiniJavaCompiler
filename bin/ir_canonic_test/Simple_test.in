@@ -1,0 +1,19 @@
+class TestClass {
+  public static void main () {
+    int three;
+    three = 3;
+    int two;
+    two = 2;
+    if (two > 0) {
+        int four;
+        four = three + 1;
+        System.out.println(four);
+    } else {
+        int five;
+        five = two + three;
+        System.out.println(five);
+    }
+    System.out.println(three);
+    System.out.println(two);
+  }
+}

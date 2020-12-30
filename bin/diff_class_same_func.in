@@ -1,0 +1,25 @@
+class MainClass {
+  public static void main () {
+    int three;
+    three = 3;
+    System.out.println(three);
+    new TestClass1 ().TestFunc ();
+    new TestClass2 ().TestFunc ();
+  }
+}
+
+class TestClass1 {
+  public void TestFunc () {
+    int num_aux;
+    num_aux = 123;
+    System.out.println(num_aux);
+  }
+}
+
+class TestClass2 {
+  public void TestFunc () {
+    int num_aux;
+    num_aux = 456;
+    System.out.println(num_aux);
+  }
+}

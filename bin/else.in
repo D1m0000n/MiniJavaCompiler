@@ -1,0 +1,26 @@
+class TestClass {
+  public static void main () {
+    int three;
+    three = 1;
+    three = 0;
+    if (0 > 0) {
+        int four;
+        four = 56;
+        System.out.println(four);
+    } else {
+        if (1 < 1) {
+            int b;
+            b = 2;
+            System.out.println(b);
+        } else {
+            int c;
+            c = 23;
+            System.out.println(c);
+        }
+        int kek;
+        kek = 101;
+        System.out.println(kek);
+    }
+    System.out.println(three);
+  }
+}

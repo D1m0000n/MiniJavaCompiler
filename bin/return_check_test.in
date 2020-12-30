@@ -1,0 +1,13 @@
+class MainClass {
+  public static void main () {
+    new ReturnClass ().ReturnFunc (10);
+  }
+}
+
+class ReturnClass {
+  public void ReturnFunc (int num) {
+    int num_aux;
+    num_aux = num + 5;
+    return num_aux;
+  }
+}

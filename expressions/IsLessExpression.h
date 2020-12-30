@@ -1,11 +1,8 @@
 #pragma once
-#include <Expression.h>
+#include <BinaryExpression.h>
 
-class IsLessExpression : public Expression {
+class IsLessExpression : public BinaryExpression {
  public:
   IsLessExpression(Expression* e1, Expression* e2);
-  [[nodiscard]] int eval() const override;
-  void AcceptVisitor(Visitor* visitor) override;
-  Expression* first;
-  Expression* second;
+  void Accept(Visitor* visitor) override;
 };

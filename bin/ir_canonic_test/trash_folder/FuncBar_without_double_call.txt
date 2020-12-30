@@ -1,0 +1,6 @@
+SeqStatement:
+	LabelStatement: ClassBar::FuncBar
+	MoveStatement:
+		MemExpression: 
+			TempExpression: ::fp
+		TempExpression: ::return_value

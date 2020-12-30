@@ -1,11 +1,8 @@
 #pragma once
-#include <Expression.h>
+#include <BinaryExpression.h>
 
-class ModuloExpression : public Expression {
+class ModuloExpression : public BinaryExpression {
  public:
   ModuloExpression(Expression* e1, Expression* e2);
-  [[nodiscard]] int eval() const override;
-  void AcceptVisitor(Visitor* visitor) override;
-  Expression* first;
-  Expression* second;
+  void Accept(Visitor* visitor) override;
 };

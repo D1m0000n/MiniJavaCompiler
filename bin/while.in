@@ -1,0 +1,13 @@
+class TestClass {
+  public static void main () {
+   int three;
+   three = 3;
+   while (three < 10) {
+       int four;
+       four = three;
+       three = four + 3;
+       System.out.println(four);
+   }
+   System.out.println(three);
+  }
+}

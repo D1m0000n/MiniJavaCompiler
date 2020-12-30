@@ -1,0 +1,147 @@
+Trace separator EKKEKEKEKEKKEKEKEKEKKEKEKKEKEKEKEKEKEKKEKEKEKEKKEKEKE
+
+Block separator EHHEHEHEHHEHEHEHEHHEHEHEHHEHEHEHHEHEHEHHEHEHEHEHHEH
+
+LabelStatement: MainClass::main
+MoveStatement:
+	ConstExpression 3
+	MemExpression: 
+		BinopExpression: PLUS
+			TempExpression: ::fp
+			ConstExpression 4
+PrintStatement:
+	MemExpression: 
+		BinopExpression: PLUS
+			TempExpression: ::fp
+			ConstExpression 4
+JumpConditionalStatement: GT
+TrueLabel: L0
+FalseLabel: L1
+	MemExpression: 
+		BinopExpression: PLUS
+			TempExpression: ::fp
+			ConstExpression 4
+	ConstExpression 2
+Block separator EHHEHEHEHHEHEHEHEHHEHEHEHHEHEHEHHEHEHEHHEHEHEHEHHEH
+
+LabelStatement: L1
+PrintStatement:
+	ConstExpression 222
+MoveStatement:
+	BinopExpression: PLUS
+		TempExpression: ::fp
+		ConstExpression 8
+	TempExpression: %4
+ExpStatement:
+	ConstExpression 0
+MoveStatement:
+	CallExpression: 
+		NameExpression: FuncFoo
+		ExpressionList: 
+			ConstExpression 1
+			ConstExpression 2
+			ConstExpression 3
+	TempExpression: %1
+MoveStatement:
+	TempExpression: %1
+	TempExpression: %3
+ExpStatement:
+	ConstExpression 0
+MoveStatement:
+	CallExpression: 
+		NameExpression: FuncBar
+		ExpressionList: 
+			MemExpression: 
+				BinopExpression: PLUS
+					TempExpression: ::fp
+					ConstExpression 8
+	TempExpression: %2
+MoveStatement:
+	BinopExpression: PLUS
+		TempExpression: %3
+		TempExpression: %2
+	MemExpression: 
+		TempExpression: %4
+PrintStatement:
+	MemExpression: 
+		BinopExpression: PLUS
+			TempExpression: ::fp
+			ConstExpression 8
+JumpStatement: L2
+Block separator EHHEHEHEHHEHEHEHEHHEHEHEHHEHEHEHHEHEHEHHEHEHEHEHHEH
+
+LabelStatement: L2
+MoveStatement:
+	BinopExpression: PLUS
+		TempExpression: ::fp
+		ConstExpression 12
+	TempExpression: %5
+MoveStatement:
+	ConstExpression 1
+	TempExpression: %0
+JumpConditionalStatement: GT
+TrueLabel: L3
+FalseLabel: L4
+	MemExpression: 
+		BinopExpression: PLUS
+			TempExpression: ::fp
+			ConstExpression 4
+	ConstExpression 2
+Block separator EHHEHEHEHHEHEHEHEHHEHEHEHHEHEHEHHEHEHEHHEHEHEHEHHEH
+
+LabelStatement: L4
+MoveStatement:
+	ConstExpression 0
+	TempExpression: %0
+JumpStatement: L3
+Block separator EHHEHEHEHHEHEHEHEHHEHEHEHHEHEHEHHEHEHEHHEHEHEHEHHEH
+
+LabelStatement: L3
+MoveStatement:
+	TempExpression: %0
+	MemExpression: 
+		TempExpression: %5
+JumpConditionalStatement: GT
+TrueLabel: L5
+FalseLabel: L6
+	MemExpression: 
+		BinopExpression: PLUS
+			TempExpression: ::fp
+			ConstExpression 4
+	ConstExpression 2
+Block separator EHHEHEHEHHEHEHEHEHHEHEHEHHEHEHEHHEHEHEHHEHEHEHEHHEH
+
+LabelStatement: L6
+PrintStatement:
+	ConstExpression 1000
+SeqStatement:
+	PrintStatement:
+		ConstExpression 1000
+	LabelStatement: L7
+JumpStatement: main_done
+Trace separator EKKEKEKEKEKKEKEKEKEKKEKEKKEKEKEKEKEKEKKEKEKEKEKKEKEKE
+
+Block separator EHHEHEHEHHEHEHEHEHHEHEHEHHEHEHEHHEHEHEHHEHEHEHEHHEH
+
+LabelStatement: L0
+PrintStatement:
+	BinopExpression: PLUS
+		MemExpression: 
+			BinopExpression: PLUS
+				TempExpression: ::fp
+				ConstExpression 4
+		ConstExpression 2
+JumpStatement: L2
+Trace separator EKKEKEKEKEKKEKEKEKEKKEKEKKEKEKEKEKEKEKKEKEKEKEKKEKEKE
+
+Block separator EHHEHEHEHHEHEHEHEHHEHEHEHHEHEHEHHEHEHEHHEHEHEHEHHEH
+
+LabelStatement: L5
+PrintStatement:
+	BinopExpression: PLUS
+		MemExpression: 
+			BinopExpression: PLUS
+				TempExpression: ::fp
+				ConstExpression 4
+		ConstExpression 3
+JumpStatement: L7

@@ -1,0 +1,16 @@
+SeqStatement:
+	LabelStatement: ClassFoo::FuncFoo
+	MoveStatement:
+		BinopExpression: PLUS
+			BinopExpression: PLUS
+				MemExpression: 
+					TempExpression: ::fp
+				MemExpression: 
+					BinopExpression: PLUS
+						TempExpression: ::fp
+						ConstExpression 4
+			MemExpression: 
+				BinopExpression: PLUS
+					TempExpression: ::fp
+					ConstExpression 8
+		TempExpression: ::return_value

@@ -1,0 +1,11 @@
+class TestClass {
+  public static void main () {
+    int a;
+    a = 3;
+    System.out.println(a);
+  }
+}
+
+class KekClass {
+    int kek;
+}

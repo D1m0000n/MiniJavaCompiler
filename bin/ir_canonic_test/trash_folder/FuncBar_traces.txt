@@ -1,0 +1,12 @@
+Trace separator EKKEKEKEKEKKEKEKEKEKKEKEKKEKEKEKEKEKEKKEKEKEKEKKEKEKE
+
+Block separator EHHEHEHEHHEHEHEHEHHEHEHEHHEHEHEHHEHEHEHHEHEHEHEHHEH
+
+LabelStatement: ClassBar::FuncBar
+SeqStatement:
+	LabelStatement: ClassBar::FuncBar
+	MoveStatement:
+		MemExpression: 
+			TempExpression: ::fp
+		TempExpression: ::return_value
+JumpStatement: FuncBar_done
